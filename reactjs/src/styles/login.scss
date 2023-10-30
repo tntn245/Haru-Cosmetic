@@ -1,0 +1,55 @@
+.card{
+    padding-bottom: 10px;
+}
+
+.input-2{
+    position: relative;
+    .icon-eye{
+        cursor:pointer;
+        position: absolute;
+        top:13px;
+        right:10px;
+    }
+}
+.or {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-top: -30px;
+  }
+  
+.or span {
+    display: inline-block;
+    position: relative;
+  }
+  
+  .or span::before,
+  .or span::after {
+    content: "";
+    position: absolute;
+    height: 1px;
+    background-color: #c5c6d0;
+    width: 50%;
+    top: 50%;
+  }
+  
+  .or span::before {
+    right: 100%;
+    margin-right: 5px;
+    width:100px;
+  }
+  
+  .or span::after {
+    left: 100%;
+    margin-left: 5px;
+    width:100px;
+  }
+  .alt-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Horizontally center the children */
+    justify-content: center; /* Vertically center the children */
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

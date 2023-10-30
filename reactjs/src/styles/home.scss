@@ -1,0 +1,34 @@
+.banner-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+.card-body{
+    margin-top: -15px;
+}
+.hero{
+  margin-top: 20px;
+}
+h1{
+  text-align: center;
+  margin: 0 0 28px;
+  margin-top: 40px;
+  margin-bottom: 30px;
+  line-height: 37px;
+  text-align: center;
+  font-family:75.768px "Nunito", -apple-system, BlinkMacSystemFont, Arial, Helvetica, 'Helvetica Neue', Verdana, sans-serif ;
+  font-style: normal;
+}
+.hot-deals  {
+  .card img{
+  min-height     : 180px;
+  justify-content: center;
+  }
+}
+
+.featured-brands {
+  h1 {
+    margin-top: -5px; /* Adjust the value as needed */
+  }
+}

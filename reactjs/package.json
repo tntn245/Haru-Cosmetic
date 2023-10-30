@@ -1,0 +1,46 @@
+{
+  "name": "haru",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-regular-svg-icons": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@popperjs/core": "^2.11.7",
+    "@react-oauth/google": "^0.11.1",
+    "axios": "^1.6.0",
+    "bootstrap": "^5.3.2",
+    "jwt-decode": "^3.1.2",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.9.1",
+    "react-dom": "^18.2.0",
+    "react-fast-marquee": "^1.5.2",
+    "react-google-login": "^5.2.2",
+    "react-icons": "^4.8.0",
+    "react-rating-stars-component": "^2.2.0",
+    "react-router-dom": "^6.17.0",
+    "react-router-use-history": "^1.0.0",
+    "react-slick": "^0.29.0",
+    "slick-carousel": "^1.8.1",
+    "vanilla-lazyload": "^17.8.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^4.0.0",
+    "eslint": "^8.38.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.3.4",
+    "sass": "^1.69.2",
+    "vite": "^4.3.2"
+  }
+}
