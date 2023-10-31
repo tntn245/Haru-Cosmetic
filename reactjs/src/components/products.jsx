@@ -23,9 +23,24 @@ import img5 from '../assets/images/products/img5.png'
 import img6 from '../assets/images/products/img6.png'
 import img7 from '../assets/images/products/img7.png'
 import img8 from '../assets/images/products/img8.png'
+import axios from '../api/axios.js';
+
+
+export const PRODUCTS = [];
+
+async function loadProducts() {
+  try {
+    const response = await axios.get("http://127.0.0.1:8001/api/products"); 
+    PRODUCTS.push(...response.data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+loadProducts();
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const PRODUCTS = [
+export const PRODUCTS1 = [
     {
         id: 0,
         image: pr1,
@@ -153,7 +168,7 @@ export const PRODUCTS = [
 ];
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const  PRODUCTS1 = [
+export const  PRODUCTS2 = [
     {
         id: 16,
         image: img1,

@@ -15,6 +15,8 @@ import './App.css'
 import ShopContext from './components/shopcontext'
 import Details from './pages/details'
 
+import ImageUploadForm from './pages/testloadimg'
+
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -45,6 +47,7 @@ function App() {
         <Route path='cart' element={<Cart />} />
         <Route path='checkout' element={<Checkout />} />
         <Route path='details' element={<Details />} />
+        <Route path='imgproduct' element={<ImageUploadForm />} />
       </Route>
     </Routes>
     </BrowserRouter>

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 
-class APIController extends Controller
+class UserController extends Controller
 {
     public function getUsers()
     {
@@ -134,4 +134,31 @@ class APIController extends Controller
             }
         }
     }
+    
+    public function uploadImg(Request $request){
+        if ($request->isMethod('post')) {
+            if ($request->hasFile('image')) {
+
+                $image = $request->file('image');
+                $imageName = $image->getClientOriginalName();
+
+                // $imageData = file_get_contents($image->getRealPath());
+
+                // $newImage = new Image();
+                
+                // $newImage->name = $image->getClientOriginalName();
+                // $newImage->image = $imageData;
+                // $newImage->save();
+
+
+                $image->store('avatar', 'public');
+                // auth()->user()->update(['avatar' => storage_path('app')."/$path"]);
+
+                return response()->json(['message' => $imageName], 200);
+            }
+
+            return response()->json(['message' => 'Không tìm thấy ảnh'], 400);
+        }
+    }
+    
 }

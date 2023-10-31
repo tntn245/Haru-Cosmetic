@@ -2,8 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\APIController;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,9 +21,11 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::namespace('App\Http\Controllers')->group(function(){
-    Route::post('register-user', [APIController::class, 'registerUser']);
-    Route::post('login-user', [APIController::class, 'loginUser']);
-    Route::post('update-user', [APIController::class, 'updateUser']);
+    Route::post('register-user', [UserController::class, 'registerUser']);
+    Route::post('login-user', [UserController::class, 'loginUser']);
+    Route::post('update-user', [UserController::class, 'updateUser']);
+    Route::post('images', [UserController::class, 'uploadImg']);
+    Route::get('products', [ProductController::class, 'getProducts']);
 });
 
 // Route::get('users', 'App\Http\Controllers\APIController@getUsers');
