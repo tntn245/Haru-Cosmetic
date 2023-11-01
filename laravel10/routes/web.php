@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,4 +21,6 @@ Route::post('/', function () {
     return [];
 });
 
+Route::get('get-products', [ProductController::class, 'getProducts']);
+Route::post('upload-img-product', [ProductController::class, 'uploadImageProduct']);
 require __DIR__.'/auth.php';

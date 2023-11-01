@@ -47,7 +47,7 @@ function App() {
         <Route path='cart' element={<Cart />} />
         <Route path='checkout' element={<Checkout />} />
         <Route path='details' element={<Details />} />
-        <Route path='imgproduct' element={<ImageUploadForm />} />
+        <Route path='img' element={<ImageUploadForm />} />
       </Route>
     </Routes>
     </BrowserRouter>

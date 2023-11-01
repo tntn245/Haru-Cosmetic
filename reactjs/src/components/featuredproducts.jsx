@@ -13,7 +13,7 @@ const featuredproducts = () => {
       {PRODUCTS.slice(0, 4).map((product) => (
         <div className="col mb-5">
         <div key={product.id} className="card h-100 m-auto">
-          <img src={`http://localhost:8001/${product.image}`} className="card-img-top img-fluid" alt="..." />
+          <img src={product.image} className="card-img-top img-fluid" alt="..." />
           <div className="card-body">
             {/* <p className="card-text mb-2">{product.brand}</p> */}
             <h5 className='mb-3'>{product.name} </h5>

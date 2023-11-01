@@ -24,11 +24,6 @@ Route::namespace('App\Http\Controllers')->group(function(){
     Route::post('register-user', [UserController::class, 'registerUser']);
     Route::post('login-user', [UserController::class, 'loginUser']);
     Route::post('update-user', [UserController::class, 'updateUser']);
-    Route::post('images', [UserController::class, 'uploadImg']);
-    Route::get('products', [ProductController::class, 'getProducts']);
+    // Route::post('images', [UserController::class, 'uploadImg']);
 });
 
-// Route::get('users', 'App\Http\Controllers\APIController@getUsers');
-
-// Route::post('register', [AuthController::class, 'register']);
-// Route::post('login', [AuthController::class, 'login']);

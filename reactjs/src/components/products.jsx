@@ -30,7 +30,7 @@ export const PRODUCTS = [];
 
 async function loadProducts() {
   try {
-    const response = await axios.get("http://127.0.0.1:8001/api/products"); 
+    const response = await axios.get("http://127.0.0.1:8001/get-products"); 
     PRODUCTS.push(...response.data);
   } catch (error) {
     console.error(error);

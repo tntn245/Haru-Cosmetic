@@ -7,25 +7,11 @@ const ImageUploadForm = () => {
 
   const handleImageUpload = async (e) => {
     e.preventDefault();
-
-    // const formData = new FormData();
-    // formData.append('image', selectedImage);
-
-    // try {
-    //   await axios.post('/api/images', selectedImage.name)
-    //   .then(
-    //     (response) => {
-    //       console.log(response.data);
-    //     });
-    // } catch (error) {
-    //   console.log(error);
-    // }
-
     
     const formData = new FormData();
     formData.append("image", selectedImage);
     
-    axios.post("/api/images", formData, {
+    axios.post("/upload-img-product", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           "x-rapidapi-host": "file-upload8.p.rapidapi.com",
