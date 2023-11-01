@@ -25,5 +25,7 @@ Route::namespace('App\Http\Controllers')->group(function(){
     Route::post('login-user', [UserController::class, 'loginUser']);
     Route::post('update-user', [UserController::class, 'updateUser']);
     // Route::post('images', [UserController::class, 'uploadImg']);
+
+    // Route::post('add-to-cart', [UserController::class, 'addToCart']);
 });
 
