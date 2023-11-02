@@ -11,7 +11,7 @@ import visa from '../assets/images/pay/pay.png'
 
 const footer = () => {
   return <>
-    <footer className='footer p-5'>
+    <footer className='footer p-5' style={{ backgroundColor: '#333333' }}>
       <div className="container-xxl">
         <div className="row justify-content-between ">
           <div className="col-xs-12 col-sm-4 col-md-4 col-lg mb-md-0">
@@ -38,10 +38,10 @@ const footer = () => {
             <div className='mb-3'> <Link id='footer-links'>Sản phẩm yêu thích</Link>  </div>
           </div>
         </div>
-        <hr className='my-4' />
+        <hr className='my-4 hr-custom' />
         <div className="row d-flex justify-content-center">
           <div className="col-12 col-md-6  ">
-            <p className="text-center">&copy;Developed by HARU team</p>
+            <p className="copyright text-center">&copy;Developed by HARU team</p>
           </div>
         </div>
       </div>

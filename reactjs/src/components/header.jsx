@@ -5,10 +5,9 @@ import React, { useContext, useState } from 'react'
 import { ShopContext } from '../components/shopcontext'
 import { CiMail } from 'react-icons/ci'
 import { BiPhoneCall } from 'react-icons/bi'
-import { BsSearch } from 'react-icons/bs'
 import { VscAccount } from 'react-icons/vsc'
 import { CgShoppingCart, CgProductHunt } from 'react-icons/cg'
-import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai'
+import { AiOutlineMenu, AiOutlineClose, AiOutlineHeart } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
 import { NavLink, useLocation } from 'react-router-dom';
 import compare from "../assets/images/compare.svg";
@@ -73,6 +72,12 @@ const header = () => {
               <img src={logo} alt="logo" className='img-fluid logo' />
             </Link>
 
+            <button className="cart-span fs-3 d-md-none">
+              <Link to='cart' className={location.pathname === '/wishlist' ? 'active' : 'not-active'}>
+                <AiOutlineHeart />
+                <b><span>{totalProducts}</span></b>
+              </Link>
+            </button>
 
             <button className="cart-span fs-3 d-md-none">
               <Link to='cart' className={location.pathname === '/cart' ? 'active' : 'not-active'}>
@@ -157,12 +162,12 @@ const header = () => {
             <div className="col-md-3">
               <div className="row d-flex justify-content-center">
                 <div className="col-12 col-md-2 d-none d-md-flex d-lg-flex m-auto">
-                  <div className={location.pathname === '/' ? 'active' : 'not-active'}>
+                  <div className={location.pathname === 'wishlist' ? 'active' : 'not-active'}>
                     <Link onClick={toggleMenu}
-                      to=""
+                      to="/wishlist"
                       className="d-flex align-items-center color-nav me-3"
                     >
-                      <CgProductHunt className='me-1 fs-2' />
+                      <AiOutlineHeart className='me-1 fs-2' />
                     </Link>
                   </div>
                   <div className={location.pathname === 'login' ? 'active' : 'not-active'}>
@@ -179,9 +184,7 @@ const header = () => {
                       className="d-flex align-items-center color-nav me-3 cart-span-one"
                     >
                       <CgShoppingCart className='me-1 fs-2' />
-                      <div >
-                        <p><b><span>{totalProducts}</span></b></p>
-                      </div>
+                      <b>{totalProducts}</b>
                     </Link>
                   </div>
                 </div>

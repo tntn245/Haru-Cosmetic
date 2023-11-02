@@ -13,8 +13,6 @@
 h1{
   text-align: center;
   margin: 0 0 28px;
-  margin-top: 40px;
-  margin-bottom: 30px;
   line-height: 37px;
   text-align: center;
   font-family:75.768px "Nunito", -apple-system, BlinkMacSystemFont, Arial, Helvetica, 'Helvetica Neue', Verdana, sans-serif ;
@@ -27,8 +25,19 @@ h1{
   }
 }
 
+
 .featured-brands {
   h1 {
-    margin-top: -5px; /* Adjust the value as needed */
+    margin-top: -10px; /* Adjust the value as needed */
+    margin-bottom: 20px;
   }
+}
+  
+.featured-products h1{
+  margin-top: 37px;
+  margin-bottom: -40px;
+}
+.new-arrivals h1{
+  margin-top: 15px;
+  margin-bottom:15px;
 }
