@@ -1,18 +1,18 @@
   @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@200;300;400;500;600;700&display=swap');
 
   :root {
-    --primary    : #00A97F;
-    --light      : rgba(133, 198, 218, 255);
-    --dark       : rgba(13, 13, 10, 255);
-    --darker     : rgba(234, 157, 90, 255);
-    --lighter    : #FFFFFF;
-    --lighter1   : #333333;
-    --lighter2   : #e4f0e9da;
-    --darken     : #cca27e;
-    --color      : orangered;
-    /* --search  : #FF6000; */
-    --primary1   : #2b3d4c;
-    --primary2   : #354d61;
+    --primary : #0C0908;
+    --light   : rgba(133, 198, 218, 255);
+    --dark    : rgba(13, 13, 10, 255);
+    --darker  : rgba(234, 157, 90, 255);
+    --lighter : #FFFFFF;
+    --lighter1: #333333;
+    --lighter2: #e4f0e9da;
+    --darken  : #0C0908;
+    --color   : #28231D;
+    --search  : #28231D;
+    --primary1: #2b3d4c;
+    --primary2: #354d61;
   }
 
   * {
@@ -25,7 +25,7 @@
   h1 {
     font-weight: 450;
     font-size  : 35px;
-    color      : black;
+    color      : #28282B;
   }
 
   h2 {
@@ -41,7 +41,7 @@
   }
 
   a:hover {
-    color: #535bf2;
+    color: #7cbeb8;
   }
 
 
@@ -181,7 +181,7 @@
   }
 
   .color-nav {
-    color: var(--darker);
+    color: #45474B;
   }
 
   .banner .back-details {
@@ -195,6 +195,7 @@
     justify-content    : center;
     display            : flex;
     flex-direction     : column;
+    margin-bottom      : 38px;
   }
 
   .banner .back-details {
@@ -483,7 +484,7 @@
     border-bottom-right-radius: 0;
   }
 
-  footer .pay img {
+  /* footer .pay img {
     padding      : 10px 8px;
     margin-right : 5px;
     border-radius: 10px;
@@ -493,50 +494,61 @@
 
   footer .pay img:hover {
     transform: translateY(-10px);
-  }
+  } */
 
-  footer .socials {
-    margin: 0 10px;
-  }
 
   #footer-link {
     font-size : 18px;
     margin    : 0 10px;
-    color     : var(--darken);
+    color     : #FCF5ED;
     transition: 0.5s ease;
   }
 
   #footer-link:hover {
-    color: var(--search);
+    color: #99d49c;
   }
 
   footer p {
     font-size  : 16px;
     font-weight: 400;
+    color      : #FCF5ED;
   }
 
   #footer-links {
     font-size : 16px;
-    color     : var(--primary1);
+    color     : #FCF5ED;
     transition: 0.5s ease;
   }
 
   #footer-links:hover {
-    color: var(--search);
+    color: #98c1ae;
+  }
+
+  .footer {
+    margin-top: 60px;
   }
 
   footer .footer-title {
-    border-bottom: 2px solid var(--darken);
+    border-bottom: 2px solid #FEFEFA;
     width        : 30%;
+    color        : #FCF5ED;
   }
 
   footer .footer-tel {
-    color     : var(--darken);
-    transition: 0.5s ease;
+    color     : #FCF5ED;
+    transition: 0.8s ease;
   }
 
   footer .footer-tel:hover {
-    color: var(--primary1);
+    color: #FEFEFA;
+  }
+
+  footer .copyright {
+    color: #FCF5ED;
+  }
+
+  footer .hr-custom {
+    color: #FCF5ED;
   }
 
   /* shop starts here */
