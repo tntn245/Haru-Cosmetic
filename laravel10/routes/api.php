@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +26,6 @@ Route::namespace('App\Http\Controllers')->group(function(){
     Route::post('update-user', [UserController::class, 'updateUser']);
     // Route::post('images', [UserController::class, 'uploadImg']);
 
-    // Route::post('add-to-cart', [UserController::class, 'addToCart']);
+    Route::post('add-to-cart', [CartController::class, 'addToCart']);
 });
 
