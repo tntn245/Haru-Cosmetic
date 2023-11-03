@@ -5,9 +5,9 @@ import { ShopContext } from './shopcontext'
 import { RiDeleteBack2Line } from 'react-icons/ri'
 const cartitem = (props) => {
 
-    const {id, name, price, image, brand} = props.data;
+    const {id, name, price, image, brand, user_id, quantity} = props.data;
     const { addToCart, cartItems, removeToCart, updateCartItemCount, itemPrice} = useContext(ShopContext);
-    const itemsInStock = id === 0 ? Math.ceil((id + 2.5) * 102 / 2) : Math.ceil((id * 102.5) / 2);
+    const itemsInStock = id === 0 ? Math.ceil((id + 2.5) * 102 / 2) : Math.ceil((id * 102.5) / 2); //ủa dì dạ?
   return <>
 
 
@@ -30,11 +30,11 @@ const cartitem = (props) => {
           </div>
           <div className="p-3 d-flex justify-content-between align-items-center">
             <div className="count-handler">
-              <button className="btn btn-outline-secondary" onClick={() => addToCart(id)}>+</button>
-              <input className='text-danger fs-4 form-control' value={cartItems[id]} onChange={(e) => updateCartItemCount(Number(e.target.value), id)} />
-              <button className="btn btn-outline-secondary" onClick={() => removeToCart(id)}>-</button>
+              <button className="btn btn-outline-secondary" onClick={() => removeToCart(id, user_id)}>-</button>
+              <input className='text-danger fs-4 form-control' value={quantity} onChange={(e) => updateCartItemCount(Number(e.target.value), id, user_id)} />
+              <button className="btn btn-outline-secondary" onClick={() => addToCart(id, user_id)}>+</button>
             </div>
-            <button className="btn btn-outline-danger" onClick={() => removeToCart(id)}>
+            <button className="btn btn-outline-danger" onClick={() => removeToCart(id, user_id)}>
               <RiDeleteBack2Line />
             </button>
           </div>

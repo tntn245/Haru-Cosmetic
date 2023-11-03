@@ -17,7 +17,11 @@ class VerifyCsrfToken extends Middleware
         'api/login-user',
         'api/update-user',
 
+        'api/get-cart',
         'api/add-to-cart',
+        'api/remove-to-cart',
+        'api/update-to-cart',
+        'api/clear-cart',
         
         'upload-img-product',
     ];

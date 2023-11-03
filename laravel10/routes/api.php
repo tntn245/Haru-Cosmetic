@@ -26,6 +26,10 @@ Route::namespace('App\Http\Controllers')->group(function(){
     Route::post('update-user', [UserController::class, 'updateUser']);
     // Route::post('images', [UserController::class, 'uploadImg']);
 
+    Route::post('get-cart', [CartController::class, 'getProductsInCart']);
     Route::post('add-to-cart', [CartController::class, 'addToCart']);
+    Route::post('remove-to-cart', [CartController::class, 'removeToCart']);
+    Route::post('update-to-cart', [CartController::class, 'updateToCart']);
+    Route::post('clear-cart', [CartController::class, 'clearCart']);
 });
 

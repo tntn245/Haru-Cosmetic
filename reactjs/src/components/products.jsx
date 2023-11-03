@@ -25,19 +25,39 @@ import img7 from '../assets/images/products/img7.png'
 import img8 from '../assets/images/products/img8.png'
 import axios from '../api/axios.js';
 
+loadProductsCart();
+loadProducts();
 
-export const PRODUCTS = [];
+export const PRODUCTSCART = [];
+async function loadProductsCart() {
+  const user = JSON.parse(localStorage.getItem('user'));
+  const userID = user.id;
 
-async function loadProducts() {
   try {
-    const response = await axios.get("http://127.0.0.1:8001/get-products"); 
-    PRODUCTS.push(...response.data);
+    axios.post("http://127.0.0.1:8001/api/get-cart", { userID })
+    .then((response) =>{
+      PRODUCTSCART.push(...response.data);
+      console.log(response.data);
+    })
+    .catch((error) =>{
+      throw error;
+    });
   } catch (error) {
     console.error(error);
   }
 }
 
-loadProducts();
+export const PRODUCTS = [];
+async function loadProducts() {
+  try {
+    const response = await axios.get("http://127.0.0.1:8001/get-products"); 
+    PRODUCTS.push(...response.data);
+    console.log(response.data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const PRODUCTS1 = [
