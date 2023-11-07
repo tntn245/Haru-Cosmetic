@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import React, {useEffect} from 'react'
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 import Layout from './components/layout'
 import Home from './pages/home'
@@ -20,7 +20,7 @@ import ImageUploadForm from './pages/testloadimg'
 function ScrollToTop() {
   const { pathname } = useLocation();
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 

@@ -1,17 +1,20 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
-import React, { useContext} from 'react'
 import { ShopContext } from './shopcontext'
+import React, { useContext} from 'react'
 import { RiDeleteBack2Line } from 'react-icons/ri'
 const cartitem = (props) => {
 
-    const {id, name, price, image, brand, user_id, quantity} = props.data;
-    const { addToCart, cartItems, removeToCart, updateCartItemCount, itemPrice} = useContext(ShopContext);
-    const itemsInStock = id === 0 ? Math.ceil((id + 2.5) * 102 / 2) : Math.ceil((id * 102.5) / 2); //ủa dì dạ?
+  const {id, name, price, image, brand, user_id, quantity} = props.data;
+  // const { addToCart, removeToCart, updateCartItemCount} = useContext(ShopContext);
+  const test = useContext(ShopContext);
+  const itemsInStock = id === 0 ? Math.ceil((id + 2.5) * 102 / 2) : Math.ceil((id * 102.5) / 2); //ủa dì dạ?
+
+  const handleAddToCart = async () => {
+  }
+
   return <>
-
-
-<div className="container card my-3">
+  <div className="container card my-3">
       <div className="row g-3">
         <div className="col-12 col-md-5">
           <div className="p-3">
@@ -30,11 +33,11 @@ const cartitem = (props) => {
           </div>
           <div className="p-3 d-flex justify-content-between align-items-center">
             <div className="count-handler">
-              <button className="btn btn-outline-secondary" onClick={() => removeToCart(id, user_id)}>-</button>
-              <input className='text-danger fs-4 form-control' value={quantity} onChange={(e) => updateCartItemCount(Number(e.target.value), id, user_id)} />
-              <button className="btn btn-outline-secondary" onClick={() => addToCart(id, user_id)}>+</button>
+              <button className="btn btn-outline-secondary" onClick={() => test.removeToCart(id, user_id)}>-</button>
+              <input className='text-danger fs-4 form-control' value={quantity} onChange={(e) => test.updateCartItemCount(Number(e.target.value), id, user_id)} />
+              <button className="btn btn-outline-secondary" onClick={() => test.addToCart(id, user_id)}>+</button>
             </div>
-            <button className="btn btn-outline-danger" onClick={() => removeToCart(id, user_id)}>
+            <button className="btn btn-outline-danger" onClick={() => test.removeToCart(id, user_id)}>
               <RiDeleteBack2Line />
             </button>
           </div>

@@ -1,20 +1,19 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/jsx-key */
 /* eslint-disable no-unused-vars */
-import React, { useContext, useState } from 'react'
-import pr1 from '../assets/images/products/f1.jpg'
-import pr2 from '../assets/images/products/f2.jpg'
+import { ShopContext } from '../components/shopcontext'
+import React, { useContext, useState, useEffect } from 'react'
 import { RiDeleteBack2Line } from 'react-icons/ri'
 import { Link } from 'react-router-dom'
 import { PRODUCTS, PRODUCTSCART } from '../components/products'
-import { ShopContext } from '../components/shopcontext'
 import CartItem from '../components/cartitem'
 import { useNavigate } from 'react-router-dom'
 
 
 const cart = (props) => {
-  const { cartItems, getTotalCartAmount, clearCart } = useContext(ShopContext);
-  const totalAmount = getTotalCartAmount();
+  // const { cartItems, getTotalCartAmount, clearCart } = useContext(ShopContext);
+  const shopcontext = useContext(ShopContext);
+  const totalAmount = shopcontext.getTotalCartAmount();
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(false)
   const [userID, setUserID] = useState(JSON.parse(localStorage.getItem('user')).id);
@@ -28,6 +27,11 @@ const cart = (props) => {
   }
 
   window.addEventListener("resize", handleResize)
+  
+  useEffect(() => {
+    shopcontext.loadProductsCart();
+    console.log("aaa",shopcontext.totalAmount);
+  });
 
   return <>
     <section className="cart">
@@ -46,13 +50,11 @@ const cart = (props) => {
             </div>
 
             <div className="p-3">
-              {[...PRODUCTSCART].map((product) => {
-                if (cartItems[product.id] !== 0) {
-                  return <CartItem key={product.id} data={product} />;
-                }
+              {[...shopcontext.cartItems].map((product) => {
+                return <CartItem key={product.id} data={product} />;
               })}
               <div className='col-12 p-2 text-end'>
-                <button onClick={() => clearCart(userID)} id='clear-cart'> Clear Cart </button>
+                <button onClick={() => shopcontext.clearCart(userID)} id='clear-cart'> Clear Cart </button>
               </div>
 
               <hr />
