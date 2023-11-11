@@ -11,6 +11,7 @@ import Signup from './pages/signup'
 import Forgotpasword from './pages/forgotpasword'
 import Cart from './pages/cart'
 import Checkout from './pages/checkout'
+import Search from './pages/search'
 import './App.css'
 import ShopContext from './components/shopcontext'
 import Details from './pages/details'
@@ -41,6 +42,7 @@ function App() {
         <Route path='shop' element={<Shop />} />
         <Route path='about' element={<About />} />
         <Route path='contact' element={<Contact />} />
+        <Route path='search' element={<Search />} />
         <Route path='login' element={<Login />} />
         <Route path='signup' element={<Signup />} />
         <Route path='forgotpasword' element={<Forgotpasword />} />

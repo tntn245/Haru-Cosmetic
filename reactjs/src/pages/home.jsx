@@ -3,7 +3,7 @@ import React from 'react'
 import { CgShoppingCart } from 'react-icons/cg'
 import { Link } from 'react-router-dom';
 import Featuredproducts from '../components/featuredproducts';
-import Newarrivals from '../components/newarrivals'
+import Sale from '../components/sale'
 import Hero from '../components/hero';
 import FeaturedBrands from '../components/featuredbrand';
 import '../styles/home.scss'
@@ -55,9 +55,9 @@ const home = () => {
       <div className="container-xxl">
         <div className="row">
           <div className="d-flex align-items-center justify-content-center flex-column">
-            <h1>HÀNG MỚI VỀ</h1>
+            <h1>GIẢM GIÁ</h1>
           </div>
-          <Newarrivals />
+          <Sale />
         </div>
       </div>
     </section>

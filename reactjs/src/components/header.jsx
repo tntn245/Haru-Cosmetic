@@ -100,7 +100,11 @@ const header = () => {
             <div className="col-md-3 m-auto">
               <div className="input-group d-none d-md-flex">
                 <input type="text" className="form-control" placeholder="Tìm kiếm sản phẩm..." aria-label="Tìm kiếm sản phẩm..." aria-describedby="basic-addon2" />
-                <button className="input-group-text" id="basic-addon2"><FaSearch /></button>
+                <button className="input-group-text" id="basic-addon2">
+                  <Link to='search' className={location.pathname === '/search' ? 'active' : 'not-active'}>
+                    <FaSearch />
+                  </Link>
+                </button>
               </div>
             </div>
             <div className="col-md-6 m-auto">

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const newsletter = () => {
   return <>
-  <section className="news-letter p-5">
+  <section className="news-letter p-5 mt-5">
     <div className="container-xxl">
       <div className="row g-3">
         <div className="col-md-6">
