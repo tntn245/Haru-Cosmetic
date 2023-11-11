@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router-dom'
 
 
 const cart = (props) => {
-  // const { cartItems, getTotalCartAmount, clearCart } = useContext(ShopContext);
   const shopcontext = useContext(ShopContext);
   const totalAmount = shopcontext.getTotalCartAmount();
   const navigate = useNavigate();
@@ -30,7 +29,7 @@ const cart = (props) => {
   
   useEffect(() => {
     shopcontext.loadProductsCart();
-    console.log("aaa",shopcontext.totalAmount);
+    console.log("totalAmount ",shopcontext.totalAmount);
   });
 
   return <>

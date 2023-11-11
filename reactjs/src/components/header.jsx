@@ -21,6 +21,8 @@ const header = () => {
   const [showMenu1, setShowMenu1] = useState(false); // For "MUA HÀNG" menu
   const [showMenu2, setShowMenu2] = useState(false); // For "THƯƠNG HIỆU" menu
   const [showMenu, setShowMenu] = useState(false);
+  const [userID, setUserID] = useState(JSON.parse(localStorage.getItem('user')).id);
+
   const { getTotalCartProducts, getTotalCartAmount } = useContext(ShopContext);
   const totalAmount = getTotalCartAmount();
   const totalProducts = getTotalCartProducts();
@@ -171,12 +173,21 @@ const header = () => {
                     </Link>
                   </div>
                   <div className={location.pathname === 'login' ? 'active' : 'not-active'}>
-                    <Link onClick={toggleMenu}
+                    {userID ? 
+                    (<Link onClick={toggleMenu}
+                      to={`/user/${userID}`}
+                      className="d-flex align-items-center color-nav me-3 cart-span-one"
+                    >
+                    <VscAccount className='me-1 fs-2' />
+                    </Link>)
+                    :
+                    (<Link onClick={handleClick}
                       to="/login"
                       className="d-flex align-items-center color-nav me-3"
                     >
-                      <VscAccount className='me-1 fs-2' />
-                    </Link>
+                    <VscAccount className='me-1 fs-2' />
+                    </Link>)
+                    }
                   </div>
                   <div className={location.pathname === 'cart' ? 'active' : 'not-active'}>
                     <Link onClick={toggleMenu}

@@ -59,35 +59,6 @@ const Login = () => {
     }
   }
 
-  // async function handleSubmit1() {
-  //   await csrf();
-
-  //   let item = { email, password };
-  //   let result = await fetch("http://127.0.0.1:8001/api/login-user", {
-  //     method: 'POST',
-  //     headers: {
-  //       "Content-Type": "application/json"
-  //     },
-  //     body: JSON.stringify(item)
-  //   });
-  //   result = await result.json();
-
-  //   if (result['email'] == "Email is required")
-  //     alert(result['email']);
-  //   else if (result['email'] == "Email address is invalid")
-  //     alert(result['email']);
-  //   else if (result['email'] == "Email does not exists")
-  //     alert(result['email']);
-  //   else if (result['password'] == "Password is required")
-  //     alert(result['password']);
-  //   else if (result['message'] == "Password is incorrect")
-  //     alert(result['message']);
-  //   else {
-  //     localStorage.setItem("user", JSON.stringify(result));
-  //     navigate("/");
-  //   }
-  // }
-
   return (
     <section className="login-wrapper p-5">
       <div className="container-xxl">

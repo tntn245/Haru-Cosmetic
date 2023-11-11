@@ -60,39 +60,6 @@ const Signup = () => {
     }
   }
 
-  // async function handleSubmit1() {
-  //   let item = { email, password };
-  //   let result = await fetch("http://127.0.0.1:8001/api/register-user", {
-  //     method: 'POST',
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       'Accept': 'application/json'
-  //     },
-  //     body: JSON.stringify(item)
-  //   });
-  //   result = await result.json();
-
-  //   if (result['email'] == "Email is required")
-  //     setError('Bạn chưa điền email');
-  //   else if (result['email'] == "Email address is invalid")
-  //     setError('Định dạng email không hợp lệ');
-  //   else if (result['email'] == "Email is existed")
-  //     setError('Email đã đăng ký');
-  //   else if (result['password'] == "Password is required")
-  //     setError('Bạn chưa nhập mật khẩu');
-  //   else if (password !== confirmPassword)
-  //     setError('Mật khẩu không trùng khớp');
-  //   else {
-  //     setEmail('');
-  //     setPassword('');
-  //     setConfirmPassword('');
-  //     setError('');
-  //     alert("Đăng ký thành công");
-  //     navigate("/login");
-  //   }
-
-  // }
-
   return (
     <section className="login-wrapper p-5">
       <div className="container-xxl">

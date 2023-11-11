@@ -3,39 +3,14 @@
 /* eslint-disable no-unused-vars */
 import React, { createContext, useState } from 'react'
 import { PRODUCTS, PRODUCTSCART } from '../components/products';
-import DataFetcher from '../components/productscontext';
 import axios from '../api/axios.js';
 
 
 export const ShopContext = createContext({});
-// const  loadProductsCart = () => {
-//   const [PRODUCTSCART, setProductsCart] = useState([]);
-//   const user = JSON.parse(localStorage.getItem('user'));
-//   const userID = user.id;
-//   axios.post("http://127.0.0.1:8001/api/get-cart", { userID })
-//     .then((response) => {
-//       setProductsCart(response.data);
-//       console.log(response.data);
-//     })
-//     .catch((error) => {
-//       throw error;
-//     });
-//   return PRODUCTSCART;
-// }
-
-// const  getDefaultCart = () => {
-//   const cart = [];
-//   for (let i = 0; i < PRODUCTSCART.length; i++){
-//     cart[i] = PRODUCTSCART[i];
-//     console.log(cart[i].product_id);
-//   }
-//   return cart;
-// };
-
-
 const shopcontext = (props) => {
   const [cartItems, setCartItems] = useState(PRODUCTSCART);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [totalProducts, settotalProducts] = useState(0);
 
   const  loadProductsCart = () => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -43,7 +18,7 @@ const shopcontext = (props) => {
     const PRODUCTSCART = [];
 
     try{
-      const response = axios.post("http://127.0.0.1:8001/api/get-cart", { userID });
+      const response = axios.post("/api/get-cart", { userID });
       PRODUCTSCART.push(...response.data);
       setCartItems(PRODUCTSCART);
     } catch (error) {
@@ -67,12 +42,11 @@ const shopcontext = (props) => {
   };
 
   const getTotalCartProducts = () => {
-    let totalProducts = [];
+    let total = 0;
     for (const item in cartItems) {
-      if (cartItems[item].product_id > 0) {
-        totalProducts += cartItems[item].product_id;
-      }
+      total += cartItems[item].quantity;
     }
+    settotalProducts(total);
     return totalProducts;
   };
   
@@ -84,6 +58,12 @@ const shopcontext = (props) => {
           .then(
             (response) => {
               console.log(response);
+              for (let i = 0; i < cartItems.length; i++) {
+                if(cartItems[i].id === productID){
+                  cartItems[i].quantity ++;
+                  break;
+                }
+              }
             }
           )
           .catch(function (error) {
@@ -96,16 +76,24 @@ const shopcontext = (props) => {
   };
   
   const removeToCart = (productID, userID) => {
-    try {
-      axios.post("http://127.0.0.1:8001/api/remove-to-cart", { userID, productID })
-      .then((response) =>{
-        console.log(response);
-      })
-      .catch((error) =>{
-        throw error;
-      });
-    } catch (error) {
-      console.error(error);
+    if (userID !== 0) {
+      try {
+        axios.post("/api/remove-to-cart", { userID, productID })
+        .then((response) =>{
+          console.log(response);
+          for (let i = 0; i < cartItems.length; i++) {
+            if(cartItems[i].id === productID){
+              cartItems[i].quantity --;
+              break;
+            }
+          }
+        })
+        .catch((error) =>{
+          throw error;
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -127,7 +115,7 @@ const shopcontext = (props) => {
   
   const clearCart = (userID) => {
     try {
-      axios.post("http://127.0.0.1:8001/api/clear-cart", { userID})
+      axios.post("/api/clear-cart", { userID})
       .then((response) =>{
         console.log(response);
       })
@@ -157,6 +145,7 @@ const shopcontext = (props) => {
   const contextValue = {
     cartItems,
     totalAmount,
+    totalProducts,
     loadProductsCart,
     addToCart,
     removeToCart,
@@ -173,14 +162,9 @@ const shopcontext = (props) => {
   console.log("ShopContext ",cartItems);
 
   return (
-    // <DataFetcher>
-    //   {(data) => (
-        <ShopContext.Provider value={contextValue}>
-        {props.children}
-        </ShopContext.Provider>
-    //   )} 
-    // </DataFetcher>
-
+    <ShopContext.Provider value={contextValue}>
+      {props.children}
+    </ShopContext.Provider>
   );
 };
 

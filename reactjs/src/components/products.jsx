@@ -34,7 +34,7 @@ async function loadProductsCart() {
   const userID = user.id;
 
   try {
-    axios.post("http://127.0.0.1:8001/api/get-cart", { userID })
+    axios.post("/api/get-cart", { userID })
     .then((response) =>{
       PRODUCTSCART.push(...response.data);
       console.log(response.data);
@@ -50,7 +50,7 @@ async function loadProductsCart() {
 export const PRODUCTS = [];
 async function loadProducts() {
   try {
-    const response = await axios.get("http://127.0.0.1:8001/get-products"); 
+    const response = await axios.get("/get-products"); 
     PRODUCTS.push(...response.data);
     console.log(response.data);
   } catch (error) {

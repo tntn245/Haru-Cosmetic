@@ -2,7 +2,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import ReactStars from "react-rating-stars-component";
 import axios from '../api/axios.js';
 
 const featuredproducts = () => {
@@ -12,7 +11,7 @@ const featuredproducts = () => {
 
   //Load sản phẩm trước khi render
   useEffect(() => {
-    axios.get("http://127.0.0.1:8001/get-products")
+    axios.get("/get-products")
       .then((response) =>{
         setProducts(response.data);
       })
