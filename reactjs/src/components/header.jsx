@@ -22,6 +22,7 @@ const header = () => {
   const [showMenu2, setShowMenu2] = useState(false); // For "THƯƠNG HIỆU" menu
   const [showMenu, setShowMenu] = useState(false);
   const [userID, setUserID] = useState(JSON.parse(localStorage.getItem('user')).id);
+  const [searchText, setSearchText] = useState('');
 
   const { getTotalCartProducts, getTotalCartAmount } = useContext(ShopContext);
   const totalAmount = getTotalCartAmount();
@@ -99,9 +100,9 @@ const header = () => {
           <div className="col-md-10 row col-lg-10">
             <div className="col-md-3 m-auto">
               <div className="input-group d-none d-md-flex">
-                <input type="text" className="form-control" placeholder="Tìm kiếm sản phẩm..." aria-label="Tìm kiếm sản phẩm..." aria-describedby="basic-addon2" />
+                <input type="text" onChange={(e) => setSearchText(e.target.value)} className="form-control" placeholder="Tìm kiếm sản phẩm..." aria-label="Tìm kiếm sản phẩm..." aria-describedby="basic-addon2" />
                 <button className="input-group-text" id="basic-addon2">
-                  <Link to='search' className={location.pathname === '/search' ? 'active' : 'not-active'}>
+                  <Link to='search' className={location.pathname === '/search' ? 'active' : 'not-active'} state={{ searchText }}>
                     <FaSearch />
                   </Link>
                 </button>
