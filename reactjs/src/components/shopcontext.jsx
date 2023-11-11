@@ -37,13 +37,13 @@ const shopcontext = (props) => {
   const [cartItems, setCartItems] = useState(PRODUCTSCART);
   const [totalAmount, setTotalAmount] = useState(0);
 
-  const  loadProductsCart = () => {
+  const loadProductsCart = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     const userID = user.id;
     const PRODUCTSCART = [];
 
-    try{
-      const response = axios.post("http://127.0.0.1:8001/api/get-cart", { userID });
+    try {
+      const response = axios.post("/api/get-cart", { userID });
       PRODUCTSCART.push(...response.data);
       setCartItems(PRODUCTSCART);
     } catch (error) {
@@ -55,11 +55,11 @@ const shopcontext = (props) => {
     var total = Number(0);
     for (let i = 0; i < cartItems.length; i++) {
       let itemInfo = PRODUCTS.find((product) => product.id === Number(cartItems[i].product_id));
-      
+
       let itemPrice = itemInfo.price;
-      if(itemPrice === null)
+      if (itemPrice === null)
         itemPrice = 0;
-      
+
       total += Number(itemPrice);
     }
     setTotalAmount(total);
@@ -75,7 +75,7 @@ const shopcontext = (props) => {
     }
     return totalProducts;
   };
-  
+
 
   const addToCart = (productID, userID) => {
     if (userID !== 0) {
@@ -94,50 +94,50 @@ const shopcontext = (props) => {
       }
     }
   };
-  
+
   const removeToCart = (productID, userID) => {
     try {
-      axios.post("http://127.0.0.1:8001/api/remove-to-cart", { userID, productID })
-      .then((response) =>{
-        console.log(response);
-      })
-      .catch((error) =>{
-        throw error;
-      });
+      axios.post("/api/remove-to-cart", { userID, productID })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          throw error;
+        });
     } catch (error) {
       console.error(error);
     }
   };
 
   const updateCartItemCount = (newQuantity, productID, userID) => {
-      try {
-        axios.post("/api/add-to-cart", {newQuantity, productID, userID })
-          .then(
-            (response) => {
-              console.log(response);
-            }
-          )
-          .catch(function (error) {
-            throw error;
-          });
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      axios.post("/api/add-to-cart", { newQuantity, productID, userID })
+        .then(
+          (response) => {
+            console.log(response);
+          }
+        )
+        .catch(function (error) {
+          throw error;
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
-  
+
   const clearCart = (userID) => {
     try {
-      axios.post("http://127.0.0.1:8001/api/clear-cart", { userID})
-      .then((response) =>{
-        console.log(response);
-      })
-      .catch((error) =>{
-        throw error;
-      });
+      axios.post("/api/clear-cart", { userID })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          throw error;
+        });
     } catch (error) {
       console.error(error);
     }
-  };  
+  };
 
   const resetCart = () => {
     setCartItems([]);
@@ -152,7 +152,7 @@ const shopcontext = (props) => {
   const closeProductDetails = () => {
     setSelectedProduct(null);
   };
-  
+
 
   const contextValue = {
     cartItems,
@@ -170,14 +170,14 @@ const shopcontext = (props) => {
     selectedProduct,
   };
 
-  console.log("ShopContext ",cartItems);
+  console.log("ShopContext ", cartItems);
 
   return (
     // <DataFetcher>
     //   {(data) => (
-        <ShopContext.Provider value={contextValue}>
-        {props.children}
-        </ShopContext.Provider>
+    <ShopContext.Provider value={contextValue}>
+      {props.children}
+    </ShopContext.Provider>
     //   )} 
     // </DataFetcher>
 

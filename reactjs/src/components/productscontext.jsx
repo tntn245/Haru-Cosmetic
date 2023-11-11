@@ -10,7 +10,7 @@ const DataFetcher = ({ children }) => {
       const user = JSON.parse(localStorage.getItem('user'));
       const userID = user.id;
     
-        axios.post("http://127.0.0.1:8001/api/get-cart", { userID })
+        axios.post("/api/get-cart", { userID })
         .then((response) =>{
           setData(response.data);
           console.log(response.data);

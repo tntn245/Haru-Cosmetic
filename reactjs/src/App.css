@@ -463,7 +463,13 @@
   }
 
   .news-letter {
-    background-color: var(--lighter1);
+    background-color: #F4F9F9;
+  }
+
+  .news-letter h2,
+  h5,
+  #basic-addon2 {
+    color: var(--lighter1);
   }
 
   #basic-addon2 {
@@ -475,7 +481,7 @@
   }
 
   #basic-addon2:hover {
-    color: var(--search);
+    color: #96C291;
   }
 
   #news-input {
@@ -593,7 +599,7 @@
   }
 
   .login-wrapper {
-    background-color: var(--lighter1);
+    background-color: #F4F9F9;
   }
 
   .login-wrapper .card {
@@ -730,7 +736,11 @@
   }
 
   .checkout {
-    background-color: var(--lighter2);
+    background-color: #F4F9F9;
+  }
+
+  .checkout .checkout-header .address {
+    margin-top: -20px;
   }
 
   .checkout-details label {
