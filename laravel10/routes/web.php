@@ -23,4 +23,6 @@ Route::post('/', function () {
 
 Route::get('get-products', [ProductController::class, 'getProducts']);
 Route::post('upload-img-product', [ProductController::class, 'uploadImageProduct']);
+Route::get('search-product/{text}', [ProductController::class, 'searchProducts']);
+
 // require __DIR__.'/auth.php';

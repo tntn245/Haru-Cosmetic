@@ -1,17 +1,41 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
 import { ShopContext } from './shopcontext'
-import React, { useContext} from 'react'
+import React, { useContext, useState} from 'react'
 import { RiDeleteBack2Line } from 'react-icons/ri'
 const cartitem = (props) => {
-
+  const [showDiv, setShowDiv] = useState(true);
   const {id, name, price, image, brand, user_id, quantity, inventory_quantity} = props.data;
+  const [quantity_state, setQuantity] = useState(quantity)
   const shopcontext = useContext(ShopContext);
 
-  const handleAddToCart = async () => {
+  const handleIncreaseNumber = () => {
+    shopcontext.updateCartItemCount(Number(quantity_state+1), id, user_id)
+    setQuantity(quantity_state + 1);
   }
-
+  const handleDecreaseNumber = () => {
+    shopcontext.updateCartItemCount(Number(quantity_state-1), id, user_id)
+    setQuantity(quantity_state - 1);
+    if(quantity_state < 1){
+      shopcontext.removeToCart(id, user_id);
+      setShowDiv(false);
+    }
+  }
+  const handleUpdateNumber = (e) => {
+    const newQuantity = Number(e.target.value);
+    setQuantity(newQuantity);
+    shopcontext.updateCartItemCount(newQuantity, id, user_id);
+    if(quantity_state < 1){
+      shopcontext.removeToCart(id, user_id);
+      setShowDiv(false);
+    }
+  }
+  const handleRemoveToCart = () => {
+    shopcontext.removeToCart(id, user_id);
+    setShowDiv(false);
+  }
   return <>
+  {showDiv && 
   <div className="container card my-3">
       <div className="row g-3">
         <div className="col-12 col-md-5">
@@ -31,11 +55,11 @@ const cartitem = (props) => {
           </div>
           <div className="p-3 d-flex justify-content-between align-items-center">
             <div className="count-handler">
-              <button className="btn btn-outline-secondary" onClick={() => shopcontext.removeToCart(id, user_id)}>-</button>
-              <input className='text-danger fs-4 form-control' value={quantity} onChange={(e) => shopcontext.updateCartItemCount(Number(e.target.value), id, user_id)} />
-              <button className="btn btn-outline-secondary" onClick={() => shopcontext.addToCart(id, user_id)}>+</button>
+              <button className="btn btn-outline-secondary" onClick={handleDecreaseNumber}>-</button>
+              <input className='text-danger fs-4 form-control' value={quantity_state} onChange={handleUpdateNumber} />
+              <button className="btn btn-outline-secondary" onClick={handleIncreaseNumber}>+</button>
             </div>
-            <button className="btn btn-outline-danger" onClick={() => shopcontext.removeToCart(id, user_id)}>
+            <button className="btn btn-outline-danger" onClick={handleRemoveToCart}>
               <RiDeleteBack2Line />
             </button>
           </div>
@@ -45,6 +69,7 @@ const cartitem = (props) => {
         </div>
       </div>
     </div>
+  }
   </>;
 }
 

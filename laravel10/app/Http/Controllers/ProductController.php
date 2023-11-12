@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -35,5 +36,10 @@ class ProductController extends Controller
         } else {
             return back()->with('status', 'Failed to upload image');
         }
+    }
+    public function searchProducts($text)
+    {
+        $searchProducts =  Product::where('name', 'LIKE', '%' . $text . '%')->get();
+        return $searchProducts;
     }
 }

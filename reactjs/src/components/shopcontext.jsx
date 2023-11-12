@@ -13,17 +13,28 @@ const shopcontext = (props) => {
   const [totalProducts, settotalProducts] = useState(0);
 
   const  loadProductsCart = () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    const userID = user.id;
+    const userID = JSON.parse(localStorage.getItem('user')).id;
     const PRODUCTSCART = [];
 
-    try{
-      const response = axios.post("/api/get-cart", { userID });
-      PRODUCTSCART.push(...response.data);
-      setCartItems(PRODUCTSCART);
-    } catch (error) {
-      console.error(error);
-    }
+    axios.post("/api/get-cart", { userID })
+      .then(
+        (response) => {
+          PRODUCTSCART.push(...response.data);
+          setCartItems(PRODUCTSCART);
+        }
+      )
+      .catch(function (error) {
+        console.log(error.message);
+      });
+      
+    // try{
+      // const response = axios.post("/api/get-cart", { userID });
+      // PRODUCTSCART.push(...response.data);
+      // setCartItems(PRODUCTSCART);
+    // } catch (error) {
+    //   console.error(error);
+    // }
+
   }
 
   const getTotalCartAmount = () => {
@@ -99,7 +110,7 @@ const shopcontext = (props) => {
 
   const updateCartItemCount = (newQuantity, productID, userID) => {
       try {
-        axios.post("/api/add-to-cart", {newQuantity, productID, userID })
+        axios.post("/api/update-to-cart", {newQuantity, productID, userID })
           .then(
             (response) => {
               console.log(response);

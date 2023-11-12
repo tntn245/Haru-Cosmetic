@@ -24,5 +24,6 @@ class VerifyCsrfToken extends Middleware
         'api/clear-cart',
         
         'upload-img-product',
+        'search-product',
     ];
 }

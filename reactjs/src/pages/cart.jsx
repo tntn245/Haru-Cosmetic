@@ -30,7 +30,7 @@ const cart = (props) => {
   useEffect(() => {
     shopcontext.loadProductsCart();
     console.log("totalAmount ",shopcontext.totalAmount);
-  });
+  }, []);
 
   return <>
     <section className="cart">

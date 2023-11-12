@@ -22,41 +22,37 @@ const Login = () => {
     event.preventDefault();
     await csrf();
 
-    try {
-      await axios.post("/api/login-user", { email, password })
-        .then(
-          (response) => {
-            console.log(response.data);
-            localStorage.setItem("user", JSON.stringify(response.data.userDetails));
-            navigate("/");
-          }
-        )
-        .catch(function (error) {
-          if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.data.message);
+    await axios.post("/api/login-user", { email, password })
+      .then(
+        (response) => {
+          console.log(response.data);
+          localStorage.setItem("user", JSON.stringify(response.data.userDetails));
+          navigate("/");
+        }
+      )
+      .catch(function (error) {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.data.message);
 
-            if (error.response.data.email?.[0] == "Email is required")
-              setError('Bạn chưa điền email');
-            else if (error.response.data.email?.[0] == "Email address is invalid")
-              setError('Định dạng email không hợp lệ');
-            else if (error.response.data.email?.[0] == "Email does not exists")
-              setError('Email chưa đăng ký');
-            else if (error.response.data.password?.[0] == "Password is required")
-              setError('Bạn chưa nhập mật khẩu');
-            else if (error.response.data.message == "Password is incorrect")
-              setError('Mật khẩu không chính xác');
-          }
-          else if (error.request) {
-            console.log(error.request);
-          }
-          else {
-            console.log('Error', error.message);
-          }
-        });
-    } catch (error) {
-      console.log(error);
-    }
+          if (error.response.data.email?.[0] == "Email is required")
+            setError('Bạn chưa điền email');
+          else if (error.response.data.email?.[0] == "Email address is invalid")
+            setError('Định dạng email không hợp lệ');
+          else if (error.response.data.email?.[0] == "Email does not exists")
+            setError('Email chưa đăng ký');
+          else if (error.response.data.password?.[0] == "Password is required")
+            setError('Bạn chưa nhập mật khẩu');
+          else if (error.response.data.message == "Password is incorrect")
+            setError('Mật khẩu không chính xác');
+        }
+        else if (error.request) {
+          console.log(error.request);
+        }
+        else {
+          console.log('Error', error.message);
+        }
+      });
   }
 
   return (
