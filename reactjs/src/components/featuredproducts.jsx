@@ -64,7 +64,7 @@ const featuredproducts = () => {
             </div>
             <div className="card-footer d-md-none">
                 <div className="d-flex justify-content-between align-items-center">
-                  <Link to='shop' className='m-auto'>View products</Link>
+                  <Link to='shop' className='m-auto'>Xem chi tiết</Link>
                 </div>
               </div>
 
