@@ -62,7 +62,7 @@ const product = (props) => {
                                     </div>
                                 </div>
                                 <div className='mb-4'>
-                                    <button id='button-link'>Add to cart</button>
+                                    <button id='button-link'>Mua Hàng</button>
                                 </div>
                                 <div className='mb-4'>
                                     <p>{props.description}</p>

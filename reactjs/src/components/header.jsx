@@ -84,7 +84,7 @@ const header = () => {
                 <CgShoppingCart />
                 <b><span>{totalProducts}</span></b>
               </Link>
-
+{/* lấy giá trị input từ header rồi truyền nó qua rồi gọi api để hiển thị thông tin sản phẩm,  */}
             </button>
 
             <button className='cart-span-2 fs-3 d-md-none'>

@@ -341,7 +341,7 @@
   }
 
   .featured-products .price strike {
-    color: var(--darker);
+    color: #a3a2a2;
   }
 
   .featured-products .red {
@@ -645,7 +645,7 @@
 
   /* cart begins here */
   .cart-header {
-    background-color: var(--lighter1);
+    background-color: var(--lighter2);
   }
 
   .cart-col-1 {
@@ -688,7 +688,7 @@
   }
 
   .cart {
-    background: var(--lighter1);
+    background: var(--lighter2);
   }
 
   .cart button {
@@ -703,7 +703,7 @@
   #clear-cart {
     background-color: transparent;
     border          : none;
-    color           : #535bf2;
+    color           : #232D3F;
     padding         : 0;
     transition      : 0.5s ease;
     align-items     : center;

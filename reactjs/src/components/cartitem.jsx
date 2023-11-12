@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
 import { ShopContext } from './shopcontext'
-import React, { useContext} from 'react'
+import React, { useContext } from 'react'
 import { RiDeleteBack2Line } from 'react-icons/ri'
 const cartitem = (props) => {
 
-  const {id, name, price, image, brand, user_id, quantity} = props.data;
+  const { id, name, price, image, brand, user_id, quantity } = props.data;
   // const { addToCart, removeToCart, updateCartItemCount} = useContext(ShopContext);
   const test = useContext(ShopContext);
   const itemsInStock = id === 0 ? Math.ceil((id + 2.5) * 102 / 2) : Math.ceil((id * 102.5) / 2); //ủa dì dạ?
@@ -14,7 +14,7 @@ const cartitem = (props) => {
   }
 
   return <>
-  <div className="container card my-3">
+    <div className="container card my-3">
       <div className="row g-3">
         <div className="col-12 col-md-5">
           <div className="p-3">
