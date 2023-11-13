@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 import Layout from './components/layout'
 import Home from './pages/home'
@@ -15,7 +15,8 @@ import Search from './pages/search'
 import './App.css'
 import ShopContext from './components/shopcontext'
 import Details from './pages/details'
-
+import User from './pages/user'
+import Wishlist from './pages/wishlist'
 import ImageUploadForm from './pages/testloadimg'
 
 function ScrollToTop() {
@@ -33,27 +34,29 @@ function App() {
 
   return (
     <>
-    <ShopContext>
-    <BrowserRouter>
-    <ScrollToTop />
-    <Routes>
-      <Route path='/' element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path='shop' element={<Shop />} />
-        <Route path='about' element={<About />} />
-        <Route path='contact' element={<Contact />} />
-        <Route path='/search/:query' element={<Search />} />
-        <Route path='login' element={<Login />} />
-        <Route path='signup' element={<Signup />} />
-        <Route path='forgotpasword' element={<Forgotpasword />} />
-        <Route path='cart' element={<Cart />} />
-        <Route path='checkout' element={<Checkout />} />
-        <Route path='details' element={<Details />} />
-        <Route path='img' element={<ImageUploadForm />} />
-      </Route>
-    </Routes>
-    </BrowserRouter>
-    </ShopContext>
+      <ShopContext>
+        <BrowserRouter>
+          <ScrollToTop />
+          <Routes>
+            <Route path='/' element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path='shop' element={<Shop />} />
+              <Route path='about' element={<About />} />
+              <Route path='contact' element={<Contact />} />
+              <Route path='/search/:query' element={<Search />} />
+              <Route path='login' element={<Login />} />
+              <Route path='signup' element={<Signup />} />
+              <Route path='user' element={<User />} />
+              <Route path='forgotpasword' element={<Forgotpasword />} />
+              <Route path='cart' element={<Cart />} />
+              <Route path='wishlist' element={<Wishlist />} />
+              <Route path='checkout' element={<Checkout />} />
+              <Route path='details' element={<Details />} />
+              <Route path='img' element={<ImageUploadForm />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </ShopContext>
     </>
   )
 }

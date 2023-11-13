@@ -103,11 +103,11 @@ const header = () => {
                 <input type="text" onChange={(e) => setSearchText(e.target.value)} className="form-control" placeholder="Tìm kiếm sản phẩm..." aria-label="Tìm kiếm sản phẩm..." aria-describedby="basic-addon2" />
                 <button className="input-group-text" id="basic-addon2" >
                   {searchText ?
-                  <Link to={`/search/${searchText}`} className={location.pathname === '/search' ? 'active' : 'not-active'}>
-                  <FaSearch />
-                  </Link>
-                  :
-                  <FaSearch />
+                    <Link to={`/search/${searchText}`} className={location.pathname === '/search' ? 'active' : 'not-active'}>
+                      <FaSearch />
+                    </Link>
+                    :
+                    <FaSearch />
                   }
                 </button>
               </div>
@@ -182,20 +182,20 @@ const header = () => {
                     </Link>
                   </div>
                   <div className={location.pathname === 'login' ? 'active' : 'not-active'}>
-                    {userID ? 
-                    (<Link onClick={toggleMenu}
-                      to={`/user/${userID}`}
-                      className="d-flex align-items-center color-nav me-3 cart-span-one"
-                    >
-                    <VscAccount className='me-1 fs-2' />
-                    </Link>)
-                    :
-                    (<Link onClick={handleClick}
-                      to="/login"
-                      className="d-flex align-items-center color-nav me-3"
-                    >
-                    <VscAccount className='me-1 fs-2' />
-                    </Link>)
+                    {userID ?
+                      (<Link onClick={toggleMenu}
+                        to={`/user/${userID}`}
+                        className="d-flex align-items-center color-nav me-3 cart-span-one"
+                      >
+                        <VscAccount className='me-1 fs-2' />
+                      </Link>)
+                      :
+                      (<Link onClick={handleClick}
+                        to="/login"
+                        className="d-flex align-items-center color-nav me-3"
+                      >
+                        <VscAccount className='me-1 fs-2' />
+                      </Link>)
                     }
                   </div>
                   <div className={location.pathname === 'cart' ? 'active' : 'not-active'}>
