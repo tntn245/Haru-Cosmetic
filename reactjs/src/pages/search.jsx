@@ -15,7 +15,6 @@ const Search = () => {
     const [products, setProducts] = useState([]);
     
     useEffect(() => {
-        console.log("aaaaaaaaaa");
         axios.get(`/search-product/${query}`)
         .then(
             (response) => {
