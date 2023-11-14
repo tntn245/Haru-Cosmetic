@@ -10,6 +10,7 @@ import Login from './pages/login'
 import Signup from './pages/signup'
 import Forgotpasword from './pages/forgotpasword'
 import Cart from './pages/cart'
+import Thanks from './pages/thanks'
 import Checkout from './pages/checkout'
 import Search from './pages/search'
 import './App.css'
@@ -47,7 +48,8 @@ function App() {
         <Route path='signup' element={<Signup />} />
         <Route path='forgotpasword' element={<Forgotpasword />} />
         <Route path='cart' element={<Cart />} />
-        <Route path='checkout' element={<Checkout />} />
+        <Route path='checkout/:query' element={<Checkout />} />
+        <Route path='thanks' element={<Thanks />} />
         <Route path='details' element={<Details />} />
         <Route path='img' element={<ImageUploadForm />} />
       </Route>

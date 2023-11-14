@@ -14,7 +14,7 @@ const cart = (props) => {
   const shopcontext = useContext(ShopContext);
   const totalAmount = shopcontext.getTotalCartAmount();
   const navigate = useNavigate();
-  const [isMobile, setIsMobile] = useState(false)
+  const [isMobile, setIsMobile] = useState(false);
   const [userID, setUserID] = useState(JSON.parse(localStorage.getItem('user')).id);
 
   const handleResize = () => {
@@ -30,6 +30,10 @@ const cart = (props) => {
   useEffect(() => {
     shopcontext.loadProductsCart();
     console.log("totalAmount ",shopcontext.totalAmount);
+
+    
+    const currentURL = window.location.href;
+    console.log(currentURL);
   }, []);
 
   return <>
@@ -77,12 +81,13 @@ const cart = (props) => {
                           </p>
                         </div>
                       </div>
-                      <button
-                        onClick={() => navigate("/checkout")}
-                        className="mt-5"
-                      >
-                        {isMobile ? "Check Out" : "Proceed to Checkout"}
-                      </button>
+                      <Link to={`/checkout/${totalAmount}`} className={location.pathname === '/search' ? 'active' : 'not-active'}>
+                        <button
+                          // onClick={() => navigate("/checkout")}
+                          className="mt-5">
+                          {isMobile ? "Check Out" : "Proceed to Checkout"}
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 </div>

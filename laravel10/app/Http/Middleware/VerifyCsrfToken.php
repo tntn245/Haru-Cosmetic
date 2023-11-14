@@ -25,5 +25,9 @@ class VerifyCsrfToken extends Middleware
         
         'upload-img-product',
         'search-product',
+
+        'vnpay',
+        'next-bill-id',
+
     ];
 }
