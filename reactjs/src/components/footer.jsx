@@ -14,7 +14,7 @@ const footer = () => {
   return <>
     <footer className='footer p-5' style={{ backgroundColor: '#333333' }}>
       <div className="container-xxl">
-        <div className="row justify-content-between ">
+        <div className="row justify-content-between align-items-start">
           <div className="col-xs-12 col-sm-4 col-md-4 col-lg mb-md-0">
             <h2 className='footer-title mb-3'><b>Liên Hệ</b></h2>
             <div className='mb-3'><p><b>Địa chỉ:</b>  Khu Phố 3, Phường Linh Trung, TP.Thủ Đức</p> </div>

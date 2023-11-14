@@ -557,6 +557,16 @@
     color: #FCF5ED;
   }
 
+  footer .col-xs-12 {
+    display       : flex;
+    flex-direction: column;
+    align-items   : flex-start;
+  }
+
+  footer .col-xs-12 p {
+    margin-bottom: -15px;
+  }
+
   /* shop starts here */
   .shop-banner {
     background         : url(/src/assets/images/banner/b1.jpg);
@@ -735,6 +745,10 @@
     background-color: var(--lighter2);
   }
 
+  .Wishlist h2,
+  p {
+    text-align: center;
+  }
   .checkout {
     background-color: #F4F9F9;
   }

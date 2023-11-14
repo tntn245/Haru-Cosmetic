@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 import Layout from './components/layout'
 import Home from './pages/home'
@@ -16,7 +16,8 @@ import Search from './pages/search'
 import './App.css'
 import ShopContext from './components/shopcontext'
 import Details from './pages/details'
-
+import User from './pages/user'
+import Wishlist from './pages/wishlist'
 import ImageUploadForm from './pages/testloadimg'
 
 function ScrollToTop() {
@@ -48,6 +49,7 @@ function App() {
         <Route path='signup' element={<Signup />} />
         <Route path='forgotpasword' element={<Forgotpasword />} />
         <Route path='cart' element={<Cart />} />
+        <Route path='wishlist' element={<Wishlist />} />
         <Route path='checkout/:query' element={<Checkout />} />
         <Route path='thanks' element={<Thanks />} />
         <Route path='details' element={<Details />} />

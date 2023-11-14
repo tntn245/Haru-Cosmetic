@@ -10,7 +10,7 @@ import Details from '../pages/details';
 import '../styles/prod.scss'
 const Prod = (props) => {
   const { id, name, price, image, brand } = props.data;
-  const { addToCart, viewProductDetails, addToWishlist } = useContext(ShopContext);
+  const { addToCart, viewProductDetails, addToFavs } = useContext(ShopContext);
 
   const [hover, setHover] = useState(false);
 
@@ -22,8 +22,8 @@ const Prod = (props) => {
     viewProductDetails(id);
   };
 
-  const handleAddToWishlist = () => {
-    addToWishlist(id);
+  const handleAddToFavs = () => {
+    addToFavs(id);
   };
 
   return (
@@ -40,7 +40,7 @@ const Prod = (props) => {
               <button className="button" onClick={handleAddToCart}>
                 <FiShoppingBag />
               </button>
-              <button className="button" onClick={handleAddToWishlist}>
+              < button className="button" onClick={handleAddToFavs}>
                 <AiOutlineHeart />
               </button>
               <Link to="/details" onClick={handleViewProductDetails}>

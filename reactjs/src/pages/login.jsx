@@ -28,6 +28,7 @@ const Login = () => {
           console.log(response.data);
           localStorage.setItem("user", JSON.stringify(response.data.userDetails));
           navigate("/");
+          localStorage.setItem("userEmail", email);
         }
       )
       .catch(function (error) {
