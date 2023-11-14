@@ -29,8 +29,9 @@ const cart = (props) => {
 
   useEffect(() => {
     shopcontext.loadProductsCart();
-    console.log("totalAmount ", shopcontext.totalAmount);
+    console.log("totalAmount ",shopcontext.totalAmount);
 
+    
     const currentURL = window.location.href;
     console.log(currentURL);
   }, []);
