@@ -47,10 +47,10 @@ const Signup = () => {
               setError('Mật khẩu phải có ít nhất 6 kí tự');
             else if (error.response.data.password?.[0] == "Password is confirmed")
               setError('Mật khẩu không trùng khớp');
-          } 
+          }
           else if (error.request) {
             console.log(error.request);
-          } 
+          }
           else {
             console.log('Error', error.message);
           }

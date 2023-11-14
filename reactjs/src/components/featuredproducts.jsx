@@ -12,14 +12,14 @@ const featuredproducts = () => {
   //Load sản phẩm trước khi render
   useEffect(() => {
     axios.get("/get-products")
-      .then((response) =>{
+      .then((response) => {
         setProducts(response.data);
       })
-      .catch((error) =>{
+      .catch((error) => {
         throw error;
       });
   }, []);
-   
+
   //Xử lý thêm vào giỏ hàng
   const handleAddToCart = async (product_id) => {
     setProductID(product_id);
@@ -30,7 +30,7 @@ const featuredproducts = () => {
   }
 
   //Đợi state thay đổi rồi mới thực hiện
-  useEffect(() => {    
+  useEffect(() => {
     if (userID !== 0) {
       try {
         axios.post("/api/add-to-cart", { userID, productID })
@@ -46,33 +46,33 @@ const featuredproducts = () => {
         console.log(error);
       }
     }
-  }, [userID]); 
- 
+  }, [userID]);
+
 
   return <>
-     <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 p-3">
+    <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 p-3">
       {products?.slice(0, 4).map((product) => (
         <div className="col mb-5">
-        <div key={product.id} className="card h-100 m-auto" onClick={() => handleAddToCart(product.id)}>
-          <img src={product.image} className="card-img-top img-fluid" alt="..." />
-          <div className="card-body">
-            {/* <p className="card-text mb-2">{product.brand}</p> */}
-            <h5 className='mb-3'>{product.quantity_sold} </h5>
-            <div className="card-footer m-auto text-center">
-            <p className='text-danger fs-4'>{product.name}</p>
-            <p className="price"><span className="red"></span> {product.price} đ </p>
-            </div>
-            <div className="card-footer d-md-none">
+          <div key={product.id} className="card h-100 m-auto" onClick={() => handleAddToCart(product.id)}>
+            <img src={product.image} className="card-img-top img-fluid" alt="..." />
+            <div className="card-body">
+              {/* <p className="card-text mb-2">{product.brand}</p> */}
+              <h5 className='mb-3'>{product.quantity_sold} </h5>
+              <div className="card-footer m-auto text-center">
+                <p className='text-danger fs-4'>{product.name}</p>
+                <p className="price"><span className="red"></span> {product.price} VND </p>
+              </div>
+              <div className="card-footer d-md-none">
                 <div className="d-flex justify-content-between align-items-center">
                   <Link to='shop' className='m-auto'>Xem chi tiết</Link>
                 </div>
               </div>
 
+            </div>
+
           </div>
-          
         </div>
-        </div>
-        ))}
+      ))}
     </div>
 
   </>;

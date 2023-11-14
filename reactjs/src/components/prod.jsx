@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { ShopContext } from './shopcontext';
 import ReactStars from 'react-rating-stars-component';
 import { Link } from 'react-router-dom';
@@ -11,7 +11,7 @@ import '../styles/prod.scss'
 const Prod = (props) => {
   const { id, name, price, image, brand } = props.data;
   const { addToCart, viewProductDetails, addToFavs } = useContext(ShopContext);
-
+  const [addedToWishlist, setAddedToWishlist] = useState(false);
   const [hover, setHover] = useState(false);
 
   const handleAddToCart = () => {
@@ -24,7 +24,16 @@ const Prod = (props) => {
 
   const handleAddToFavs = () => {
     addToFavs(id);
+    setAddedToWishlist(true);
   };
+  useEffect(() => {
+    if (addedToWishlist) {
+      const timer = setTimeout(() => {
+        setAddedToWishlist(false);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [addedToWishlist]);
 
   return (
     <>
@@ -69,6 +78,12 @@ const Prod = (props) => {
           </div>
         </Link>
       </div>
+
+      {addedToWishlist && (
+        <div className="wishlist-notification">
+          <p>You've added {name} to your wishlist.</p>
+        </div>
+      )}
     </>
   );
 };

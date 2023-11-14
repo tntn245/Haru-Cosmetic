@@ -3,8 +3,9 @@
 import React, { useContext } from 'react'
 import Shopitems from '../components/shopitems';
 import Newsletter from '../components/newsletter';
-import Hero from '../components/hero'
-
+import Hero from '../components/hero';
+import PriceFilter from '../components/PriceFilter';
+import '../styles/shop.scss'
 const shop = () => {
   return <>
     <section className="shop-banner p-5">
@@ -17,12 +18,28 @@ const shop = () => {
     </section>
 
     <section className="featured-products my-5 py-4 " >
-      <div className="container-xxl" >
-        <div className="row" >
-          <Shopitems />
+      <div className='content'>
+        <div className='side-bar'>
+          <PriceFilter />
+        </div>
+        <div className="container-xxl" >
+          <div className="row shopitems" >
+            <Shopitems />
+          </div>
         </div>
       </div>
     </section>
+
+    {/* <section className="featured-products my-5 py-4 " >
+      <div  style={{ display: 'flex' }}>
+        <PriceFilter style={{ flex: '0 0 20%' }} />
+        <div className="container-xxl" >
+          <div className="row" >
+            <Shopitems style={{ flex: '1' }} />
+          </div>
+        </div>
+      </div>
+    </section> */}
 
     <section className="pagination p-2">
       <div className="container-xxl">
