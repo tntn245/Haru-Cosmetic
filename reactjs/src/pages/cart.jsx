@@ -26,7 +26,7 @@ const cart = (props) => {
   }
 
   window.addEventListener("resize", handleResize)
-  
+
   useEffect(() => {
     shopcontext.loadProductsCart();
     console.log("totalAmount ",shopcontext.totalAmount);
@@ -47,14 +47,14 @@ const cart = (props) => {
         {totalAmount > 0 ?
           <div className="row">
             <div className='p-2 text-center'>
-              <h2>Cart</h2>
+              <h2>Giỏ hàng</h2>
 
             </div>
             <div className="col-12 col-md-5 text-center">
-              <h5>Product</h5>
+              <h5>Sản phẩm</h5>
             </div>
             <div className="col-12 col-md-5 text-center">
-              <h5>Details</h5>
+              <h5>Chi tiết</h5>
             </div>
 
             <div className="p-3">
@@ -62,7 +62,7 @@ const cart = (props) => {
                 return <CartItem key={product.id} data={product} />;
               })}
               <div className='col-12 p-2 text-end'>
-                <button onClick={() => shopcontext.clearCart(userID)} id='clear-cart'> Clear Cart </button>
+                <button onClick={() => shopcontext.clearCart(userID)} id='clear-cart'> Xóa giỏ hàng </button>
               </div>
 
               <hr />
@@ -77,12 +77,12 @@ const cart = (props) => {
                   <div className="col-12">
                     <div className="text-end">
                       <h2 className="mb-3">
-                        <b>Total</b>
+                        <b>Tổng tiền</b>
                       </h2>
                       <div className="align-items-center">
                         <div>
                           <p className="total-price align-items-center">
-                            <b>${totalAmount}</b>
+                            <b>{totalAmount} VND</b>
                           </p>
                         </div>
                       </div>
@@ -103,7 +103,7 @@ const cart = (props) => {
           <div className="container-xxl">
             <div className="row">
               <div className="text-center p-5 mb-4">
-                <h2>Your Cart Is Empty!!!</h2>
+                <h2>Giỏ hàng của bạn đang trống!!!</h2>
               </div>
             </div>
           </div>

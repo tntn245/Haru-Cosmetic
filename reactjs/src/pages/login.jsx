@@ -29,6 +29,8 @@ const Login = () => {
           localStorage.setItem("user", JSON.stringify(response.data.userDetails));
           navigate("/");
           localStorage.setItem("userEmail", email);
+          const userID = response.data.userDetails.id; // Assuming the user ID is available in the response
+          navigate(`/user/${userID}`); // Navigate to the user page with the user ID
         }
       )
       .catch(function (error) {

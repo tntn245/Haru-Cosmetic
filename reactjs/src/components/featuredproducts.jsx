@@ -40,7 +40,7 @@ const featuredproducts = () => {
   };
 
   const handleAddToFavs = (productID) => {
-    shopcontext.addToFavs(userID);
+    // shopcontext.addToFavs(userID);
   };
 
 
