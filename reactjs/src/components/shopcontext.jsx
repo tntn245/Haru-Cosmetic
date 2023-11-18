@@ -13,6 +13,7 @@ const shopcontext = (props) => {
   const [totalProducts, settotalProducts] = useState(0);
   const products = PRODUCTS;
   const [favorites, setFavorites] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   useEffect(() => {
     const favsFromLocalStorage = JSON.parse(localStorage.getItem('productsInFavs') || "[]");
@@ -183,7 +184,14 @@ const shopcontext = (props) => {
     setSelectedProduct(null);
   };
 
+  const filterByPrice = (minPrice, maxPrice) => {
+    const filteredProducts = products.filter((product) => {
+      const price = product.price;
+      return price >= minPrice && price <= maxPrice;
+    });
 
+    setFilteredProducts(filteredProducts);
+  };
   const contextValue = {
     cartItems,
     totalAmount,
@@ -204,6 +212,7 @@ const shopcontext = (props) => {
     addToFavs,
     removeFromFavs,
     checkFaved,
+    filterByPrice,
   };
 
   console.log("ShopContext ", cartItems);

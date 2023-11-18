@@ -12,7 +12,7 @@ const Wishlist = () => {
     return (
         <div className='Wishlist'>
             {favorites.length === 0 ? (
-                <p>Your wishlist is empty.</p>
+                <p>Sản phẩm yêu thích của bạn đang trống.</p>
             ) : (
                 <ul>
                     {favorites.map((product) => (
@@ -21,16 +21,16 @@ const Wishlist = () => {
                                 <div className="col-12 col-md-5">
                                     <div className="p-3">
                                         <div className="cart-item-image m-auto">
-                                            <img src={product.image} className="card-img-top img-fluid" alt="..." />
+                                            <img src={product.image} className="card-img-top img-fluid " alt="..." />
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-12 col-md-7">
                                     <div className="p-3">
                                         <h2>{product.name}</h2>
-                                        <p className="cart-item-id">Product Brand: <b className='text-center mb-1'>{product.brand}</b></p>
-                                        <p className="cart-item-id">Product Price: <b className='text-center mb-1'>${product.price}</b></p>
-                                        <p className="cart-item-id">Product Number: <b className='text-center mb-3'>{product.id}</b></p>
+                                        <p className="cart-item-id">Nhãn hàng: <b className='text-center mb-1'>{product.brand}</b></p>
+                                        <p className="cart-item-id">Giá bán: <b className='text-center mb-1'>{product.price} VND</b></p>
+                                        <p className="cart-item-id">Mã sản phẩm: <b className='text-center mb-3'>{product.id}</b></p>
                                     </div>
                                     <div className="p-3 d-flex justify-content-end align-items-center">
                                         <button className="btn btn-outline-dark" onClick={() => handleRemoveFromFavs(product.id)}>

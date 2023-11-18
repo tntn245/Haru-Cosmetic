@@ -1,0 +1,11 @@
+.content {
+    display: flex;
+    .side-bar {
+      flex: 0 0 20%;
+      display: flex;
+      justify-content: center;
+    }
+    .shopitems {
+      flex: 1;
+    }
+  }
