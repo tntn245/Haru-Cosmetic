@@ -40,7 +40,7 @@ const featuredproducts = () => {
   };
 
   const handleAddToFavs = (productID) => {
-    shopcontext.addToFavs(userID);
+    shopcontext.addToFavs(userID, productID);
   };
 
 
@@ -59,10 +59,10 @@ const featuredproducts = () => {
                 <button className="button" onClick={() => handleAddToCart(product.product_id)}>
                   <FiShoppingBag />
                 </button>
-                < button className="button" onClick={handleAddToFavs(product.product_id)}>
+                < button className="button" onClick={() => handleAddToFavs(product.product_id)}>
                   <AiOutlineHeart />
                 </button>
-                <Link to="/details" onClick={handleViewProductDetails(product.product_id)}>
+                <Link to="/details" onClick={() => handleViewProductDetails(product.product_id)}>
                   <button className="button">
                     <FiSearch />
                   </button>
