@@ -1,76 +1,85 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import ReactStars from 'react-rating-stars-component';
+import { FiShoppingBag, FiSearch } from 'react-icons/fi';
+import { AiOutlineHeart } from 'react-icons/ai';
+import { ShopContext } from './shopcontext';
 import axios from '../api/axios.js';
 
 const featuredproducts = () => {
-  const [products, setProducts] = useState([]);
   const [userID, setUserID] = useState(0);
-  const [productID, setProductID] = useState(0);
+  const [hover, setHover] = useState(false);
+  const shopcontext = useContext(ShopContext);
 
-  //Load sản phẩm trước khi render
   useEffect(() => {
-    axios.get("/get-products")
-      .then((response) => {
-        setProducts(response.data);
-      })
-      .catch((error) => {
-        throw error;
-      });
-  }, []);
-
-  //Xử lý thêm vào giỏ hàng
-  const handleAddToCart = async (product_id) => {
-    setProductID(product_id);
-
     const user = localStorage.getItem('user');
-    const user_id = JSON.parse(user).id;
-    setUserID(user_id);
-  }
-
-  //Đợi state thay đổi rồi mới thực hiện
-  useEffect(() => {
-    if (userID !== 0) {
-      try {
-        axios.post("/api/add-to-cart", { userID, productID })
-          .then(
-            (response) => {
-              console.log(response);
-            }
-          )
-          .catch(function (error) {
-            throw error;
-          });
-      } catch (error) {
-        console.log(error);
-      }
+    if (user != null) {
+      const user_id = JSON.parse(user).id;
+      setUserID(user_id);
     }
   }, [userID]);
+
+  const handleAddToCart = async (productID) => {
+    if (userID !== 0) {
+      await axios.post("/api/add-to-cart", { userID, productID })
+        .then(
+          (response) => {
+            console.log(response);
+          }
+        )
+        .catch(function (error) {
+          throw error;
+        });
+    }
+  }
+
+  const handleViewProductDetails = (productID) => {
+    // shopcontext.viewProductDetails(id);
+  };
+
+  const handleAddToFavs = (productID) => {
+    // shopcontext.addToFavs(userID);
+  };
 
 
   return <>
     <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 p-3">
-      {products?.slice(0, 4).map((product) => (
-        <div className="col mb-5">
-          <div key={product.id} className="card h-100 m-auto" onClick={() => handleAddToCart(product.id)}>
+      {shopcontext.cartItems?.slice(0, 4).map((product) => (
+        <div
+          className="col mb-5"
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+        >
+          <Link key={product.product_id} className="card h-100 m-auto">
             <img src={product.image} className="card-img-top img-fluid" alt="..." />
+            {hover && (
+              <div className="overlay">
+                <button className="button" onClick={() => handleAddToCart(product.product_id)}>
+                  <FiShoppingBag />
+                </button>
+                < button className="button" onClick={handleAddToFavs(product.product_id)}>
+                  <AiOutlineHeart />
+                </button>
+                <Link to="/details" onClick={handleViewProductDetails(product.product_id)}>
+                  <button className="button">
+                    <FiSearch />
+                  </button>
+                </Link>
+              </div>
+            )}
             <div className="card-body">
-              {/* <p className="card-text mb-2">{product.brand}</p> */}
-              <h5 className='mb-3'>{product.quantity_sold} </h5>
-              <div className="card-footer m-auto text-center">
-                <p className='text-danger fs-4'>{product.name}</p>
-                <p className="price"><span className="red"></span> {product.price} VND </p>
+              <p className="card-text mb-2">{product.brand}</p>
+              <h5>{product.name}</h5>
+              <ReactStars count={5} edit={false} value={4} size={24} activeColor="#EA9D5A" />
+              <div className="mb-3">
+                <p className="price mb-2">
+                  <span className="red">{product.price} </span>&nbsp; <strike>{product.price * 2}$</strike>
+                </p>
               </div>
-              <div className="card-footer d-md-none">
-                <div className="d-flex justify-content-between align-items-center">
-                  <Link to='shop' className='m-auto'>Xem chi tiết</Link>
-                </div>
-              </div>
-
             </div>
-
-          </div>
+          </Link>
         </div>
       ))}
     </div>

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { CgShoppingCart } from 'react-icons/cg'
 import { Link } from 'react-router-dom';
 import Featuredproducts from '../components/featuredproducts';
@@ -9,6 +9,17 @@ import FeaturedBrands from '../components/featuredbrand';
 import '../styles/home.scss'
 
 const home = () => {
+  const [userID, setUserID] = useState(0);
+
+  useEffect(() => {    
+      const user = localStorage.getItem('user');
+      if(user != null){
+        const user_id = JSON.parse(user).id;
+        setUserID(user_id);
+        console.log(userID);
+      }
+  }, [userID]); 
+
   return <>
     <section className="banner">
       <div className="container-xxl ">
@@ -61,54 +72,7 @@ const home = () => {
         </div>
       </div>
     </section>
-    {/* <section className="hot-deals p-5 d-flex flex-column flex-md-row justify-content-center align-items-center align-items-md-start">
-      <div className="container-xxl">
-        <div className="row">
-          <div className="col-md-6 d-flex">
-            <div className="card m-auto mb-3">
-              <div className="row g-0">
-                <div className="col-md-4">
-                  <img src={banner} className="img-fluid rounded-start" alt="..." />
-                </div>
-                <div className="col-md-8">
-                  <div className="card-body">
-                    <h5 className="card-title">Hot Deals</h5>
-                    <h2 className="card-text mb-2">Buy One get One free.</h2>
-                    <p className="card-text mb-2"><small className="text-body-secondary">The latest best collection in our closet <br />Feel Cute with our outfits</small></p>
-                    <Link to='blog'>
-                      <button className='mt-4'>Learn more</button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <div className="col-md-6 d-flex">
-            <div className="card mb-3">
-              <div className="row g-0">
-                <div className="col-md-4">
-                  <img src={banner1} className="img-fluid rounded-start" alt="..." />
-                </div>
-                <div className="col-md-8">
-                  <div className="card-body">
-                    <h5 className="card-title">Season-In</h5>
-                    <h2 className="card-text mb-2">All Weather Attire</h2>
-                    <p className="card-text mb-2"><small className="text-body-secondary">It never matter which season it is <br />We got you covered</small></p>
-                    <Link to='blog'>
-                      <button className='mt-4'>Learn more</button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </section> */}
-
+    
     <section className="featured-brands p-4">
       <div className="container-xxl">
         <div className="row">

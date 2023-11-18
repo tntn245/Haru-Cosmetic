@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { BsDiscord } from 'react-icons/bs'
 import { Link } from 'react-router-dom';
 import { BsTwitter } from 'react-icons/bs'
@@ -7,7 +7,16 @@ import { BsFacebook } from 'react-icons/bs'
 import { BsSlack, BsGithub } from 'react-icons/bs'
 
 const footer = () => {
-  const [userID, setUserID] = useState(JSON.parse(localStorage.getItem('user')).id);
+  const [userID, setUserID] = useState(0);
+  
+  useEffect(() => {    
+    const user = localStorage.getItem('user');
+    if(user != null){
+        const user_id = JSON.parse(user).id;
+        setUserID(user_id);
+      }
+  }, [userID]); 
+
   return <>
     <footer className='footer p-5' style={{ backgroundColor: '#333333' }}>
       <div className="container-xxl">

@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { ShopContext } from '../components/shopcontext'
 import { CiMail } from 'react-icons/ci'
 import { BiPhoneCall } from 'react-icons/bi'
@@ -21,13 +21,22 @@ const header = () => {
   const [showMenu1, setShowMenu1] = useState(false); // For "MUA HÀNG" menu
   const [showMenu2, setShowMenu2] = useState(false); // For "THƯƠNG HIỆU" menu
   const [showMenu, setShowMenu] = useState(false);
-  const [userID, setUserID] = useState(JSON.parse(localStorage.getItem('user')).id);
+  const [userID, setUserID] = useState(0);
   const [searchText, setSearchText] = useState('');
 
-  const { getTotalCartProducts, getTotalCartAmount } = useContext(ShopContext);
-  const totalAmount = getTotalCartAmount();
+  // const shopContext = useContext(ShopContext);
+  const {getTotalCartProducts } = useContext(ShopContext);
   const totalProducts = getTotalCartProducts();
   const location = useLocation();
+
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (user != null) {
+      const user_id = JSON.parse(user).id;
+      setUserID(user_id);
+    }
+  }, [userID]);
+
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
@@ -190,7 +199,7 @@ const header = () => {
                         <VscAccount className='me-1 fs-2' />
                       </Link>)
                       :
-                      (<Link onClick={handleClick}
+                      (<Link
                         to="/login"
                         className="d-flex align-items-center color-nav me-3"
                       >
