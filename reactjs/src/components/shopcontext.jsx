@@ -25,20 +25,31 @@ const shopcontext = (props) => {
   }, [favorites]);
 
   const checkFaved = (list, products) => {
-    return products.map(product => ({
-      ...product,
-      faved: list.some(item => item.id === product.id)
-    }));
+    // return products.map(product => ({
+    //   ...product,
+    //   faved: list.some(item => item.id === product.id)
+    // }));
   };
 
-  const addToFavs = (productId) => {
-    const product = products.find((item) => item.id === productId);
-    setFavorites([...favorites, product]);
+  const addToFavs = (userID, productID) => {
+    // const product = products.find((item) => item.id === productID);
+
+    if(userID!==0){
+      axios.post("/api/add-to-favs", { userID, productID })
+        .then(
+          (response) => {
+            setFavorites(response.data);
+          }
+        )
+        .catch(function (error) {
+          console.log(error.message);
+        });
+    }
   };
 
-  const removeFromFavs = (productId) => {
-    const updatedFavorites = favorites.filter((item) => item.id !== productId);
-    setFavorites(updatedFavorites);
+  const removeFromFavs = (productID) => {
+    // const updatedFavorites = favorites.filter((item) => item.id !== productID);
+    // setFavorites(updatedFavorites);
   };
 
 
@@ -56,15 +67,6 @@ const shopcontext = (props) => {
       .catch(function (error) {
         console.log(error.message);
       });
-
-    // try{
-    // const response = axios.post("/api/get-cart", { userID });
-    // PRODUCTSCART.push(...response.data);
-    // setCartItems(PRODUCTSCART);
-    // } catch (error) {
-    //   console.error(error);
-    // }
-
   }
 
   const getTotalCartAmount = () => {
