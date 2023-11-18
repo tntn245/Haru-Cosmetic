@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BillController;
+use App\Http\Controllers\FavouriteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -32,5 +33,8 @@ Route::namespace('App\Http\Controllers')->group(function(){
     Route::post('remove-to-cart', [CartController::class, 'removeToCart']);
     Route::post('update-to-cart', [CartController::class, 'updateToCart']);
     Route::post('clear-cart', [CartController::class, 'clearCart']);
+
+    Route::post('add-to-favs', [FavouriteController::class, 'addToFavs']);
+
 });
 

@@ -15,7 +15,7 @@ const cart = (props) => {
   const totalAmount = shopcontext.getTotalCartAmount();
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(false);
-  const [userID, setUserID] = useState(JSON.parse(localStorage.getItem('user')).id);
+  const [userID, setUserID] = useState(0);
 
   const handleResize = () => {
     if (window.innerWidth < 576) {
@@ -30,7 +30,12 @@ const cart = (props) => {
   useEffect(() => {
     shopcontext.loadProductsCart();
     console.log("totalAmount ",shopcontext.totalAmount);
-
+    
+    const user = localStorage.getItem('user');
+    if (user != null) {
+      const user_id = JSON.parse(user).id;
+      setUserID(user_id);
+    }
     
     const currentURL = window.location.href;
     console.log(currentURL);

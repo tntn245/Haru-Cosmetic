@@ -10,20 +10,20 @@ import Details from '../pages/details';
 import '../styles/prod.scss'
 const Prod = (props) => {
   const { id, name, price, image, brand } = props.data;
-  const { addToCart, viewProductDetails, addToFavs } = useContext(ShopContext);
+  const shopcontext = useContext(ShopContext);
 
   const [hover, setHover] = useState(false);
 
   const handleAddToCart = () => {
-    addToCart(id);
+    // addToCart(id);
   };
 
   const handleViewProductDetails = () => {
-    viewProductDetails(id);
+    // shopcontext.viewProductDetails(id);
   };
 
   const handleAddToFavs = () => {
-    addToFavs(id);
+    // shopcontext.addToFavs(id);
   };
 
   return (
@@ -58,13 +58,6 @@ const Prod = (props) => {
               <p className="price mb-2">
                 <span className="red">{price} </span>&nbsp; <strike>{price * 2}$</strike>
               </p>
-              {/* <Link to="/details" onClick={handleViewProductDetails}>
-                <p className="text-center">
-                  <button className="fs-4" id="clear-cart">
-                    Xem Chi Tiết
-                  </button>
-                </p>
-              </Link> */}
             </div>
           </div>
         </Link>
