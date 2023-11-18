@@ -19,7 +19,7 @@ import Details from './pages/details'
 import User from './pages/user'
 import Wishlist from './pages/wishlist'
 import ImageUploadForm from './pages/testloadimg'
-
+import TayTrang from './pages/category/taytrang'
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -35,29 +35,31 @@ function App() {
 
   return (
     <>
-    <ShopContext>
-    <BrowserRouter>
-    <ScrollToTop />
-    <Routes>
-      <Route path='/' element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path='shop' element={<Shop />} />
-        <Route path='about' element={<About />} />
-        <Route path='contact' element={<Contact />} />
-        <Route path='/search/:query' element={<Search />} />
-        <Route path='login' element={<Login />} />
-        <Route path='signup' element={<Signup />} />
-        <Route path='forgotpasword' element={<Forgotpasword />} />
-        <Route path='cart' element={<Cart />} />
-        <Route path='wishlist' element={<Wishlist />} />
-        <Route path='checkout/:query' element={<Checkout />} />
-        <Route path='thanks' element={<Thanks />} />
-        <Route path='details' element={<Details />} />
-        <Route path='img' element={<ImageUploadForm />} />
-      </Route>
-    </Routes>
-    </BrowserRouter>
-    </ShopContext>
+      <ShopContext>
+        <BrowserRouter>
+          <ScrollToTop />
+          <Routes>
+            <Route path='/' element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path='shop' element={<Shop />} />
+              <Route path='about' element={<About />} />
+              <Route path='contact' element={<Contact />} />
+              <Route path='/search/:query' element={<Search />} />
+              <Route path='login' element={<Login />} />
+              <Route path='user' element={<User />} />
+              <Route path='signup' element={<Signup />} />
+              <Route path='forgotpasword' element={<Forgotpasword />} />
+              <Route path='cart' element={<Cart />} />
+              <Route path='wishlist' element={<Wishlist />} />
+              <Route path='checkout/:query' element={<Checkout />} />
+              <Route path='thanks' element={<Thanks />} />
+              <Route path='details' element={<Details />} />
+              <Route path='img' element={<ImageUploadForm />} />
+              <Route path='taytrang' element={<TayTrang />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </ShopContext>
     </>
   )
 }

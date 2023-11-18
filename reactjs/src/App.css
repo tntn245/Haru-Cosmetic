@@ -391,7 +391,7 @@
     background         : url(/src/assets/images/banner/b2.jpg);
     background-size    : cover;
     width              : 100%;
-    height             : 47vh;
+    height             : 60vh;
     justify-content    : center;
     background-position: center;
     justify-content    : center;
@@ -979,13 +979,18 @@
   .contact-wrapper {
     background         : url(/src/assets/images/back.jpg);
     background-size    : cover;
-    width              : 100%;
-    height             : 30vh;
+    width              : 100vw;
+    height             : 37vh;
     justify-content    : center;
     background-position: center;
     justify-content    : center;
     display            : flex;
     flex-direction     : column;
+  }
+
+  .banner.container-xxl {
+    padding-left : 0;
+    padding-right: 0;
   }
 
   .contact-wrapper-details .card {

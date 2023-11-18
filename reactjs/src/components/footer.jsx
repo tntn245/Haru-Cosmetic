@@ -5,9 +5,6 @@ import { Link } from 'react-router-dom';
 import { BsTwitter } from 'react-icons/bs'
 import { BsFacebook } from 'react-icons/bs'
 import { BsSlack, BsGithub } from 'react-icons/bs'
-import playstore from '../assets/images/pay/play.jpg'
-import appstore from '../assets/images/pay/app.jpg'
-import visa from '../assets/images/pay/pay.png'
 
 const footer = () => {
   const [userID, setUserID] = useState(JSON.parse(localStorage.getItem('user')).id);

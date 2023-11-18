@@ -14,7 +14,7 @@ const shopcontext = (props) => {
   const products = PRODUCTS;
   const [favorites, setFavorites] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-
+  const [selectedCategory, setSelectedCategory] = useState(null);
   useEffect(() => {
     const favsFromLocalStorage = JSON.parse(localStorage.getItem('productsInFavs') || "[]");
     setFavorites(favsFromLocalStorage);
@@ -46,6 +46,16 @@ const shopcontext = (props) => {
     const userID = JSON.parse(localStorage.getItem('user')).id;
     const PRODUCTSCART = [];
 
+    // Lấy sản phẩm dựa trên cái loại sản phẩm
+    const categoryProducts = axios.get(`/api/get-products?category=${selectedCategory}`)
+      .then((response) => {
+        PRODUCTSCART.push(...response.data);
+        setCartItems(PRODUCTSCART);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+
     axios.post("/api/get-cart", { userID })
       .then(
         (response) => {
@@ -66,6 +76,10 @@ const shopcontext = (props) => {
     // }
 
   }
+  // Cập nhật cái loại sản phẩm được chọn
+  const updateSelectedCategory = (category) => {
+    setSelectedCategory(category);
+  };
 
   const getTotalCartAmount = () => {
     var total = Number(0);
@@ -211,6 +225,8 @@ const shopcontext = (props) => {
     removeFromFavs,
     checkFaved,
     filterByPrice,
+    selectedCategory,
+    updateSelectedCategory,
   };
 
   console.log("ShopContext ", cartItems);

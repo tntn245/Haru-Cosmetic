@@ -2,8 +2,9 @@ import React, { useContext, useState } from 'react';
 import { ShopContext } from './shopcontext';
 
 const PriceFilter = () => {
-    const { filterByPrice } = useContext(ShopContext);
+    const { filterByPrice, updateSelectedCategory } = useContext(ShopContext);
     const [selectedOption, setSelectedOption] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('');
 
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
@@ -23,7 +24,10 @@ const PriceFilter = () => {
 
         filterByPrice(minPrice, maxPrice);
     };
-
+    const handleCategoryChange = (event) => {
+        setSelectedCategory(event.target.value);
+        updateSelectedCategory(event.target.value);
+    };
     return (
         <div>
             <label><b>Price</b></label><br />

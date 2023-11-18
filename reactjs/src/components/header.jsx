@@ -131,12 +131,12 @@ const header = () => {
                     onMouseOver={handleMouseOver1}
                     onMouseLeave={closeMenu}
                   >
-                    <NavDropdown.Item as={NavLink} to="/category/taytrang">Tẩy trang</NavDropdown.Item>
-                    <NavDropdown.Item as={NavLink} to="/category/suaruamat">Sữa rửa mặt</NavDropdown.Item>
-                    <NavDropdown.Item as={NavLink} to="/category/toner">Toner</NavDropdown.Item>
-                    <NavDropdown.Item as={NavLink} to="/category/tinhchat">Tinh chất</NavDropdown.Item>
-                    <NavDropdown.Item as={NavLink} to="/category/kemduong">Kem dưỡng</NavDropdown.Item>
-                    <NavDropdown.Item as={NavLink} to="/category/kemchongnang">Kem chống nắng</NavDropdown.Item>
+                    <NavDropdown.Item as={NavLink} to="/taytrang">Tẩy trang</NavDropdown.Item>
+                    <NavDropdown.Item as={NavLink} to="/suaruamat">Sữa rửa mặt</NavDropdown.Item>
+                    <NavDropdown.Item as={NavLink} to="/toner">Toner</NavDropdown.Item>
+                    <NavDropdown.Item as={NavLink} to="/tinhchat">Tinh chất</NavDropdown.Item>
+                    <NavDropdown.Item as={NavLink} to="/kemduong">Kem dưỡng</NavDropdown.Item>
+                    <NavDropdown.Item as={NavLink} to="/kemchongnang">Kem chống nắng</NavDropdown.Item>
                   </NavDropdown>
                 </div>
                 <div className='ms-auto gap-3'>

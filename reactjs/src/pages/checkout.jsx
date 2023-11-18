@@ -2,13 +2,10 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
-import React, { useState } from 'react'
-import { Link, useParams } from 'react-router-dom';
 import pay from '../assets/images/pay/pay.png'
-import { ShopContext } from '../components/shopcontext.jsx';
 import axios from '../api/axios.js';
 import { ShopContext } from '../components/shopcontext.jsx';
-import axios from '../api/axios.js';
+
 
 const checkout = () => {
     const provinces = [

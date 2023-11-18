@@ -11,13 +11,13 @@ import '../styles/home.scss'
 const home = () => {
   return <>
     <section className="banner">
-      <div className="container-xxl">
+      <div className="container-xxl ">
         <div className="row">
           <div className="col-lg-12 col-md-12 col-sm-12">
             <div className="d-flex flex-column justify-content-center ">
               <div id="carouselExampleInterval" className="carousel slide" data-bs-ride="carousel">
-                <div className="carousel-inner">
-                  <div className='back-details'>
+                <div className="carousel-inner ">
+                  <div className='back-details '>
                     <p className='mb-3 text'></p>
                     <p className='mb-3' />
                     <Link to='/shop' className='banner-link'></Link>
