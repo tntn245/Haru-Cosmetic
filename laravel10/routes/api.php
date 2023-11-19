@@ -34,7 +34,10 @@ Route::namespace('App\Http\Controllers')->group(function(){
     Route::post('update-to-cart', [CartController::class, 'updateToCart']);
     Route::post('clear-cart', [CartController::class, 'clearCart']);
 
+    Route::post('get-favs', [FavouriteController::class, 'getProductsInFavs']);
     Route::post('add-to-favs', [FavouriteController::class, 'addToFavs']);
+    Route::post('check-faved', [FavouriteController::class, 'checkFaved']);
+    Route::post('remove-from-favs', [FavouriteController::class, 'removeFromFavs']);
 
 });
 

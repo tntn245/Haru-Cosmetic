@@ -4,12 +4,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import ReactStars from 'react-rating-stars-component';
 import { FiShoppingBag, FiSearch } from 'react-icons/fi';
-import { AiOutlineHeart } from 'react-icons/ai';
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import { ShopContext } from './shopcontext';
 import axios from '../api/axios.js';
 
 const featuredproducts = () => {
   const [userID, setUserID] = useState(0);
+  const [flagFaved, setFlagFaved] = useState(0);
   const [hover, setHover] = useState(false);
   const shopcontext = useContext(ShopContext);
 
@@ -41,15 +42,35 @@ const featuredproducts = () => {
 
   const handleAddToFavs = (productID) => {
     shopcontext.addToFavs(userID, productID);
+    setFlagFaved(1);
+  };
+  const handleRemoveFromFavs = (productID) => {
+    shopcontext.removeFromFavs(userID, productID);
+    setFlagFaved(0);
   };
 
+  const handleCheckFaved = (productID) => {
+    if(userID!==0){
+      axios.post("/api/check-faved", { userID, productID })
+        .then(
+          (response) => {
+            setFlagFaved(response.data);
+            console.log("flag", flagFaved);
+            setHover(true);
+          }
+        )
+        .catch(function (error) {
+          console.log(error.message);
+        });
+      }
+  };
 
   return <>
     <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 p-3">
       {shopcontext.cartItems?.slice(0, 4).map((product) => (
         <div
           className="col mb-5"
-          onMouseEnter={() => setHover(true)}
+          onMouseEnter={() => handleCheckFaved(product.product_id)}
           onMouseLeave={() => setHover(false)}
         >
           <Link key={product.product_id} className="card h-100 m-auto">
@@ -59,9 +80,15 @@ const featuredproducts = () => {
                 <button className="button" onClick={() => handleAddToCart(product.product_id)}>
                   <FiShoppingBag />
                 </button>
-                < button className="button" onClick={() => handleAddToFavs(product.product_id)}>
-                  <AiOutlineHeart />
-                </button>
+                {flagFaved ?
+                  < button className="button" onClick={() => handleRemoveFromFavs(product.product_id)}>
+                    <AiFillHeart />
+                  </button>
+                  :
+                  < button className="button" onClick={() => handleAddToFavs(product.product_id)}>
+                    <AiOutlineHeart />
+                  </button>
+                }
                 <Link to="/details" onClick={() => handleViewProductDetails(product.product_id)}>
                   <button className="button">
                     <FiSearch />

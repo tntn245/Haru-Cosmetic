@@ -15,30 +15,28 @@ const shopcontext = (props) => {
   const [favorites, setFavorites] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-  useEffect(() => {
-    const favsFromLocalStorage = JSON.parse(localStorage.getItem('productsInFavs') || "[]");
-    setFavorites(favsFromLocalStorage);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("productsInFavs", JSON.stringify(favorites));
-  }, [favorites]);
-
-  const checkFaved = (list, products) => {
-    // return products.map(product => ({
-    //   ...product,
-    //   faved: list.some(item => item.id === product.id)
-    // }));
-  };
+  const loadFavs = (userID) => {
+    if (userID !== 0) {
+      axios.post("/api/get-favs", { userID })
+        .then(
+          (response) => {
+            setFavorites(response.data);
+            console.log(response.data);
+          }
+        )
+        .catch(function (error) {
+          console.log(error.message);
+        });
+    }
+  }
 
   const addToFavs = (userID, productID) => {
-    // const product = products.find((item) => item.id === productID);
-
     if(userID!==0){
       axios.post("/api/add-to-favs", { userID, productID })
         .then(
           (response) => {
             setFavorites(response.data);
+            console.log(response);
           }
         )
         .catch(function (error) {
@@ -47,11 +45,19 @@ const shopcontext = (props) => {
     }
   };
 
-  const removeFromFavs = (productID) => {
-    // const updatedFavorites = favorites.filter((item) => item.id !== productID);
-    // setFavorites(updatedFavorites);
+  const removeFromFavs = (userID, productID) => {
+    if(userID!==0){
+      axios.post("/api/remove-from-favs", { userID, productID })
+        .then(
+          (response) => {
+            console.log(response);
+          }
+        )
+        .catch(function (error) {
+          console.log(error.message);
+        });
+    }
   };
-
 
   const loadProductsCart = () => {
     const userID = JSON.parse(localStorage.getItem('user')).id;
@@ -194,6 +200,7 @@ const shopcontext = (props) => {
   };
   const contextValue = {
     cartItems,
+    favorites,
     totalAmount,
     totalProducts,
     loadProductsCart,
@@ -208,10 +215,9 @@ const shopcontext = (props) => {
     closeProductDetails,
     selectedProduct,
     products,
-    favorites,
+    loadFavs,
     addToFavs,
     removeFromFavs,
-    checkFaved,
     filterByPrice,
   };
 
