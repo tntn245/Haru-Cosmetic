@@ -1185,3 +1185,35 @@
     padding: 24px 1rem !important;
 
   }
+
+  .price-filter {
+    display       : flex;
+    flex-direction: column;
+  }
+
+  .price-filter #price {
+    font-size     : 1.25rem;
+    font-weight   : bold;
+    line-height   : 1.2;
+    color         : #141414;
+    font-family   : "Candara";
+    padding-bottom: 10px;
+  }
+
+  .price-filter .form-check {
+    margin-bottom: 10px;
+  }
+
+  .user-wrapper .user-heading {
+    margin-bottom: 20px;
+  }
+
+  .user-wrapper .card-title {
+    font-weight   : bold;
+    padding-bottom: 10px;
+  }
+
+  .user-wrapper .card-body p {
+    margin-top   : 5px;
+    margin-bottom: 20px;
+  }

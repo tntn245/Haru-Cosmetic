@@ -62,10 +62,10 @@ const Prod = (props) => {
           <div className="card-body">
             <p className="card-text mb-2">{brand}</p>
             <h5>{name}</h5>
-            <ReactStars count={5} edit={false} value={4} size={24} activeColor="#EA9D5A" />
+            <ReactStars count={5} edit={false} value={4.5} size={24} isHalf={true} activeColor="#EA9D5A" />
             <div className="mb-3">
               <p className="price mb-2">
-                <span className="red">{price} </span>&nbsp; <strike>{price * 2}$</strike>
+                <span className="red">{price} </span>&nbsp; <strike>{price * 2}đ</strike>
               </p>
             </div>
           </div>
@@ -74,7 +74,7 @@ const Prod = (props) => {
 
       {addedToWishlist && (
         <div className="wishlist-notification">
-          <p>You've added {name} to your wishlist.</p>
+          <p>Bạn vừa thêm {name} vào sản phẩm yêu thích.</p>
         </div>
       )}
     </>

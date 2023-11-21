@@ -34,7 +34,7 @@ const shopcontext = (props) => {
   const addToFavs = (userID, productID) => {
     // const product = products.find((item) => item.id === productID);
 
-    if(userID!==0){
+    if (userID !== 0) {
       axios.post("/api/add-to-favs", { userID, productID })
         .then(
           (response) => {

@@ -1,43 +1,80 @@
 .banner-link {
-    display: block;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-  }
-.card-body{
-    margin-top: -15px;
+  display: block;
+  width  : 100%;
+  height : 100%;
+  cursor : pointer;
 }
-.hero{
+
+.banner-text {
+  font-size     : 1.05rem;
+  font-weight   : normal;
+  line-height   : 1.2;
+  color         : #141414;
+  font-family   : "Candara";
+  padding-bottom: 10px;
+}
+
+.big-text {
+  font-family : "CandaraBold";
+  font-size   : 1.85rem;
+  font-weight : bold;
+  line-height : 1.35;
+  color       : #141414;
+  padding-top : 5px;
+  padding-left: 10px;
+}
+
+.card-body {
+  margin-top: -15px;
+}
+
+.hero {
   margin-top: 20px;
 }
-h1{
-  text-align: center;
-  margin: 0 0 28px;
+
+h1 {
+  text-align : center;
+  margin     : 0 0 28px;
   line-height: 37px;
-  text-align: center;
-  font-family:75.768px "Nunito", -apple-system, BlinkMacSystemFont, Arial, Helvetica, 'Helvetica Neue', Verdana, sans-serif ;
-  font-style: normal;
+  text-align : center;
+  font-family: 75.768px "Nunito", -apple-system, BlinkMacSystemFont, Arial, Helvetica, 'Helvetica Neue', Verdana, sans-serif;
+  font-style : normal;
 }
-.hot-deals  {
-  .card img{
-  min-height     : 180px;
-  justify-content: center;
+
+.hot-deals {
+  .card img {
+    min-height     : 180px;
+    justify-content: center;
   }
 }
 
 
 .featured-brands {
   h1 {
-    margin-top: -10px; /* Adjust the value as needed */
+    margin-top   : -10px;
+    /* Adjust the value as needed */
     margin-bottom: 20px;
   }
 }
-  
-.featured-products h1{
-  margin-top: 37px;
+
+.featured-products h1 {
+  margin-top   : 37px;
   margin-bottom: -40px;
 }
-.new-arrivals h1{
-  margin-top: 15px;
-  margin-bottom:15px;
+
+.new-arrivals h1 {
+  margin-top   : 15px;
+  margin-bottom: 15px;
+}
+.home-discount-banner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
+  padding: 20px;
+}
+
+.home-discount-banner .banner-text, .big-text {
+  padding-left: 85px;
 }
