@@ -1,11 +1,13 @@
 <?php
 
-use App\Http\Controllers\BillController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\FavouriteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderDetailsController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,8 +27,11 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::namespace('App\Http\Controllers')->group(function(){
     Route::post('register-user', [UserController::class, 'registerUser']);
     Route::post('login-user', [UserController::class, 'loginUser']);
+    Route::post('get-user', [UserController::class, 'getUser']);
     Route::post('update-user', [UserController::class, 'updateUser']);
     // Route::post('images', [UserController::class, 'uploadImg']);
+
+    Route::post('get-products', [ProductController::class, 'getProducts']);
 
     Route::post('get-cart', [CartController::class, 'getProductsInCart']);
     Route::post('add-to-cart', [CartController::class, 'addToCart']);
@@ -39,5 +44,14 @@ Route::namespace('App\Http\Controllers')->group(function(){
     Route::post('check-faved', [FavouriteController::class, 'checkFaved']);
     Route::post('remove-from-favs', [FavouriteController::class, 'removeFromFavs']);
 
+    Route::post('create-order', [OrderController::class, 'createOrder']);
+    Route::post('update-order-status', [OrderController::class, 'updateOrderStatus']);
+    Route::post('update-payment-status', [OrderController::class, 'updatePaymentStatus']);
+
+    Route::post('create-order-details', [OrderDetailsController::class, 'createOrderDetails']);
+
+    Route::group(['middleware' => ['auth:sanctum']], function(){
+        Route::post('get-user', [UserController::class, 'getUser']);
+    });
 });
 

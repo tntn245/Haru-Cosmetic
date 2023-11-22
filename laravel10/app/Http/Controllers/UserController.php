@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function getUsers()
+    public function getUser()
     {
         $getUsers = User::get();
         return $getUsers;

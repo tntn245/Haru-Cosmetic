@@ -11,7 +11,7 @@ import '../styles/prod.scss'
 import axios from '../api/axios.js';
 
 const Prod = (props) => {
-  const { id, name, price, image, brand } = props.data;
+  const { id, name, price, image, brand, star } = props.data;
   const [addedToWishlist, setAddedToWishlist] = useState(false);
   const [removeFromWishlist, setRemoveFromWishlist] = useState(false);
   const shopcontext = useContext(ShopContext);
@@ -123,7 +123,7 @@ const Prod = (props) => {
           <div className="card-body">
             <p className="card-text mb-2">{brand}</p>
             <h5>{name}</h5>
-            <ReactStars count={5} edit={false} value={4} size={24} activeColor="#EA9D5A" />
+            <ReactStars count={5} edit={false} isHalf={true} value={star} size={24} activeColor="#EA9D5A" />
             <div className="mb-3">
               <p className="price mb-2">
                 <span className="red">{price} </span>&nbsp; <strike>{price * 2}$</strike>

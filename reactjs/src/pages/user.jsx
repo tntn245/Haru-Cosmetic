@@ -6,19 +6,20 @@ const User = () => {
     const { userID } = useParams();
     const [user, setUser] = useState(null);
     const userEmail = localStorage.getItem("userEmail");
+    
     useEffect(() => {
-        // Fetch user data based on the userID
-        const fetchUser = async () => {
             try {
-                const response = await fetch(`/api/users/${userID}`);
-                const userData = await response.json();
-                setUser(userData);
+                // const response =  fetch(`/api/users/${userID}`);
+                // const userData =  response.json();
+                
+                const user = JSON.parse(localStorage.getItem('user'));
+                if (user != null) {
+                    setUser(user);
+                }
+
             } catch (error) {
                 console.error("Error fetching user data:", error);
             }
-        };
-
-        fetchUser();
     }, [userID]);
 
     if (!user) {

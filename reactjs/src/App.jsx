@@ -45,6 +45,7 @@ function App() {
         <Route path='about' element={<About />} />
         <Route path='contact' element={<Contact />} />
         <Route path='/search/:query' element={<Search />} />
+        <Route path='/user/:query' element={<User />} />
         <Route path='login' element={<Login />} />
         <Route path='signup' element={<Signup />} />
         <Route path='forgotpasword' element={<Forgotpasword />} />

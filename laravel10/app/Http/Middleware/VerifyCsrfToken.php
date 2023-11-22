@@ -15,7 +15,10 @@ class VerifyCsrfToken extends Middleware
         // 
         'api/register-user',
         'api/login-user',
+        'api/get-user',
         'api/update-user',
+
+        'api/get-products',
 
         'api/get-cart',
         'api/add-to-cart',
@@ -28,11 +31,17 @@ class VerifyCsrfToken extends Middleware
         'api/check-faved',
         'api/remove-from-favs',
         
+        'api/create-order',
+        'api/update-order-status',
+        'api/update-payment-status',
+
+        'api/create-order-details',
+
         'upload-img-product',
         'search-product',
 
         'vnpay',
-        'next-bill-id',
+        'next-order-id',
 
     ];
 }

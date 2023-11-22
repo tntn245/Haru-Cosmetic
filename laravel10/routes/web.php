@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\BillController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +31,6 @@ Route::post('vnpay', [CheckoutController::class, 'VNPay']);
 Route::get('vnpay', [CheckoutController::class, 'VNPay']);
 Route::get('getvnpay', [CheckoutController::class, 'getVNPay']);
 
-Route::post('next-bill-id', [BillController::class, 'getNextBillID']);
+Route::post('next-order-id', [OrderController::class, 'getNextOrderID']);
 
 // require __DIR__.'/auth.php';
