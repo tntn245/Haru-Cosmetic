@@ -1,13 +1,17 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+
+import { ShopContext } from '../components/shopcontext'
+import React, { useState, useEffect, useContext } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import pay from '../assets/images/pay/pay.png'
 import axios from '../api/axios.js';
-import { ShopContext } from '../components/shopcontext.jsx';
-
 
 const checkout = () => {
+    const [paymentMethod, setPaymentMethod] = useState('');
+    const [userID, setUserID] = useState(0);
+    const shopcontext = useContext(ShopContext);
+
     const provinces = [
         "An Giang",
         "Bà Rịa - Vũng Tàu",
@@ -75,8 +79,17 @@ const checkout = () => {
     ];
 
     const { query } = useParams();
+    
+    useEffect(() => {
+        const user = localStorage.getItem('user');
+        if (user != null) {
+          const user_id = JSON.parse(user).id;
+          setUserID(user_id);
+        }
+      }, [userID]);
 
     const handlePay = () => {
+        // check if vnpay
         axios.post("/vnpay", { query })
             .then(
                 (response) => {
@@ -88,6 +101,9 @@ const checkout = () => {
             .catch(function (error) {
                 console.log(error);
             });
+        
+        setPaymentMethod("VNPay");
+        shopcontext.createOrder(userID, Number(query), paymentMethod);
     };
 
     return <>
@@ -112,11 +128,11 @@ const checkout = () => {
                                         </div>
                                     </button>
                                 </div>
-                                <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                {/* <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                                     <div className="card-body">
                                         <input type="text" className="form-control" placeholder="Paypal email" />
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="card m-auto">
                                 <div id="collapseOne" className="collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">

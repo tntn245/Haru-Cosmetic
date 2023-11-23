@@ -1,11 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from '../api/axios.js';
 
 const User = () => {
     const { userID } = useParams();
     const [user, setUser] = useState(null);
     const userEmail = localStorage.getItem("userEmail");
+    const navigate = useNavigate();
+    
+    const handleLogout = () => {
+        axios.post("/api/logout-user", {userID})
+            .then(
+                (response) => {
+                    console.log(response);
+                    navigate('/login');
+                    localStorage.clear();
+                }
+            )
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
     useEffect(() => {
         // Fetch user data based on the userID
         try {
@@ -18,7 +35,6 @@ const User = () => {
         } catch (error) {
             console.error("Error fetching user data:", error);
         }
-
     }, [userID]);
 
     if (!user) {
@@ -33,6 +49,7 @@ const User = () => {
                         <p>User ID: {user.id}</p>
                         <h5 className="card-title">Email: {userEmail}</h5>
                         <Link to="/edit-profile" className="btn btn-outline-danger">Edit Profile</Link>
+                        <button onClick={handleLogout}>Logout</button>
                     </div>
                 </div>
             </div>

@@ -9,7 +9,7 @@ class CheckoutController extends Controller
 {
     public function VNPay(Request $request)
     {
-        $maxID = DB::table('bills')->max('id');
+        $maxID = DB::table('orders')->max('id');
         $nextBillID = $maxID + 1;
         $billAmount = intval($request->input("query"));
 

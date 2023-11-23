@@ -1,14 +1,39 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ShopContext } from '../components/shopcontext';
 import { RiDeleteBack2Line } from 'react-icons/ri'
+import axios from '../api/axios.js';
 
 const Wishlist = () => {
-    const { favorites, removeFromFavs } = useContext(ShopContext);
+    const shopcontext = useContext(ShopContext);
+    const [favorites, setFavorites] = useState([]);
+    const [userID, setUserID] = useState(0);
 
-    const handleRemoveFromFavs = (productId) => {
-        removeFromFavs(productId);
+    const handleRemoveFromFavs = (productID) => {
+        shopcontext.removeFromFavs(userID, productID);
+        setFavorites(prevProducts => prevProducts.filter(product => product.id !== productID));
     };
 
+    useEffect(() => {
+        const user = localStorage.getItem('user');
+        if (user != null) {
+            const user_id = JSON.parse(user).id;
+            setUserID(user_id);
+            
+            if (userID !== 0) {
+                axios.post("/api/get-favs", { userID })
+                .then(
+                    (response) => {
+                    setFavorites(response.data);
+                    console.log(response.data);
+                    }
+                )
+                .catch(function (error) {
+                    console.log(error.message);
+                });
+            }
+        }
+    }, [userID]);
+    
     return (
         <div className='Wishlist'>
             {favorites.length === 0 ? (
@@ -16,7 +41,7 @@ const Wishlist = () => {
             ) : (
                 <ul>
                     {favorites.map((product) => (
-                        <div className="container card my-3">
+                        <div key={product.id} className="container card my-3">
                             <div className="row g-3">
                                 <div className="col-12 col-md-5">
                                     <div className="p-3">

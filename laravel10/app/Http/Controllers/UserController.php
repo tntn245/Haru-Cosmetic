@@ -7,10 +7,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    public function getUsers()
+    public function getUser()
     {
         $getUsers = User::get();
         return $getUsers;
@@ -104,7 +105,8 @@ class UserController extends Controller
     public function logoutUser(Request $request)
     {
         // auth()->user()->tokens()->delete();
-        $request->user('sanctum')->currentAccessToken()->delete();
+        Auth::logout();
+        // $request->user('sanctum')->currentAccessToken()->delete();
         return [
             'message' => 'Logged out'
         ];
@@ -135,30 +137,37 @@ class UserController extends Controller
         }
     }
     
-    // public function uploadImg(Request $request){
-    //     if ($request->isMethod('post')) {
-    //         if ($request->hasFile('image')) {
+    public function loginGoogle(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $data = $request->input();
+            
+            $userCount = User::where('email', $data['email'])->count();
 
-    //             $image = $request->file('image');
-    //             $imageName = $image->getClientOriginalName();
+            $flag = false;
+            if($userCount > 0) {
+                $flag = true;
+            }
+ 
+            if(!$flag){
+                $user = User::create([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'password' => bcrypt($data['password'])
+                ]);
 
-    //             // $imageData = file_get_contents($image->getRealPath());
+                $token = $user->createToken('myapptoken')->plainTextToken;
+                $user->token = $token;
+                $user->save();
+            }
 
-    //             // $newImage = new Image();
-                
-    //             // $newImage->name = $image->getClientOriginalName();
-    //             // $newImage->image = $imageData;
-    //             // $newImage->save();
+            $userDetails = User::where('email', $data['email'])->first();
 
-
-    //             $image->store('avatar', 'public');
-    //             // auth()->user()->update(['avatar' => storage_path('app')."/$path"]);
-
-    //             return response()->json(['message' => $imageName], 200);
-    //         }
-
-    //         return response()->json(['message' => 'Không tìm thấy ảnh'], 400);
-    //     }
-    // }
-    
+            return response()->json([
+                'status' => true,
+                'message' => 'Login with google successful',
+                'userDetails' => $userDetails,
+            ], 201);
+        }
+    }
 }

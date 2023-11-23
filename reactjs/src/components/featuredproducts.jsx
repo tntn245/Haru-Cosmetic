@@ -4,20 +4,25 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import ReactStars from 'react-rating-stars-component';
 import { FiShoppingBag, FiSearch } from 'react-icons/fi';
-import { AiOutlineHeart } from 'react-icons/ai';
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 import { ShopContext } from './shopcontext';
 import axios from '../api/axios.js';
 
 const featuredproducts = () => {
   const [userID, setUserID] = useState(0);
+  const [flagFaved, setFlagFaved] = useState(0);
   const [hover, setHover] = useState(false);
   const shopcontext = useContext(ShopContext);
+  const [addedToWishlist, setAddedToWishlist] = useState(false);
+  const [removeFromWishlist, setRemoveFromWishlist] = useState(false);
 
   useEffect(() => {
     const user = localStorage.getItem('user');
     if (user != null) {
       const user_id = JSON.parse(user).id;
       setUserID(user_id);
+      shopcontext.loadProducts();
+      console.log("aaaa", shopcontext.products);
     }
   }, [userID]);
 
@@ -36,33 +41,80 @@ const featuredproducts = () => {
   }
 
   const handleViewProductDetails = (productID) => {
-    // shopcontext.viewProductDetails(id);
+    shopcontext.viewProductDetails(productID);
   };
 
   const handleAddToFavs = (productID) => {
-    // shopcontext.addToFavs(userID);
+    shopcontext.addToFavs(userID, productID);
+    setFlagFaved(1);
+    setAddedToWishlist(true);
+  };
+  const handleRemoveFromFavs = (productID) => {
+    shopcontext.removeFromFavs(userID, productID);
+    setFlagFaved(0);
+    setRemoveFromWishlist(true);
   };
 
+  const handleCheckFaved = (productID) => {
+    if(userID!==0){
+      console.log(productID);
+      axios.post("/api/check-faved", { userID, productID })
+        .then(
+          (response) => {
+            setFlagFaved(response.data);
+            console.log("flag", flagFaved);
+            setHover(true);
+          }
+        )
+        .catch(function (error) {
+          console.log(error.message);
+        });
+      }
+  };
+
+  useEffect(() => {
+    if (addedToWishlist) {
+      const timer = setTimeout(() => {
+        setAddedToWishlist(false);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [addedToWishlist]);
+
+  useEffect(() => {
+    if (removeFromWishlist) {
+      const timer = setTimeout(() => {
+        setRemoveFromWishlist(false);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [removeFromWishlist]);
 
   return <>
     <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 p-3">
-      {shopcontext.cartItems?.slice(0, 4).map((product) => (
+      {shopcontext.products?.slice(0, 4).map((product) => (
         <div
           className="col mb-5"
-          onMouseEnter={() => setHover(true)}
+          onMouseEnter={() => handleCheckFaved(product.id)}
           onMouseLeave={() => setHover(false)}
         >
-          <Link key={product.product_id} className="card h-100 m-auto">
+          <Link key={product.id} className="card h-100 m-auto">
             <img src={product.image} className="card-img-top img-fluid" alt="..." />
             {hover && (
               <div className="overlay">
-                <button className="button" onClick={() => handleAddToCart(product.product_id)}>
+                <button className="button" onClick={() => handleAddToCart(product.id)}>
                   <FiShoppingBag />
                 </button>
-                < button className="button" onClick={handleAddToFavs(product.product_id)}>
-                  <AiOutlineHeart />
-                </button>
-                <Link to="/details" onClick={handleViewProductDetails(product.product_id)}>
+                {flagFaved ?
+                  < button className="button" onClick={() => handleRemoveFromFavs(product.id)}>
+                    <AiFillHeart />
+                  </button>
+                  :
+                  < button className="button" onClick={() => handleAddToFavs(product.id)}>
+                    <AiOutlineHeart />
+                  </button>
+                }
+                <Link to="/details" onClick={() => handleViewProductDetails(product.id)}>
                   <button className="button">
                     <FiSearch />
                   </button>
@@ -72,7 +124,7 @@ const featuredproducts = () => {
             <div className="card-body">
               <p className="card-text mb-2">{product.brand}</p>
               <h5>{product.name}</h5>
-              <ReactStars count={5} edit={false} value={4} size={24} activeColor="#EA9D5A" />
+              <ReactStars count={5} edit={false} isHalf={true} value={product.star} size={24} activeColor="#EA9D5A" />
               <div className="mb-3">
                 <p className="price mb-2">
                   <span className="red">{product.price} </span>&nbsp; <strike>{product.price * 2}$</strike>
@@ -84,6 +136,17 @@ const featuredproducts = () => {
       ))}
     </div>
 
+    {addedToWishlist &&(
+        <div className="wishlist-notification">
+          <p>You've added {name} to your wishlist.</p>
+        </div>
+      )}
+            
+      {removeFromWishlist &&(
+        <div className="wishlist-notification">
+          <p>You've removed {name} from your wishlist.</p>
+        </div>
+      )}
   </>;
 }
 

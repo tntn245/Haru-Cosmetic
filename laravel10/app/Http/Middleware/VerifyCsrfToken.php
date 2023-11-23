@@ -15,19 +15,39 @@ class VerifyCsrfToken extends Middleware
         // 
         'api/register-user',
         'api/login-user',
+        'api/login-google',
+        'api/logout-user',
+        'api/get-user',
         'api/update-user',
+        'google/callback',
+        'google/redirect',
+        'auth/google',
+        'auth/google/callback',
+
+        'api/get-products',
 
         'api/get-cart',
         'api/add-to-cart',
         'api/remove-to-cart',
         'api/update-to-cart',
         'api/clear-cart',
+
+        'api/get-favs',
+        'api/add-to-favs',
+        'api/check-faved',
+        'api/remove-from-favs',
         
+        'api/create-order',
+        'api/update-order-status',
+        'api/update-payment-status',
+
+        'api/create-order-details',
+
         'upload-img-product',
         'search-product',
 
         'vnpay',
-        'next-bill-id',
+        'next-order-id',
 
     ];
 }
