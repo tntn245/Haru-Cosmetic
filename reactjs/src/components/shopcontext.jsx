@@ -37,32 +37,32 @@ const shopcontext = (props) => {
 
               //add to order details
               axios.post("/api/create-order-details", { orderID, productID, quantity, price })
-              .then(
-                (response) => {
-                  console.log(response.data);
-                }
-              )
-              .catch(function (error) {
-                console.log(error.message);
-              });
+                .then(
+                  (response) => {
+                    console.log(response.data);
+                  }
+                )
+                .catch(function (error) {
+                  console.log(error.message);
+                });
 
               //del in cart
-              axios.post("/api/remove-to-cart", {userID, productID})
-              .then(
-                (response) => {
-                  console.log("aaa", response.data);
-                }
-              )
-              .catch(function (error) {
-                console.log(error.message);
-              });
+              axios.post("/api/remove-to-cart", { userID, productID })
+                .then(
+                  (response) => {
+                    console.log("aaa", response.data);
+                  }
+                )
+                .catch(function (error) {
+                  console.log(error.message);
+                });
             });
 
           }
         )
         .catch(function (error) {
           console.log(error.message);
-        });      
+        });
     }
   }
   const updatePaymentStatus = (orderID, paymentStatus) => {
@@ -94,7 +94,7 @@ const shopcontext = (props) => {
 
   const addToProductsChoosed = (productID, price, quantity) => {
     let sum = totalChoosed;
-    sum += Number(price)*Number(quantity);
+    sum += Number(price) * Number(quantity);
     setTotalChoosed(sum);
 
     const newProduct = {
@@ -108,7 +108,7 @@ const shopcontext = (props) => {
 
   const removeFromProductsChoosed = (productID, price, quantity) => {
     let sum = totalChoosed;
-    sum -= Number(price)*Number(quantity);
+    sum -= Number(price) * Number(quantity);
     setTotalChoosed(sum);
 
     const filteredItems = productsChoosedToBuy.filter((item) => item.key !== productID);
@@ -133,7 +133,7 @@ const shopcontext = (props) => {
 
 
   const addToFavs = (userID, productID) => {
-    if(userID!==0){
+    if (userID !== 0) {
       axios.post("/api/add-to-favs", { userID, productID })
         .then(
           (response) => {
@@ -148,7 +148,7 @@ const shopcontext = (props) => {
   };
 
   const removeFromFavs = (userID, productID) => {
-    if(userID!==0){
+    if (userID !== 0) {
       axios.post("/api/remove-from-favs", { userID, productID })
         .then(
           (response) => {
@@ -359,7 +359,6 @@ const shopcontext = (props) => {
     addToFavs,
     removeFromFavs,
     filterByPrice,
-    selectedCategory,
     updateSelectedCategory,
   };
 

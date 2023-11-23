@@ -12,10 +12,10 @@ const cartitem = (props) => {
 
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
-    if(event.target.checked){
+    if (event.target.checked) {
       shopcontext.addToProductsChoosed(id, price, quantity_state);
     }
-    else{
+    else {
       shopcontext.removeFromProductsChoosed(id, price, quantity_state);
     }
   }
@@ -46,47 +46,48 @@ const cartitem = (props) => {
     setShowDiv(false);
   }
   return <>
-  {showDiv && 
-  <div className="container card my-3">
-      <div className="row g-3">
+    {showDiv &&
+      <div className="container card my-3">
+        <div className="row g-3">
           <div>
             <input type="checkbox"
               checked={isChecked}
               onChange={handleCheckboxChange}
             />
           </div>
-        <div className="col-12 col-md-5">
-          <div className="p-3">
-            <div className="cart-item-image m-auto">
-              <img src={image} className="card-img-top img-fluid" alt="..." />
-
-            </div>
-          </div>
-          <div className="col-12 col-md-7">
+          <div className="col-12 col-md-5">
             <div className="p-3">
-              <h2>{name}</h2>
-              <p className="cart-item-id">Product Brand: <b className='text-center mb-1'>{brand}</b></p>
-              <p className="cart-item-id">Product Price: <b className='text-center mb-1'>${price}</b></p>
-              <p className="cart-item-id">Product Number: <b className='text-center mb-3'>{id}</b></p>
-              <p className="cart-item-id">Items in Stock: <b className='text-danger'>{inventory_quantity}</b></p>
-            </div>
-            <div className="p-3 d-flex justify-content-between align-items-center">
-              <div className="count-handler">
-                <button className="btn btn-outline-secondary" onClick={handleDecreaseNumber}>-</button>
-                <input className='text-danger fs-4 form-control' value={quantity_state} onChange={handleUpdateNumber} />
-                <button className="btn btn-outline-secondary" onClick={handleIncreaseNumber}>+</button>
+              <div className="cart-item-image m-auto">
+                <img src={image} className="card-img-top img-fluid" alt="..." />
+
               </div>
+            </div>
+            <div className="col-12 col-md-7">
+              <div className="p-3">
+                <h2>{name}</h2>
+                <p className="cart-item-id">Product Brand: <b className='text-center mb-1'>{brand}</b></p>
+                <p className="cart-item-id">Product Price: <b className='text-center mb-1'>${price}</b></p>
+                <p className="cart-item-id">Product Number: <b className='text-center mb-3'>{id}</b></p>
+                <p className="cart-item-id">Items in Stock: <b className='text-danger'>{inventory_quantity}</b></p>
+              </div>
+              <div className="p-3 d-flex justify-content-between align-items-center">
+                <div className="count-handler">
+                  <button className="btn btn-outline-secondary" onClick={handleDecreaseNumber}>-</button>
+                  <input className='text-danger fs-4 form-control' value={quantity_state} onChange={handleUpdateNumber} />
+                  <button className="btn btn-outline-secondary" onClick={handleIncreaseNumber}>+</button>
+                </div>
+                <button className="btn btn-outline-danger" onClick={handleRemoveToCart}>
+                  <RiDeleteBack2Line />
+                </button>
+              </div>
+              <div className="p-3">
+                <input type="text" className="form-control" id="coupon" placeholder="Enter coupon code..." />
+              </div>
+
               <button className="btn btn-outline-danger" onClick={handleRemoveToCart}>
                 <RiDeleteBack2Line />
               </button>
             </div>
-            <div className="p-3">
-              <input type="text" className="form-control" id="coupon" placeholder="Enter coupon code..." />
-            </div>
-
-            <button className="btn btn-outline-danger" onClick={handleRemoveToCart}>
-              <RiDeleteBack2Line />
-            </button>
           </div>
         </div>
       </div>
