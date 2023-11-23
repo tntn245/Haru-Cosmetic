@@ -977,7 +977,7 @@
   }
 
   .contact-wrapper {
-    background         : url(/src/assets/images/back.jpg);
+    background         : url(/src/assets/images/banner/contact.jpg);
     background-size    : cover;
     width              : 100vw;
     height             : 37vh;
@@ -1204,6 +1204,24 @@
     margin-bottom: 10px;
   }
 
+  .star-filter {
+    display       : flex;
+    flex-direction: column;
+  }
+
+  .star-filter #stars {
+    font-size     : 1.25rem;
+    font-weight   : bold;
+    line-height   : 1.2;
+    color         : #141414;
+    font-family   : "Candara";
+    padding-bottom: 10px;
+  }
+
+  .star-filter .form-check {
+    margin-bottom: 10px;
+  }
+
   .user-wrapper .user-heading {
     margin-bottom: 20px;
   }
@@ -1216,4 +1234,8 @@
   .user-wrapper .card-body p {
     margin-top   : 5px;
     margin-bottom: 20px;
+  }
+
+  .nav-link-custom {
+    color: #141414;
   }

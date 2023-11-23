@@ -30,7 +30,7 @@ const PriceFilter = () => {
     };
     return (
         <div className="price-filter">
-            <label id="price">Price</label>
+            <label id="price">Giá bán</label>
             <div className="form-check">
                 <input
                     className="form-check-input"

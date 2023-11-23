@@ -5,6 +5,7 @@ import React, { useContext } from 'react'
 import Newsletter from '../components/newsletter';
 import Hero from '../components/hero';
 import PriceFilter from '../components/PriceFilter';
+import StarFilter from '../components/starfilter';
 import '../styles/shop.scss'
 
 const ProductCategory = () => {
@@ -21,8 +22,9 @@ const ProductCategory = () => {
 
       <section className="featured-products my-5 py-4">
         <div className='content'>
-          <div className='side-bar'>
+          <div className='side-bar-content'>
             <PriceFilter />
+            <StarFilter />
           </div>
           <div className="container-xxl">
             <div className="row productItems">

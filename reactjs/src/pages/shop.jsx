@@ -6,12 +6,13 @@ import Newsletter from '../components/newsletter';
 import Hero from '../components/hero';
 import Pagination from '../components/pagination';
 import PriceFilter from '../components/PriceFilter';
+import StarFilter from '../components/starfilter';
 import '../styles/shop.scss'
 import { PRODUCTS } from '../components/products';
 import { PRODUCTS1 } from '../components/products';
 const shop = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 12; // Number of items to display per page
+  const itemsPerPage = 16; // Number of items to display per page
   // Combine and deduplicate PRODUCTS and PRODUCTS1
   const allProducts = [...PRODUCTS, ...PRODUCTS1];
   const uniqueProducts = Array.from(new Set(allProducts.map((product) => product.id))).map((id) => {
@@ -44,7 +45,10 @@ const shop = () => {
     <section className="featured-products my-5 py-4 " >
       <div className='content'>
         <div className='side-bar'>
-          <PriceFilter />
+          <div className='side-bar-content'>
+            <PriceFilter />
+            <StarFilter />
+          </div>
         </div>
         <div className="container-xxl" >
           <div className="row shopitems" >
