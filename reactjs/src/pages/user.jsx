@@ -24,18 +24,17 @@ const User = () => {
     };
 
     useEffect(() => {
-            try {
-                // const response =  fetch(`/api/users/${userID}`);
-                // const userData =  response.json();
-                
-                const user = JSON.parse(localStorage.getItem('user'));
-                if (user != null) {
-                    setUser(user);
-                }
-
-            } catch (error) {
-                console.error("Error fetching user data:", error);
+        // Fetch user data based on the userID
+        try {
+            // const response = await fetch(`/api/users/${userID}`);
+            // const userData = await response.json();
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user != null) {
+                setUser(user);
             }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+        }
     }, [userID]);
 
     if (!user) {
@@ -44,7 +43,7 @@ const User = () => {
     return (
         <section className="user-wrapper">
             <div className="container">
-                <h1>Tài Khoản Của Tôi</h1>
+                <h1 className="user-heading">Tài Khoản Của Tôi</h1>
                 <div class Name="card">
                     <div className="card-body">
                         <p>User ID: {user.id}</p>

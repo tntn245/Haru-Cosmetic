@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { CgShoppingCart } from 'react-icons/cg'
 import { Link } from 'react-router-dom';
 import Featuredproducts from '../components/featuredproducts';
@@ -11,28 +11,30 @@ import '../styles/home.scss'
 const home = () => {
   const [userID, setUserID] = useState(0);
 
-  useEffect(() => {    
-      const user = localStorage.getItem('user');
-      if(user != null){
-        const user_id = JSON.parse(user).id;
-        setUserID(user_id);
-        console.log(userID);
-      }
-  }, [userID]); 
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (user != null) {
+      const user_id = JSON.parse(user).id;
+      setUserID(user_id);
+      console.log(userID);
+    }
+  }, [userID]);
 
   return <>
     <section className="banner">
-      <div className="container-xxl">
+      <div className="container-xxl ">
         <div className="row">
           <div className="col-lg-12 col-md-12 col-sm-12">
             <div className="d-flex flex-column justify-content-center ">
               <div id="carouselExampleInterval" className="carousel slide" data-bs-ride="carousel">
-                <div className="carousel-inner">
-                  <div className='back-details'>
-                    <p className='mb-3 text'></p>
-                    <p className='mb-3' />
-                    <Link to='/shop' className='banner-link'></Link>
-                  </div>
+                <div className="carousel-inner ">
+                  <Link to='/shop' className='banner-link'>
+                    <div className='back-details '>
+                      <p className='mb-3 mt-3 banner-text'>GIFT SET</p>
+                      <p className='big-text'>QUÀ TẶNG MÙA LỄ HỘI<br /> CHO TÍN ĐỒ SẮC ĐẸP</p>
+                      <p className='mb-3 mt-4 banner-text'>Shop Our Bestselling Sets</p>
+                    </div>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -56,7 +58,10 @@ const home = () => {
     <section className="discount-banner p-5">
       <div className="container-xxl">
         <div className="row ">
-          <div className="home-discount-banner text-center align-items-center">
+          <div className="home-discount-banner">
+            <p className='mb-3 mt-3 banner-text'>For Winter Time</p>
+            <p className='big-text'>ƯU ĐÃI KEM CHỐNG NẮNG</p>
+            <p className='mb-3 mt-4 banner-text'>#soothing #moisturizing</p>
           </div>
         </div>
       </div>
@@ -72,7 +77,7 @@ const home = () => {
         </div>
       </div>
     </section>
-    
+
     <section className="featured-brands p-4">
       <div className="container-xxl">
         <div className="row">

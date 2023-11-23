@@ -31,19 +31,21 @@ loadProducts();
 export const PRODUCTSCART = [];
 async function loadProductsCart() {
   const user = JSON.parse(localStorage.getItem('user'));
-  const userID = user.id;
+  if(user!=null){
+    const userID = user.id;
 
-  try {
-    axios.post("/api/get-cart", { userID })
-      .then((response) => {
-        PRODUCTSCART.push(...response.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        throw error;
-      });
-  } catch (error) {
-    console.error(error);
+    try {
+      axios.post("/api/get-cart", { userID })
+        .then((response) => {
+          PRODUCTSCART.push(...response.data);
+          console.log(response.data);
+        })
+        .catch((error) => {
+          throw error;
+        });
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
 

@@ -2,8 +2,9 @@ import React, { useContext, useState } from 'react';
 import { ShopContext } from './shopcontext';
 
 const PriceFilter = () => {
-    const { filterByPrice } = useContext(ShopContext);
+    const { filterByPrice, updateSelectedCategory } = useContext(ShopContext);
     const [selectedOption, setSelectedOption] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('');
 
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
@@ -23,39 +24,45 @@ const PriceFilter = () => {
 
         filterByPrice(minPrice, maxPrice);
     };
-
+    const handleCategoryChange = (event) => {
+        setSelectedCategory(event.target.value);
+        updateSelectedCategory(event.target.value);
+    };
     return (
-        <div>
-            <label><b>Price</b></label><br />
-            <label>
+        <div className="price-filter">
+            <label id="price">Price</label>
+            <div className="form-check">
                 <input
+                    className="form-check-input"
                     type="radio"
                     value="low"
                     checked={selectedOption === 'low'}
                     onChange={handleOptionChange}
                 />
-                0-100000
-            </label><br />
+                <label className="form-check-label">0-100,000</label>
+            </div>
 
-            <label>
+            <div className="form-check">
                 <input
+                    className="form-check-input"
                     type="radio"
                     value="medium"
                     checked={selectedOption === 'medium'}
                     onChange={handleOptionChange}
                 />
-                100000-500000
-            </label><br />
+                <label className="form-check-label">100,000-500,000</label>
+            </div>
 
-            <label>
+            <div className="form-check">
                 <input
+                    className="form-check-input"
                     type="radio"
                     value="high"
                     checked={selectedOption === 'high'}
                     onChange={handleOptionChange}
                 />
-                {`>`}500000
-            </label>
+                <label className="form-check-label">{'>'}500,000</label>
+            </div>
         </div>
     );
 };
