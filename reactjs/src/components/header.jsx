@@ -147,7 +147,6 @@ const header = () => {
                     <NavDropdown.Item as={NavLink} to="/tinhchat">Tinh chất</NavDropdown.Item>
                     <NavDropdown.Item as={NavLink} to="/kemduong">Kem dưỡng</NavDropdown.Item>
                     <NavDropdown.Item as={NavLink} to="/kemchongnang">Kem chống nắng</NavDropdown.Item>
-
                   </NavDropdown>
                 </div>
                 <div className='ms-auto gap-3'>

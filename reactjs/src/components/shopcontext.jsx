@@ -15,7 +15,6 @@ const shopcontext = (props) => {
   const [totalProducts, settotalProducts] = useState(0);
   const [favorites, setFavorites] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-
   const [productsChoosedToBuy, setProductsChoosedToBuy] = useState([]);
 
   const createOrder = (userID, totalPrice, paymentMethod) => {
@@ -359,7 +358,6 @@ const shopcontext = (props) => {
     addToFavs,
     removeFromFavs,
     filterByPrice,
-    // selectedCategory,
     updateSelectedCategory,
   };
 
