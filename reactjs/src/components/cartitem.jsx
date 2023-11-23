@@ -91,7 +91,6 @@ const cartitem = (props) => {
           </div>
         </div>
       </div>
-    </div>
     }
   </>;
 }
