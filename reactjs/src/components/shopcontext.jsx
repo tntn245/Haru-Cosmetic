@@ -359,7 +359,7 @@ const shopcontext = (props) => {
     addToFavs,
     removeFromFavs,
     filterByPrice,
-    selectedCategory,
+    // selectedCategory,
     updateSelectedCategory,
   };
 
