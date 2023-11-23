@@ -27,6 +27,8 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::namespace('App\Http\Controllers')->group(function(){
     Route::post('register-user', [UserController::class, 'registerUser']);
     Route::post('login-user', [UserController::class, 'loginUser']);
+    Route::post('login-google', [UserController::class, 'loginGoogle']);
+    Route::post('logout-user', [UserController::class, 'logoutUser']);
     Route::post('get-user', [UserController::class, 'getUser']);
     Route::post('update-user', [UserController::class, 'updateUser']);
     // Route::post('images', [UserController::class, 'uploadImg']);

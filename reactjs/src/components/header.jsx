@@ -34,6 +34,7 @@ const header = () => {
     if (user != null) {
       const user_id = JSON.parse(user).id;
       setUserID(user_id);
+      console.log("a",userID);
     }
   }, [userID]);
 
@@ -138,8 +139,7 @@ const header = () => {
                     id="dropdown-menu"
                     show={showMenu1}
                     onMouseOver={handleMouseOver1}
-                    onMouseLeave={closeMenu}
-                  >
+                    onMouseLeave={closeMenu}>
                     <NavDropdown.Item as={NavLink} to="/category/taytrang">Tẩy trang</NavDropdown.Item>
                     <NavDropdown.Item as={NavLink} to="/category/suaruamat">Sữa rửa mặt</NavDropdown.Item>
                     <NavDropdown.Item as={NavLink} to="/category/toner">Toner</NavDropdown.Item>
@@ -158,8 +158,7 @@ const header = () => {
                     id="dropdown-menu"
                     show={showMenu2}
                     onMouseOver={handleMouseOver2}
-                    onMouseLeave={closeMenu}
-                  >
+                    onMouseLeave={closeMenu}>
                     <NavDropdown.Item as={NavLink} to="/brandname/roundlab">Round Lab</NavDropdown.Item>
                     <NavDropdown.Item as={NavLink} to="/brandname/purito">Purito</NavDropdown.Item>
                     <NavDropdown.Item as={NavLink} to="/brandname/makeprem">Make P:rem</NavDropdown.Item>
@@ -192,7 +191,7 @@ const header = () => {
                   </div>
                   <div className={location.pathname === 'login' ? 'active' : 'not-active'}>
                     {userID ?
-                      (<Link onClick={toggleMenu}
+                      (<Link
                         to={`/user/${userID}`}
                         className="d-flex align-items-center color-nav me-3 cart-span-one"
                       >

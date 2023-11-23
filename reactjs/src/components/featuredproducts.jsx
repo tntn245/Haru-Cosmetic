@@ -41,7 +41,7 @@ const featuredproducts = () => {
   }
 
   const handleViewProductDetails = (productID) => {
-    // shopcontext.viewProductDetails(id);
+    shopcontext.viewProductDetails(productID);
   };
 
   const handleAddToFavs = (productID) => {

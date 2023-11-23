@@ -41,8 +41,8 @@ const Prod = (props) => {
     }
   }
 
-  const handleViewProductDetails = () => {
-    // shopcontext.viewProductDetails(id);
+  const handleViewProductDetails = (productID) => {
+    shopcontext.viewProductDetails(productID);
   };
 
   const handleAddToFavs = (productID) => {
@@ -113,7 +113,7 @@ const Prod = (props) => {
                     <AiOutlineHeart />
                   </button>
                 }
-              <Link to="/details" onClick={handleViewProductDetails}>
+              <Link to="/details" onClick={() => handleViewProductDetails(id)}>
                 <button className="button">
                   <FiSearch />
                 </button>

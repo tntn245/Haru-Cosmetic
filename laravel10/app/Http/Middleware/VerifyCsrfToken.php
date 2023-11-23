@@ -15,8 +15,14 @@ class VerifyCsrfToken extends Middleware
         // 
         'api/register-user',
         'api/login-user',
+        'api/login-google',
+        'api/logout-user',
         'api/get-user',
         'api/update-user',
+        'google/callback',
+        'google/redirect',
+        'auth/google',
+        'auth/google/callback',
 
         'api/get-products',
 
