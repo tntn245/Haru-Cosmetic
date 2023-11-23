@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '../api/axios.js';
 import '../styles/login.scss';
@@ -55,6 +55,54 @@ const Login = () => {
         else {
           console.log('Error', error.message);
         }
+      });
+  }
+
+  const handleGG = async (event) => {
+    await axios.get("/auth/google")
+      .then(
+        (response) => {
+          console.log(response);
+        }
+      )
+      .catch(function (error) {
+        console.log(error);
+      })
+  }
+
+  useEffect(() => {
+    google.accounts.id.initialize({
+      client_id: "633767045331-hdief49o2fq3m6p5iiqh3h6brtf859v7.apps.googleusercontent.com",
+      callback: handleCallBackResponse
+    });
+
+    google.accounts.id.renderButton(
+      document.getElementById("sigin"),
+      {theme: "outline", size: "large"}
+    );
+  }, []);
+
+  function handleCallBackResponse(response){
+    console.log(response.credential);
+    var obj = jwt_decode(response.credential);
+    console.log(obj);
+    
+    var name = obj.family_name + " " + obj.given_name;
+    var email = obj.email;
+    var password = "";
+    console.log(name);
+
+    csrf();
+    axios.post("/api/login-google", { name, email, password })
+      .then(
+        (response) => {
+          console.log(response.data);
+          navigate("/");
+          localStorage.setItem("user", JSON.stringify(response.data.userDetails));
+        }
+      )
+      .catch(function (error) {
+        console.log(error);
       });
   }
 
@@ -121,7 +169,9 @@ const Login = () => {
                 {/* </form> */}
               </div>
               <p className="or"><span>Hoặc</span></p>
-              <div className="alt-login">
+              <div id='sigin' className="alt-login"></div>
+              
+              {/* <div className="alt-login">
                 <GoogleOAuthProvider clientId="229105552951-k2ld40mskicj5fr0igq6kvi23trmm8s1.apps.googleusercontent.com">
                   <GoogleLogin
                     onSuccess={credentialResponse => {
@@ -135,7 +185,7 @@ const Login = () => {
                     }}
                   />
                 </GoogleOAuthProvider>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

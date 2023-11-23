@@ -1,13 +1,24 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
 import { ShopContext } from './shopcontext'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { RiDeleteBack2Line } from 'react-icons/ri'
 const cartitem = (props) => {
   const [showDiv, setShowDiv] = useState(true);
   const { id, name, price, image, brand, user_id, quantity, inventory_quantity } = props.data;
   const [quantity_state, setQuantity] = useState(quantity)
   const shopcontext = useContext(ShopContext);
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
+    if(event.target.checked){
+      shopcontext.addToProductsChoosed(id, price, quantity_state);
+    }
+    else{
+      shopcontext.removeFromProductsChoosed(id, price, quantity_state);
+    }
+  }
 
   const handleIncreaseNumber = () => {
     shopcontext.updateCartItemCount(Number(quantity_state + 1), id, user_id)
@@ -35,14 +46,20 @@ const cartitem = (props) => {
     setShowDiv(false);
   }
   return <>
-    {showDiv &&
-      <div className="container card my-3">
-        <div className="row g-3">
-          <div className="col-12 col-md-5">
-            <div className="p-3">
-              <div className="cart-item-image m-auto">
-                <img src={image} className="card-img-top img-fluid" alt="..." />
-              </div>
+  {showDiv && 
+  <div className="container card my-3">
+      <div className="row g-3">
+          <div>
+            <input type="checkbox"
+              checked={isChecked}
+              onChange={handleCheckboxChange}
+            />
+          </div>
+        <div className="col-12 col-md-5">
+          <div className="p-3">
+            <div className="cart-item-image m-auto">
+              <img src={image} className="card-img-top img-fluid" alt="..." />
+
             </div>
           </div>
           <div className="col-12 col-md-7">
@@ -66,6 +83,10 @@ const cartitem = (props) => {
             <div className="p-3">
               <input type="text" className="form-control" id="coupon" placeholder="Enter coupon code..." />
             </div>
+
+            <button className="btn btn-outline-danger" onClick={handleRemoveToCart}>
+              <RiDeleteBack2Line />
+            </button>
           </div>
         </div>
       </div>

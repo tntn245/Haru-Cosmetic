@@ -9,36 +9,136 @@ import axios from '../api/axios.js';
 export const ShopContext = createContext({});
 const shopcontext = (props) => {
   const [cartItems, setCartItems] = useState(PRODUCTSCART);
+  const [products, setProducts] = useState(PRODUCTS);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [totalChoosed, setTotalChoosed] = useState(0);
   const [totalProducts, settotalProducts] = useState(0);
-  const products = PRODUCTS;
   const [favorites, setFavorites] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  useEffect(() => {
-    const favsFromLocalStorage = JSON.parse(localStorage.getItem('productsInFavs') || "[]");
-    setFavorites(favsFromLocalStorage);
-  }, []);
 
-  useEffect(() => {
-    localStorage.setItem("productsInFavs", JSON.stringify(favorites));
-  }, [favorites]);
+  const [productsChoosedToBuy, setProductsChoosedToBuy] = useState([]);
 
-  const checkFaved = (list, products) => {
-    // return products.map(product => ({
-    //   ...product,
-    //   faved: list.some(item => item.id === product.id)
-    // }));
+  const createOrder = (userID, totalPrice, paymentMethod) => {
+    if (userID !== 0) {
+      let orderID = 0;
+      axios.post("/api/create-order", { userID, totalPrice, paymentMethod })
+        .then(
+          (response) => {
+            setFavorites(response.data);
+            console.log(response.data);
+
+            orderID = response.data.order_id;
+            console.log(productsChoosedToBuy);
+
+            productsChoosedToBuy.forEach((item) => {
+              const productID = item.product_id;
+              const quantity = item.quantity;
+              const price = item.price;
+
+              //add to order details
+              axios.post("/api/create-order-details", { orderID, productID, quantity, price })
+              .then(
+                (response) => {
+                  console.log(response.data);
+                }
+              )
+              .catch(function (error) {
+                console.log(error.message);
+              });
+
+              //del in cart
+              axios.post("/api/remove-to-cart", {userID, productID})
+              .then(
+                (response) => {
+                  console.log("aaa", response.data);
+                }
+              )
+              .catch(function (error) {
+                console.log(error.message);
+              });
+            });
+
+          }
+        )
+        .catch(function (error) {
+          console.log(error.message);
+        });      
+    }
+  }
+  const updatePaymentStatus = (orderID, paymentStatus) => {
+    axios.post("api/update-payment-status", { orderID, paymentStatus })
+      .then(
+        (response) => {
+          console.log(response.data);
+        }
+      )
+      .catch(function (error) {
+        console.log(error.message);
+      });
+  }
+  const updateOrderStatus = (orderID, orderStatus) => {
+    axios.post("api/update-order-status", { orderID, orderStatus })
+      .then(
+        (response) => {
+          console.log(response.data);
+        }
+      )
+      .catch(function (error) {
+        console.log(error.message);
+      });
+  }
+
+  const resetTotalChoosed = () => {
+    setTotalChoosed(0);
+  }
+
+  const addToProductsChoosed = (productID, price, quantity) => {
+    let sum = totalChoosed;
+    sum += Number(price)*Number(quantity);
+    setTotalChoosed(sum);
+
+    const newProduct = {
+      product_id: productID,
+      quantity: quantity,
+      price: price
+    };
+    setProductsChoosedToBuy([...productsChoosedToBuy, newProduct]);
+    console.log(productsChoosedToBuy);
+  }
+
+  const removeFromProductsChoosed = (productID, price, quantity) => {
+    let sum = totalChoosed;
+    sum -= Number(price)*Number(quantity);
+    setTotalChoosed(sum);
+
+    const filteredItems = productsChoosedToBuy.filter((item) => item.key !== productID);
+    setProductsChoosedToBuy(filteredItems);
+    console.log(productsChoosedToBuy);
   };
 
-  const addToFavs = (userID, productID) => {
-    // const product = products.find((item) => item.id === productID);
-
+  const loadFavs = (userID) => {
     if (userID !== 0) {
+      axios.post("/api/get-favs", { userID })
+        .then(
+          (response) => {
+            setFavorites(response.data);
+            console.log(response.data);
+          }
+        )
+        .catch(function (error) {
+          console.log(error.message);
+        });
+    }
+  }
+
+
+  const addToFavs = (userID, productID) => {
+    if(userID!==0){
       axios.post("/api/add-to-favs", { userID, productID })
         .then(
           (response) => {
             setFavorites(response.data);
+            console.log(response);
           }
         )
         .catch(function (error) {
@@ -47,11 +147,34 @@ const shopcontext = (props) => {
     }
   };
 
-  const removeFromFavs = (productID) => {
-    // const updatedFavorites = favorites.filter((item) => item.id !== productID);
-    // setFavorites(updatedFavorites);
+  const removeFromFavs = (userID, productID) => {
+    if(userID!==0){
+      axios.post("/api/remove-from-favs", { userID, productID })
+        .then(
+          (response) => {
+            console.log(response);
+          }
+        )
+        .catch(function (error) {
+          console.log(error.message);
+        });
+    }
   };
 
+  const loadProducts = () => {
+    const PRODUCTS = [];
+
+    axios.post("/api/get-products")
+      .then(
+        (response) => {
+          PRODUCTS.push(...response.data);
+          setProducts(PRODUCTS);
+        }
+      )
+      .catch(function (error) {
+        console.log(error.message);
+      });
+  }
 
   const loadProductsCart = () => {
     const userID = JSON.parse(localStorage.getItem('user')).id;
@@ -208,24 +331,33 @@ const shopcontext = (props) => {
   };
   const contextValue = {
     cartItems,
+    favorites,
     totalAmount,
+    totalChoosed,
     totalProducts,
+    productsChoosedToBuy,
+    createOrder,
+    updatePaymentStatus,
+    updateOrderStatus,
+    loadProducts,
     loadProductsCart,
     addToCart,
     removeToCart,
     updateCartItemCount,
+    resetTotalChoosed,
     getTotalCartAmount,
     getTotalCartProducts,
     clearCart,
     resetCart,
     viewProductDetails,
     closeProductDetails,
+    addToProductsChoosed,
+    removeFromProductsChoosed,
     selectedProduct,
     products,
-    favorites,
+    loadFavs,
     addToFavs,
     removeFromFavs,
-    checkFaved,
     filterByPrice,
     selectedCategory,
     updateSelectedCategory,

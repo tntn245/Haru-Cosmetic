@@ -29,17 +29,20 @@ const cart = (props) => {
 
   useEffect(() => {
     shopcontext.loadProductsCart();
+    shopcontext.resetTotalChoosed();
     console.log("totalAmount ",shopcontext.totalAmount);
+    console.log("totalChoosed ",shopcontext.totalChoosed);
     
     const user = localStorage.getItem('user');
     if (user != null) {
       const user_id = JSON.parse(user).id;
       setUserID(user_id);
     }
-    
-    const currentURL = window.location.href;
-    console.log(currentURL);
   }, []);
+ 
+  useEffect(() => {
+    console.log(shopcontext.productsChoosedToBuy);
+  }, [shopcontext.productsChoosedToBuy]);
 
   return <>
     <section className="cart">
@@ -82,13 +85,12 @@ const cart = (props) => {
                       <div className="align-items-center">
                         <div>
                           <p className="total-price align-items-center">
-                            <b>{totalAmount} VND</b>
+                            <b>{shopcontext.totalChoosed} VND</b>
                           </p>
                         </div>
                       </div>
-                      <Link to={`/checkout/${totalAmount}`} className={location.pathname === '/search' ? 'active' : 'not-active'}>
+                      <Link to={`/checkout/${shopcontext.totalChoosed}`} className={location.pathname === '/search' ? 'active' : 'not-active'}>
                         <button
-                          // onClick={() => navigate("/checkout")}
                           className="mt-5">
                           {isMobile ? "Check Out" : "Proceed to Checkout"}
                         </button>
