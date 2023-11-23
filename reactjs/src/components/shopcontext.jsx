@@ -14,6 +14,7 @@ const shopcontext = (props) => {
   const [totalChoosed, setTotalChoosed] = useState(0);
   const [totalProducts, settotalProducts] = useState(0);
   const [favorites, setFavorites] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [productsChoosedToBuy, setProductsChoosedToBuy] = useState([]);
 
