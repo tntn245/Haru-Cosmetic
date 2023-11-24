@@ -1240,4 +1240,23 @@
     color: #141414;
   }
 
+  .tab-pane.active {
+    text-decoration: none;
+  }
 
+  .tab-pane.active h6,
+  .tab-pane.active p {
+    font-style: italic;
+  }
+
+  .text-muted {
+    color     : #000000;
+  }
+
+  /* Center the numeric value */
+  .text-muted.mb-1 {
+    display   : block;
+    text-align: center;
+    font-size : 40px;
+
+  }

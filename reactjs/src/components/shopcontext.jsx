@@ -197,19 +197,6 @@ const shopcontext = (props) => {
     const userID = JSON.parse(localStorage.getItem('user')).id;
     const PRODUCTSCART = [];
 
-<<<<<<< HEAD
-    // Lấy sản phẩm dựa trên cái loại sản phẩm
-    // const categoryProducts = axios.get(`/api/get-products?category=${selectedCategory}`)
-    //   .then((response) => {
-    //     PRODUCTSCART.push(...response.data);
-    //     setCartItems(PRODUCTSCART);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.message);
-    //   });
-
-=======
->>>>>>> 0f026b87d6777e7265783397102bdadbe1d6e4a8
     axios.post("/api/get-cart", { userID })
       .then(
         (response) => {
@@ -345,12 +332,12 @@ const shopcontext = (props) => {
     const filteredProducts = products.filter((product) => {
       const star = product.star;
       const price = product.price;
-      if(starRating == 0)
+      if (starRating == 0)
         return price >= minPrice && price <= maxPrice;
-      else if(minPrice == 0 && maxPrice == 0)
+      else if (minPrice == 0 && maxPrice == 0)
         return star == starRating;
       else
-        return price >= minPrice && price <= maxPrice &&  star == starRating;
+        return price >= minPrice && price <= maxPrice && star == starRating;
     });
 
     setFilteredProducts(filteredProducts);
@@ -360,12 +347,12 @@ const shopcontext = (props) => {
     const filteredProducts = productsCategory.filter((product) => {
       const star = product.star;
       const price = product.price;
-      if(starRating == 0)
+      if (starRating == 0)
         return price >= minPrice && price <= maxPrice;
-      else if(minPrice == 0 && maxPrice == 0)
+      else if (minPrice == 0 && maxPrice == 0)
         return star == starRating;
       else
-        return price >= minPrice && price <= maxPrice &&  star == starRating;
+        return price >= minPrice && price <= maxPrice && star == starRating;
     });
 
     setFilteredProducts(filteredProducts);
@@ -384,7 +371,7 @@ const shopcontext = (props) => {
         console.log(error.message);
       });
   };
-  
+
   const contextValue = {
     cartItems,
     favorites,
