@@ -24,6 +24,9 @@ class VerifyCsrfToken extends Middleware
         'auth/google',
         'auth/google/callback',
 
+        'api/get-categories',
+        'api/load-products-in-category',
+
         'api/get-products',
 
         'api/get-cart',

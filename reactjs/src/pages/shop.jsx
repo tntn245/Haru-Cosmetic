@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import Shopitems from '../components/shopitems';
 import Newsletter from '../components/newsletter';
 import Hero from '../components/hero';
@@ -10,13 +10,17 @@ import StarFilter from '../components/starfilter';
 import '../styles/shop.scss'
 import { PRODUCTS } from '../components/products';
 import { PRODUCTS1 } from '../components/products';
+import { ShopContext } from '../components/shopcontext'
+
 const shop = () => {
+  const shopcontext = useContext(ShopContext);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 16; // Number of items to display per page
   // Combine and deduplicate PRODUCTS and PRODUCTS1
-  const allProducts = [...PRODUCTS, ...PRODUCTS1];
-  const uniqueProducts = Array.from(new Set(allProducts.map((product) => product.id))).map((id) => {
-    return allProducts.find((product) => product.id === id);
+  // const allProducts = [...PRODUCTS, ...PRODUCTS1];
+  const allProducts = [...shopcontext.filteredProducts];
+  const uniqueProducts = Array.from(new Set(shopcontext.filteredProducts.map((product) => product.id))).map((id) => {
+    return shopcontext.filteredProducts.find((product) => product.id === id);
   });
 
   const totalItems = uniqueProducts.length; // Total number of unique items
@@ -32,6 +36,11 @@ const shop = () => {
   const endIndex = startIndex + itemsPerPage;
   const paginatedProducts = uniqueProducts.slice(startIndex, endIndex);
 
+  useEffect(() => {
+    shopcontext.loadProducts();
+    console.log("filteredProducts",shopcontext.filteredProducts);
+  }, []);    
+
   return (<>
     <section className="shop-banner p-5">
       <div className="container-xxl">
@@ -46,8 +55,8 @@ const shop = () => {
       <div className='content'>
         <div className='side-bar'>
           <div className='side-bar-content'>
-            <PriceFilter />
-            <StarFilter />
+            <PriceFilter flagCategory={false}/>
+            <StarFilter flagCategory={false}/>
           </div>
         </div>
         <div className="container-xxl" >
