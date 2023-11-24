@@ -3,6 +3,7 @@
 import { ShopContext } from './shopcontext'
 import React, { useContext, useState, useEffect } from 'react'
 import { RiDeleteBack2Line } from 'react-icons/ri'
+import '../styles/cartitems.scss'
 const cartitem = (props) => {
   const [showDiv, setShowDiv] = useState(true);
   const { id, name, price, image, brand, user_id, quantity, inventory_quantity } = props.data;
@@ -45,54 +46,54 @@ const cartitem = (props) => {
     shopcontext.removeToCart(id, user_id);
     setShowDiv(false);
   }
-  return <>
-    {showDiv &&
-      <div className="container card my-3">
-        <div className="row g-3">
-          <div>
-            <input type="checkbox"
-              checked={isChecked}
-              onChange={handleCheckboxChange}
-            />
-          </div>
-          <div className="col-12 col-md-5">
-            <div className="p-3">
-              <div className="cart-item-image m-auto">
-                <img src={image} className="card-img-top img-fluid" alt="..." />
-
+  return (
+    <>
+      {showDiv &&
+        <div className="container card my-3">
+          <div className="row g-3">
+            <div className="col-12 col-md-5">
+              <div className="p-3">
+                <div className="checkbox-container">
+                  <input
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={handleCheckboxChange}
+                    className="checkbox"
+                  />
+                </div>
+                <div className="cart-item-image m-auto">
+                  <img src={image} className="card-img-top img-fluid" alt="..." />
+                </div>
               </div>
             </div>
-            <div className="col-12 col-md-7">
+            <div className="cart-container col-12 col-md-7 d-flex align-items-center justify-content-center">
               <div className="p-3">
                 <h2>{name}</h2>
-                <p className="cart-item-id">Product Brand: <b className='text-center mb-1'>{brand}</b></p>
-                <p className="cart-item-id">Product Price: <b className='text-center mb-1'>${price}</b></p>
-                <p className="cart-item-id">Product Number: <b className='text-center mb-3'>{id}</b></p>
-                <p className="cart-item-id">Items in Stock: <b className='text-danger'>{inventory_quantity}</b></p>
-              </div>
-              <div className="p-3 d-flex justify-content-between align-items-center">
-                <div className="count-handler">
-                  <button className="btn btn-outline-secondary" onClick={handleDecreaseNumber}>-</button>
-                  <input className='text-danger fs-4 form-control' value={quantity_state} onChange={handleUpdateNumber} />
-                  <button className="btn btn-outline-secondary" onClick={handleIncreaseNumber}>+</button>
-                </div>
-                <button className="btn btn-outline-danger" onClick={handleRemoveToCart}>
-                  <RiDeleteBack2Line />
-                </button>
-              </div>
-              <div className="p-3">
-                <input type="text" className="form-control" id="coupon" placeholder="Enter coupon code..." />
-              </div>
+                <p className="cart-item-id">Thương hiệu: <b className='text-center mb-1'>{brand}</b></p>
+                <p className="cart-item-id">Giá bán: <b className='text-center mb-1'>{price} đ</b></p>
+                <p className="cart-item-id">Mã sản phẩm: <b className='text-center mb-3'>{id}</b></p>
+                <p className="cart-item-id">Lượng sản phẩm trong kho: <b className='text-danger'>{inventory_quantity}</b></p>
 
-              <button className="btn btn-outline-danger" onClick={handleRemoveToCart}>
-                <RiDeleteBack2Line />
-              </button>
+                <div className="p-3 d-flex justify-content-between align-items-center">
+                  <div className="count-handler">
+                    <button className="btn btn-outline-secondary" onClick={handleDecreaseNumber}>-</button>
+                    <input className='text-danger fs-4 form-control' value={quantity_state} onChange={handleUpdateNumber} />
+                    <button className="btn btn-outline-secondary" onClick={handleIncreaseNumber}>+</button>
+                  </div>
+                  <div className="btn-cart">
+                    <button className="btn btn-outline-danger " onClick={handleRemoveToCart}>
+                      <RiDeleteBack2Line />
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    }
-  </>;
+        </div >
+      }
+    </>
+  );
+
 }
 
 export default cartitem
