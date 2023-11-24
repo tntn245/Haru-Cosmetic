@@ -27,6 +27,7 @@ import axios from '../api/axios.js';
 
 loadProductsCart();
 loadProducts();
+loadCategories();
 
 export const PRODUCTSCART = [];
 async function loadProductsCart() {
@@ -60,6 +61,17 @@ async function loadProducts() {
   }
 }
 
+
+export const CATEGORIES = [];
+async function loadCategories() {
+  try {
+    const response = await axios.post("/get-categories");
+    CATEGORIES.push(...response.data);
+    console.log(response.data);
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const PRODUCTS1 = [

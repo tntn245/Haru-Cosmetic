@@ -22,7 +22,6 @@ const featuredproducts = () => {
       const user_id = JSON.parse(user).id;
       setUserID(user_id);
       shopcontext.loadProducts();
-      console.log("aaaa", shopcontext.products);
     }
   }, [userID]);
 

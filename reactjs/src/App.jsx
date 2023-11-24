@@ -19,7 +19,7 @@ import Details from './pages/details'
 import User from './pages/user'
 import Wishlist from './pages/wishlist'
 import ImageUploadForm from './pages/testloadimg'
-import TayTrang from './pages/category/taytrang'
+import Category from './pages/category'
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -55,7 +55,7 @@ function App() {
               <Route path='thanks' element={<Thanks />} />
               <Route path='details' element={<Details />} />
               <Route path='img' element={<ImageUploadForm />} />
-              <Route path='taytrang' element={<TayTrang />} />
+              <Route path='/category/:categoryStr' element={<Category />} />
             </Route>
           </Routes>
         </BrowserRouter>

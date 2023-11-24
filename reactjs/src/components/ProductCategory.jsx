@@ -7,8 +7,9 @@ import Hero from '../components/hero';
 import PriceFilter from '../components/PriceFilter';
 import StarFilter from '../components/starfilter';
 import '../styles/shop.scss'
+import Prod from './prod';
 
-const ProductCategory = () => {
+const ProductCategory =  ({ products })  => {
   return (
     <>
       <section className="shop-banner p-5">
@@ -23,12 +24,14 @@ const ProductCategory = () => {
       <section className="featured-products my-5 py-4">
         <div className='content'>
           <div className='side-bar-content'>
-            <PriceFilter />
-            <StarFilter />
+            <PriceFilter flagCategory={true}/>
+            <StarFilter flagCategory={true} />
           </div>
           <div className="container-xxl">
             <div className="row productItems">
-              {/* <ProductItems /> */}
+              {products.map((product) => (
+                <Prod key={product.id} data={product} />
+              ))}
             </div>
           </div>
         </div>

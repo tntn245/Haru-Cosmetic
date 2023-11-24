@@ -16,15 +16,16 @@ import user from "../assets/images/user.svg";
 import logo from '../assets/images/logo.png'
 import { FaSearch } from "react-icons/fa";
 import { NavDropdown } from 'react-bootstrap';
+import axios from '../api/axios.js';
 
 const header = () => {
   const [showMenu1, setShowMenu1] = useState(false); // For "MUA HÀNG" menu
   const [showMenu2, setShowMenu2] = useState(false); // For "THƯƠNG HIỆU" menu
   const [showMenu, setShowMenu] = useState(false);
   const [userID, setUserID] = useState(0);
+  const [categories, setCategories] = useState([]);
   const [searchText, setSearchText] = useState('');
 
-  // const shopContext = useContext(ShopContext);
   const {getTotalCartProducts } = useContext(ShopContext);
   const totalProducts = getTotalCartProducts();
   const location = useLocation();
@@ -34,9 +35,21 @@ const header = () => {
     if (user != null) {
       const user_id = JSON.parse(user).id;
       setUserID(user_id);
-      console.log("a",userID);
+
+      axios.post("/api/get-categories")
+      .then(
+        (response) => {
+          setCategories(response.data);
+        })
+      .catch(function (error) {
+        console.log(error.message);
+      });
     }
   }, [userID]);
+  
+  useEffect(() => {
+    console.log(categories);
+  }, [categories]);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -134,19 +147,14 @@ const header = () => {
                     title={
                       <NavLink to="/shop" className={location.pathname === '/shop' ? 'active' : 'not-active'} onClick={closeMenu}>
                         MUA HÀNG
-                      </NavLink>
-                    }
+                      </NavLink>}
                     id="dropdown-menu"
                     show={showMenu1}
                     onMouseOver={handleMouseOver1}
-
                     onMouseLeave={closeMenu}>
-                    <NavDropdown.Item as={NavLink} to="/taytrang">Tẩy trang</NavDropdown.Item>
-                    <NavDropdown.Item as={NavLink} to="/suaruamat">Sữa rửa mặt</NavDropdown.Item>
-                    <NavDropdown.Item as={NavLink} to="/toner">Toner</NavDropdown.Item>
-                    <NavDropdown.Item as={NavLink} to="/tinhchat">Tinh chất</NavDropdown.Item>
-                    <NavDropdown.Item as={NavLink} to="/kemduong">Kem dưỡng</NavDropdown.Item>
-                    <NavDropdown.Item as={NavLink} to="/kemchongnang">Kem chống nắng</NavDropdown.Item>
+                    {categories.map((category) => (
+                      <NavDropdown.Item as={NavLink} to={`/category/${category.name_str}`}>{category.name}</NavDropdown.Item>
+                    ))}
                   </NavDropdown>
                 </div>
                 <div className='ms-auto gap-3'>

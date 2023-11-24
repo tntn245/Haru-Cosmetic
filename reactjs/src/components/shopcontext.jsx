@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
 import React, { createContext, useState, useEffect } from 'react'
-import { PRODUCTS, PRODUCTSCART } from '../components/products';
+import { PRODUCTS, PRODUCTSCART, CATEGORIES } from '../components/products';
 import axios from '../api/axios.js';
 
 
@@ -10,11 +10,12 @@ export const ShopContext = createContext({});
 const shopcontext = (props) => {
   const [cartItems, setCartItems] = useState(PRODUCTSCART);
   const [products, setProducts] = useState(PRODUCTS);
+  const [categories, setCategories] = useState(CATEGORIES);
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalChoosed, setTotalChoosed] = useState(0);
   const [totalProducts, settotalProducts] = useState(0);
   const [favorites, setFavorites] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState([]);
+  const [productsCategory, setProductsCategory] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [productsChoosedToBuy, setProductsChoosedToBuy] = useState([]);
 
@@ -161,6 +162,21 @@ const shopcontext = (props) => {
     }
   };
 
+  const loadCategories = () => {
+    const CATEGORIES = [];
+
+    axios.post("/api/get-categories")
+      .then(
+        (response) => {
+          CATEGORIES.push(...response.data);
+          setProducts(CATEGORIES);
+        }
+      )
+      .catch(function (error) {
+        console.log(error.message);
+      });
+  }
+
   const loadProducts = () => {
     const PRODUCTS = [];
 
@@ -169,6 +185,7 @@ const shopcontext = (props) => {
         (response) => {
           PRODUCTS.push(...response.data);
           setProducts(PRODUCTS);
+          setFilteredProducts(PRODUCTS);
         }
       )
       .catch(function (error) {
@@ -180,6 +197,7 @@ const shopcontext = (props) => {
     const userID = JSON.parse(localStorage.getItem('user')).id;
     const PRODUCTSCART = [];
 
+<<<<<<< HEAD
     // Lấy sản phẩm dựa trên cái loại sản phẩm
     // const categoryProducts = axios.get(`/api/get-products?category=${selectedCategory}`)
     //   .then((response) => {
@@ -190,6 +208,8 @@ const shopcontext = (props) => {
     //     console.log(error.message);
     //   });
 
+=======
+>>>>>>> 0f026b87d6777e7265783397102bdadbe1d6e4a8
     axios.post("/api/get-cart", { userID })
       .then(
         (response) => {
@@ -203,7 +223,7 @@ const shopcontext = (props) => {
   }
   // Cập nhật cái loại sản phẩm được chọn
   const updateSelectedCategory = (category) => {
-    setSelectedCategory(category);
+    // setSelectedCategory(category);
   };
 
   const getTotalCartAmount = () => {
@@ -321,14 +341,50 @@ const shopcontext = (props) => {
     setSelectedProduct(null);
   };
 
-  const filterByPrice = (minPrice, maxPrice) => {
+  const filter = (starRating, minPrice, maxPrice) => {
     const filteredProducts = products.filter((product) => {
+      const star = product.star;
       const price = product.price;
-      return price >= minPrice && price <= maxPrice;
+      if(starRating == 0)
+        return price >= minPrice && price <= maxPrice;
+      else if(minPrice == 0 && maxPrice == 0)
+        return star == starRating;
+      else
+        return price >= minPrice && price <= maxPrice &&  star == starRating;
     });
 
     setFilteredProducts(filteredProducts);
   };
+
+  const filter_Category = (starRating, minPrice, maxPrice) => {
+    const filteredProducts = productsCategory.filter((product) => {
+      const star = product.star;
+      const price = product.price;
+      if(starRating == 0)
+        return price >= minPrice && price <= maxPrice;
+      else if(minPrice == 0 && maxPrice == 0)
+        return star == starRating;
+      else
+        return price >= minPrice && price <= maxPrice &&  star == starRating;
+    });
+
+    setFilteredProducts(filteredProducts);
+  };
+
+  const loadProductsCategory = (categoryStr) => {
+    axios.post('/api/load-products-in-category', { categoryStr })
+      .then(
+        (response) => {
+          setProductsCategory(response.data);
+          setFilteredProducts(response.data);
+          console.log(response);
+        }
+      )
+      .catch(function (error) {
+        console.log(error.message);
+      });
+  };
+  
   const contextValue = {
     cartItems,
     favorites,
@@ -336,9 +392,13 @@ const shopcontext = (props) => {
     totalChoosed,
     totalProducts,
     productsChoosedToBuy,
+    filteredProducts,
+    productsCategory,
     createOrder,
     updatePaymentStatus,
     updateOrderStatus,
+    loadCategories,
+    loadProductsCategory,
     loadProducts,
     loadProductsCart,
     addToCart,
@@ -355,10 +415,12 @@ const shopcontext = (props) => {
     removeFromProductsChoosed,
     selectedProduct,
     products,
+    categories,
     loadFavs,
     addToFavs,
     removeFromFavs,
-    filterByPrice,
+    filter,
+    filter_Category,
     updateSelectedCategory,
   };
 
