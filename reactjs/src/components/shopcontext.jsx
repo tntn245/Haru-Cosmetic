@@ -197,19 +197,6 @@ const shopcontext = (props) => {
     const userID = JSON.parse(localStorage.getItem('user')).id;
     const PRODUCTSCART = [];
 
-<<<<<<< HEAD
-    // Lấy sản phẩm dựa trên cái loại sản phẩm
-    // const categoryProducts = axios.get(`/api/get-products?category=${selectedCategory}`)
-    //   .then((response) => {
-    //     PRODUCTSCART.push(...response.data);
-    //     setCartItems(PRODUCTSCART);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.message);
-    //   });
-
-=======
->>>>>>> 0f026b87d6777e7265783397102bdadbe1d6e4a8
     axios.post("/api/get-cart", { userID })
       .then(
         (response) => {

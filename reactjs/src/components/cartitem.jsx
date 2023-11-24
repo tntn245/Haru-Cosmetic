@@ -53,6 +53,7 @@ const cartitem = (props) => {
           <div className="row g-3">
             <div className="col-12 col-md-5">
               <div className="p-3">
+              <div className="item-container">
                 <div className="checkbox-container">
                   <input
                     type="checkbox"
@@ -64,6 +65,7 @@ const cartitem = (props) => {
                 <div className="cart-item-image m-auto">
                   <img src={image} className="card-img-top img-fluid" alt="..." />
                 </div>
+              </div>
               </div>
             </div>
             <div className="cart-container col-12 col-md-7 d-flex align-items-center justify-content-center">
