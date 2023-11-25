@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\FavouriteController;
 use Illuminate\Http\Request;
@@ -36,6 +37,9 @@ Route::namespace('App\Http\Controllers')->group(function(){
 
     Route::post('get-categories', [CategoriesController::class, 'getCategories']);
     Route::post('load-products-in-category', [CategoriesController::class, 'loadProductsInCategory']);
+
+    Route::post('get-brands', [BrandController::class, 'getBrands']);
+    Route::post('load-products-in-brand', [BrandController::class, 'loadProductsInBrand']);
 
     Route::post('get-products', [ProductController::class, 'getProducts']);
 
