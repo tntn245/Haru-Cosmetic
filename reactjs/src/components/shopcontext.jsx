@@ -195,20 +195,22 @@ const shopcontext = (props) => {
       });
   }
 
-  const loadProductsCart = () => {
-    const userID = JSON.parse(localStorage.getItem('user')).id;
+  const loadProductsCart = (userID) => {
     const PRODUCTSCART = [];
+    setCartItems(PRODUCTSCART);
 
-    axios.post("/api/get-cart", { userID })
-      .then(
-        (response) => {
-          PRODUCTSCART.push(...response.data);
-          setCartItems(PRODUCTSCART);
-        }
-      )
-      .catch(function (error) {
-        console.log(error.message);
-      });
+    if(userID!=0){
+      axios.post("/api/get-cart", { userID })
+        .then(
+          (response) => {
+            PRODUCTSCART.push(...response.data);
+            setCartItems(PRODUCTSCART);
+          }
+        )
+        .catch(function (error) {
+          console.log(error.message);
+        });
+    }
   }
   // Cập nhật cái loại sản phẩm được chọn
   const updateSelectedCategory = (category) => {
