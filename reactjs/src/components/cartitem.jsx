@@ -53,17 +53,19 @@ const cartitem = (props) => {
           <div className="row g-3">
             <div className="col-12 col-md-5">
               <div className="p-3">
-              <div className="item-container">
-                <div className="checkbox-container">
-                  <input
-                    type="checkbox"
-                    checked={isChecked}
-                    onChange={handleCheckboxChange}
-                    className="checkbox"
-                  />
-                </div>
-                <div className="cart-item-image m-auto">
-                  <img src={image} className="card-img-top img-fluid" alt="..." />
+                <div className="item-container">
+                  <div className="checkbox-container">
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={handleCheckboxChange}
+                      className="checkbox"
+                    />
+                  </div>
+                  <div className="cart-item-image m-auto">
+                    <img src={image} className="card-img-top img-fluid" alt="..." />
+                  </div>
+
                 </div>
               </div>
               </div>

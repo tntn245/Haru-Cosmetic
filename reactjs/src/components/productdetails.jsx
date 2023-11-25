@@ -3,6 +3,9 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { ShopContext } from './shopcontext';
 import { PRODUCTS, PRODUCTS1 } from './products';
+import { GrDeliver } from "react-icons/gr";
+import { FaPhoneAlt } from "react-icons/fa";
+import ReactStars from "react-rating-stars-component";
 import axios from '../api/axios.js';
 
 const ProductDetails = () => {
@@ -24,6 +27,74 @@ const ProductDetails = () => {
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
+
+
+  const [reviews, setReviews] = useState([
+    { id: 1, stars: 4, text: "Great product!", date: new Date("2023-11-01") },
+    { id: 2, stars: 5, text: "Highly recommended!", date: new Date("2023-11-05") },
+    { id: 3, stars: 3, text: "Average product.", date: new Date("2023-11-10") },
+  ]);
+
+  // Tính số sao trung bình
+  const calculateAverageStars = (reviews) => {
+    if (reviews.length === 0) return 0;
+    const totalStars = reviews.reduce((sum, review) => sum + review.stars, 0);
+    return totalStars / reviews.length;
+  };
+
+  // Tính số sao trung bình cho mỗi rating
+  const calculateRatingPercentage = (reviews, rating) => {
+    if (reviews.length === 0) return 0;
+    const ratingCount = reviews.filter((review) => review.stars === rating).length;
+    return (ratingCount / reviews.length) * 100;
+  };
+
+  // Đếm số review cho mỗi rating
+  const countReviewsByRating = (reviews, rating) => {
+    return reviews.filter((review) => review.stars === rating).length;
+  };
+  const handleReviewSubmit = () => {
+    // Validate the review trước khi submitting
+    if (newReview.stars === 0 || newReview.text.trim() === '') {
+      // You can show an error message or prevent submission if the review is not valid
+      return;
+    }
+
+    // Add the new review to the existing reviews
+    const updatedReviews = [...reviews, { ...newReview, date: new Date() }];
+
+    // Reset the new review state
+    setNewReview({ stars: 0, text: '' });
+
+    // You can send the updatedReviews array to your backend or update the state as needed
+    // For now, let's just update the state locally
+    setReviews(updatedReviews);
+    setIsWritingReview(false);
+  };
+  // Render star icons dựa trên star rating
+  const renderStarReview = (stars) => {
+    return (
+      <ReactStars
+        count={5}
+        value={stars}
+        size={24}
+        color1="#CCCCCC"
+        color2="#FFD700"
+        edit={false}
+      />
+    );
+  };
+
+  // Format the date of the review
+  const formatDate = (date) => {
+    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  };
+  const [isWritingReview, setIsWritingReview] = useState(false);
+  const [newReview, setNewReview] = useState({ stars: 0, text: '' });
+  const handleWriteReviewClick = () => {
+    setIsWritingReview(true);
+  };
+
   const handleDecreaseQuantiy = () => {
     if(quantity>1)
       setQuantity(quantity-1);
@@ -51,6 +122,7 @@ const ProductDetails = () => {
     }
   }, [userID]);
 
+
   return (
     <div className="container p-5">
       <div className="row">
@@ -71,12 +143,8 @@ const ProductDetails = () => {
               </p>
               <p className="card-text">{product.description}</p>
               <div>
-                <p className="card-text mb-1 text-start">Mô tả sản phẩm</p>
-                <ul>
-                  <li>First bullet point</li>
-                  <li>Second bullet point</li>
-                  <li>Third bullet point</li>
-                </ul>
+                <GrDeliver className="mb-2" /> THANH TOÁN BẰNG HÌNH THỨC COD HOẶC CHUYỂN KHOẢN<br />
+                <FaPhoneAlt /> HOTLINE: (098) 67453476
               </div>
 
               <div className="d-flex align-items-center mb-3 col-4 mb-5">
@@ -140,19 +208,145 @@ const ProductDetails = () => {
           {activeTab === 'details' && (
             <div className="tab-pane active">
               {/* Nội dung của tab Chi tiết sản phẩm */}
-              {/* ... */}
+              <div className="mt-4">
+                <strong>Tinh chất kháng viêm Niacinamide 10%</strong><br /><br />
+                <h6><b>Công dụng sản phẩm:</b></h6><br />
+                <ul>
+                  <li>Phái sinh Azelaic kết hợp Ferulic acid có khả năng kháng viêm, giảm đỏ, làm sáng da hiệu quả, ngăn ngừa lão hóa mạnh mẽ. </li><br />
+                  <li> Zinc PCA và Panthenol giúp ngừa mụn, phục hồi những vùng da nhạy cảm, thương tổn do mụn gây ra.  </li><br />
+                  <li> Bộ đôi Niacinamide và N-acetyl Glucosamine tăng khả năng chống oxy hóa cho da lên nhiều lần, giúp da trắng sáng, tươi trẻ.   </li><br />
+                </ul>
+                <h6><b>Thành phần :</b></h6>
+                <p className="text-start">Water, Niacinamide, Acetyl Glucosamine, Potassium Azeloyl Diglycinate, Propanediol, Propylene Glycol, Hydroxyethyl Urea, Panthenol, Zinc PCA, Butylene Glycol, Glycyrrhiza Glabra Root Extract, Morus Alba Root Extract, Scutellaria Baicalensis Root Extract, Allantoin, Artemisia Capillaris Flower Extract, Zizyphus Jujuba Fruit Extract, Sodium Hyaluronate, Ferulic acid, Disodium EDTA, Diazolidinyl Urea, Iodopropynyl Butylcarbamate, Gluconolactone.</p>
+              </div>
             </div>
           )}
           {activeTab === 'instructions' && (
             <div className="tab-pane active">
               {/* Nội dung của tab Hướng dẫn sử dụng */}
-              {/* ... */}
+              <div className="mt-4">
+                <h6><b>Đối tượng sử dụng:</b></h6><br />
+                <ul>
+                  <li>Da thường xuyên bị mụn viêm. </li><br />
+                  <li>Da cần được điều trị toàn diện.  </li><br />
+                  <li> Da có nhiều vấn đề về sắc tố như thâm đen, thâm đỏ.    </li><br />
+                </ul>
+                <h6><b>Cách sử dụng Tinh chất kháng viêm Niacinamide 10% Ampoule Zakka Naturals</b></h6><br />
+                <ul>
+                  <li> Nhỏ 2-3 giọt serum ra tay hoặc lên da. </li><br />
+                  <li>Thoa đều lên da rồi massage nhẹ nhàng</li><br />
+                </ul>
+              </div>
             </div>
           )}
           {activeTab === 'reviews' && (
             <div className="tab-pane active">
               {/* Nội dung của tab Review của khách hàng */}
-              {/* ... */}
+              <div className="mt-4">
+                <h4>Đánh Giá Của Khách Hàng</h4>
+                <div className="d-flex justify-content-between align-items-center">
+                  <div style={{ width: '18%' }}>
+                    <div className="d-flex flex-column align-items-center">
+                      <div className="me-2">
+                        <div className="text-muted mb-1">
+                          {calculateAverageStars(reviews).toFixed(1)}
+                        </div>
+                        <ReactStars
+                          count={5}
+                          value={calculateAverageStars(reviews)}
+                          size={24}
+                          color1="#CCCCCC"
+                          color2="#FFD700"
+                          edit={false}
+                        />
+                      </div>
+                      <div>
+                        <span className="text-muted">{reviews.length} Đánh Giá</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ width: '50%' }}>
+                    {[5, 4, 3, 2, 1].map((stars, index) => (
+                      <div className="d-flex align-items-center" key={stars}>
+                        <div className="me-2">
+                          {renderStarReview(stars)}
+                        </div>
+                        <div className="progress" style={{ width: '30%' }}>
+                          <div
+                            className="progress-bar bg-success"
+                            role="progressbar"
+                            style={{ width: `${calculateRatingPercentage(reviews, stars)}%` }}
+                            aria-valuenow={calculateRatingPercentage(reviews, stars)}
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                          />
+                        </div>
+                        <div className="ms-2">
+                          {countReviewsByRating(reviews, stars)} Đánh Giá
+                        </div>
+                        {index !== [5, 4, 3, 2, 1].length - 1 && <hr />}
+                        <br />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="d-flex justify-content-end mb-3">
+                  <div className="container p-5">
+                    {/* ... (other code) */}
+                    {isWritingReview ? (
+                      <div>
+                        <textarea
+                          placeholder="Nhập đánh giá của bạn..."
+                          rows="4"
+                          className="form-control mb-3"
+                          value={newReview.text}
+                          onChange={(e) => setNewReview({ ...newReview, text: e.target.value })}
+                        />
+                        <ReactStars
+                          count={5}
+                          value={newReview.stars}
+                          size={24}
+                          color1="#CCCCCC"
+                          color2="#FFD700"
+                          edit={true}
+                          onChange={(newRating) => setNewReview({ ...newReview, stars: newRating })}
+                        />
+                        <button
+                          className="btn btn-outline-dark"
+                          onClick={handleReviewSubmit}
+                        >
+                          Gửi Đánh Giá
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        className="btn btn-outline-dark"
+                        onClick={handleWriteReviewClick}
+                      >
+                        Viết Đánh Giá
+                      </button>
+                    )}
+                  </div>
+                </div>
+                {/* Review của mỗi khách hàng */}
+                {reviews.map((review) => (
+                  <div key={review.id} className="card mb-3">
+                    <div className="card-body d-flex justify-content-between align-items-center">
+                      <div className="d-flex align-items-center">
+                        <div className="me-2">
+                          {renderStarReview(review.stars)}
+                        </div>
+                        <div>
+                          <p className="card-text">{review.text}</p>
+                        </div>
+                      </div>
+                      <div className="text-end">
+                        <p className="card-text text-muted">{formatDate(review.date)}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
           {activeTab === 'related' && (
@@ -192,7 +386,7 @@ const ProductDetails = () => {
           )}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

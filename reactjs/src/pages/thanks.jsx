@@ -62,11 +62,11 @@ const Thanks = () => {
                   {vnpTransactionStatus == '00'
                   ?
                   <div>
-                    <h3>Thanks rất nhiều :D !!!</h3>
+                    <h3>Cảm ơn quý khách rất nhiều :D !!!</h3>
                     <div className="row">
                       <div className="col-12 col-md-6 d-flex m-auto justify-content-center mt-4">
                         <button onClick={() => navigate("/shop")}>
-                          Continue Shopping
+                          Tiếp Tục Mua Sắm
                         </button>
                       </div>
                       <div className="col-12 col-md-6 d-flex m-auto justify-content-center mt-4">

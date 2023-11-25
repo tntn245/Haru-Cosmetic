@@ -358,7 +358,7 @@ const shopcontext = (props) => {
         console.log(error.message);
       });
   };
-  
+
   const contextValue = {
     cartItems,
     favorites,

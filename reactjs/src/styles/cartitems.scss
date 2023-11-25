@@ -1,58 +1,59 @@
 .cart-container{
-    padding-right: 50px;
-    .cart-item-id{
-        margin-right: 50px;
-    }
-    .count-handler{
-        margin-right:20px;
-    }
+  padding-right: 50px;
+  .cart-item-id{
+      margin-right: 50px;
+  }
+  .count-handler{
+      margin-right:20px;
+  }
 }
 
 .container {
-    .row {
-      .col-12 {
-        &.col-md-7 {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-  
-          .p-3 {
-            width: 100%;
-            h2 {
-                text-align: center;
-                margin-bottom: 10px;
-                margin-right: 45px;
-              }
-            .btn-cart {
-              margin-left: auto;
+  .row {
+    .col-12 {
+      &.col-md-7 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .p-3 {
+          width: 100%;
+          h2 {
+              text-align: center;
+              margin-bottom: 10px;
+              margin-right: 45px;
             }
+          .btn-cart {
+            margin-left: auto;
           }
         }
       }
-      .checkbox-container {
-        display: flex;
-        align-items: center;
-        .checkbox {
-          transform: scale(1.5);
-          align-self: center;
-          margin-right: 10px; 
-        }
-      }
-
     }
-  }
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      .checkbox {
+        transform: scale(1.5);
+        align-self: center;
+        margin-right: 10px; 
+      }
+    }
 
-  .item-container {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 10px;
   }
-  
-  .checkbox-container {
-    grid-column: 1;
-  }
-  
-  .cart-item-image {
-    grid-column: 2;
-    text-align: center; /* Optional: To center the image horizontally */
-  }
+}
+
+.item-container {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+}
+
+.checkbox-container {
+  grid-column: 1;
+}
+
+.cart-item-image {
+  grid-column: 2;
+  text-align: center; /* Optional: To center the image horizontally */
+}
+
