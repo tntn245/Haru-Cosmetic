@@ -17,10 +17,10 @@ class CategoriesController extends Controller
     {
         $data = $request->input();
 
-        $getProductsInCategory =  DB::table('category')
-        ->join('products', 'category.id', '=', 'products.category_id')
-        ->where('category.name_str',  $data['categoryStr'])
-        ->select('category.*', 'products.*')
+        $getProductsInCategory =  DB::table('categories')
+        ->join('products', 'categories.id', '=', 'products.category_id')
+        ->where('categories.name_str',  $data['categoryStr'])
+        ->select('categories.*', 'products.*')
         ->get();
         
         return $getProductsInCategory;

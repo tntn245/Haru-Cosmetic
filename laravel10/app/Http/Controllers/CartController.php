@@ -34,12 +34,13 @@ class CartController extends Controller
             $data = $request->input();
             $userID = $data['userID'];
             $productID = $data['productID'];
+            $quantity = $data['quantity'];
 
             $getProductsInCart =  DB::table('carts')->where('user_id',  $userID)->where('product_id',  $productID)->get();
             $flag = false;
             foreach ($getProductsInCart as $product) {
                 $flag = true;
-                $new_quantity = $product->quantity + 1;
+                $new_quantity = $product->quantity + $quantity;
                 
                 DB::table('carts')
                 ->where('user_id',  $userID)

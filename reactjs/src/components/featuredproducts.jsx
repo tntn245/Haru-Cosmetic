@@ -27,7 +27,8 @@ const featuredproducts = () => {
 
   const handleAddToCart = async (productID) => {
     if (userID !== 0) {
-      await axios.post("/api/add-to-cart", { userID, productID })
+      var quantity = 1;
+      await axios.post("/api/add-to-cart", { userID, productID, quantity})
         .then(
           (response) => {
             console.log(response);

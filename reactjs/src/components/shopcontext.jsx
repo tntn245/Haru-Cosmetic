@@ -16,6 +16,7 @@ const shopcontext = (props) => {
   const [totalProducts, settotalProducts] = useState(0);
   const [favorites, setFavorites] = useState([]);
   const [productsCategory, setProductsCategory] = useState([]);
+  const [productsRoot, setProductsRoot] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [productsChoosedToBuy, setProductsChoosedToBuy] = useState([]);
 
@@ -185,6 +186,7 @@ const shopcontext = (props) => {
         (response) => {
           PRODUCTS.push(...response.data);
           setProducts(PRODUCTS);
+          setProductsRoot(PRODUCTS);
           setFilteredProducts(PRODUCTS);
         }
       )
@@ -238,16 +240,16 @@ const shopcontext = (props) => {
   };
 
 
-  const addToCart = (productID, userID) => {
+  const addToCart = (productID, userID, quantity) => {
     if (userID !== 0) {
       try {
-        axios.post("/api/add-to-cart", { userID, productID })
+        axios.post("/api/add-to-cart", { userID, productID, quantity})
           .then(
             (response) => {
               console.log(response);
               for (let i = 0; i < cartItems.length; i++) {
                 if (cartItems[i].id === productID) {
-                  cartItems[i].quantity++;
+                  cartItems[i].quantity += quantity;
                   break;
                 }
               }
@@ -329,7 +331,7 @@ const shopcontext = (props) => {
   };
 
   const filter = (starRating, minPrice, maxPrice) => {
-    const filteredProducts = products.filter((product) => {
+    const filteredProducts = productsRoot.filter((product) => {
       const star = product.star;
       const price = product.price;
       if(starRating == 0)
@@ -339,22 +341,6 @@ const shopcontext = (props) => {
       else
         return price >= minPrice && price <= maxPrice &&  star == starRating;
     });
-
-    setFilteredProducts(filteredProducts);
-  };
-
-  const filter_Category = (starRating, minPrice, maxPrice) => {
-    const filteredProducts = productsCategory.filter((product) => {
-      const star = product.star;
-      const price = product.price;
-      if(starRating == 0)
-        return price >= minPrice && price <= maxPrice;
-      else if(minPrice == 0 && maxPrice == 0)
-        return star == starRating;
-      else
-        return price >= minPrice && price <= maxPrice &&  star == starRating;
-    });
-
     setFilteredProducts(filteredProducts);
   };
 
@@ -363,6 +349,7 @@ const shopcontext = (props) => {
       .then(
         (response) => {
           setProductsCategory(response.data);
+          setProductsRoot(response.data);
           setFilteredProducts(response.data);
           console.log(response);
         }
@@ -381,6 +368,7 @@ const shopcontext = (props) => {
     productsChoosedToBuy,
     filteredProducts,
     productsCategory,
+    productsRoot,
     createOrder,
     updatePaymentStatus,
     updateOrderStatus,
@@ -407,7 +395,6 @@ const shopcontext = (props) => {
     addToFavs,
     removeFromFavs,
     filter,
-    filter_Category,
     updateSelectedCategory,
   };
 

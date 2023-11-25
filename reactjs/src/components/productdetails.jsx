@@ -1,11 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { ShopContext } from './shopcontext';
 import { PRODUCTS, PRODUCTS1 } from './products';
+import axios from '../api/axios.js';
 
 const ProductDetails = () => {
-  const { selectedProduct, closeProductDetails, addToCart, cartItems, removeToCart, updateCartItemCount } = useContext(ShopContext);
+  const { selectedProduct, cartItems } = useContext(ShopContext);
+  const [quantity, setQuantity] = useState(1);
+  const [userID, setUserID] = useState(0);
 
   // Set selectedProduct to 0
   const productId = selectedProduct || 0;
@@ -21,6 +24,33 @@ const ProductDetails = () => {
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
+  const handleDecreaseQuantiy = () => {
+    if(quantity>1)
+      setQuantity(quantity-1);
+  };
+  const handleAddToCart = () => {
+    event.target.classList.toggle("red");
+    if (userID !== 0) {
+      var productID = product.id;
+      axios.post("/api/add-to-cart", { userID, productID, quantity})
+        .then(
+          (response) => {
+            console.log(response);
+          }
+        )
+        .catch(function (error) {
+          throw error;
+        });
+    }
+  }
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (user != null) {
+      const user_id = JSON.parse(user).id;
+      setUserID(user_id);
+    }
+  }, [userID]);
+
   return (
     <div className="container p-5">
       <div className="row">
@@ -50,17 +80,14 @@ const ProductDetails = () => {
               </div>
 
               <div className="d-flex align-items-center mb-3 col-4 mb-5">
-                <button className="btn btn-outline-secondary me-2" onClick={() => addToCart(product.id)}>+</button>
-                <input className="form-control text-center" type="number" value={cartItems[product.id]} onChange={(e) => updateCartItemCount(Number(e.target.value), product.id)} />
-                <button className="btn btn-outline-secondary ms-2" onClick={() => removeToCart(product.id)}>-</button>
+                <button className="btn btn-outline-secondary ms-2" onClick={() => handleDecreaseQuantiy}>-</button>
+                <input className="form-control text-center" type="number"  min="1" value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} />
+                <button className="btn btn-outline-secondary me-2" onClick={() => setQuantity(quantity+1)}>+</button>
               </div>
 
               <div className="d-flex justify-content-center">
                 <button
-                  onClick={() => {
-                    addToCart(product.id);
-                    event.target.classList.toggle("red");
-                  }}
+                  onClick={() => handleAddToCart()}
                   id='button-link'
                   className="myButton"
                   style={{ width: '100%', height: '100%' }}
@@ -79,8 +106,7 @@ const ProductDetails = () => {
           <li className="nav-item">
             <button
               className={`nav-link ${activeTab === 'details' ? 'active' : ''} nav-link-custom`}
-              onClick={() => handleTabClick('details')}
-            >
+              onClick={() => handleTabClick('details')}>
               CHI TIẾT SẢN PHẨM
             </button>
           </li>
