@@ -36,8 +36,11 @@ const header = () => {
     if (user != null) {
       const user_id = JSON.parse(user).id;
       setUserID(user_id);
-
-      axios.post("/api/get-categories")
+    }
+  }, [userID]);
+  
+  useEffect(() => {
+    axios.post("/api/get-categories")
       .then(
         (response) => {
           setCategories(response.data);
@@ -54,16 +57,7 @@ const header = () => {
       .catch(function (error) {
         console.log(error.message);
       });
-    }
-  }, [userID]);
-  
-  useEffect(() => {
-    console.log(categories);
-  }, [categories]);
-  
-  useEffect(() => {
-    console.log(brands);
-  }, [brands]);
+  }, []);
 
 
   const toggleMenu = () => {

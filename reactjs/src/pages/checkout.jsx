@@ -89,8 +89,7 @@ const checkout = () => {
         }
     }, [userID]);
 
-    const handlePay = () => {
-        // check if vnpay
+    const handlePayVNPay = () => {
         axios.post("/vnpay", { query })
             .then(
                 (response) => {
@@ -102,7 +101,8 @@ const checkout = () => {
             .catch(function (error) {
                 console.log(error);
             });
-        setPaymentMethod("VNPay");
+        setSelectedMethod("VNPay");
+        setPaymentMethod(selectedMethod);
         shopcontext.createOrder(userID, Number(query), paymentMethod);
     };
     
@@ -118,11 +118,7 @@ const checkout = () => {
             .catch(function (error) {
                 console.log(error);
             });
-        
-        setPaymentMethod("Momo");
-        shopcontext.createOrder(userID, Number(query), paymentMethod);
-    };
-
+        setSelectedMethod("Momo");
         setPaymentMethod(selectedMethod);
         shopcontext.createOrder(userID, Number(query), selectedMethod);
     };
@@ -133,7 +129,6 @@ const checkout = () => {
         <section className="checkout p-5">
             <div className="container-xxl">
                 <div className="row checkout-header">
-
                     <h1>{query}</h1>
                     <div className="col-md-6">
                         <h1 className="mb-4 fs-3">Phương thức thanh toán</h1>
@@ -146,7 +141,7 @@ const checkout = () => {
                                         data-bs-target="#collapseVNPAY"  // Unique target for VNPAY
                                         aria-expanded="false"
                                         aria-controls="collapseVNPAY"
-                                        onClick={() => handleMethodSelect('VNPAY')}>
+                                        onClick={() => handlePayVNPay()}>
                                         <div className="d-flex align-items-center justify-content-between">
                                             <div className='col-6' >
                                                 <span>VNPAY</span>
@@ -162,7 +157,7 @@ const checkout = () => {
                                         data-bs-target="#collapseMOMO"  // Unique target for MOMO
                                         aria-expanded="false"
                                         aria-controls="collapseMOMO"
-                                        onClick={() => handleMethodSelect('MOMO')}>
+                                        onClick={() => handlePayMomo()}>
                                         <div className="d-flex align-items-center justify-content-between">
                                             <div className='col-6'>
                                                 <span>MOMO</span>
@@ -218,8 +213,8 @@ const checkout = () => {
                                     ))}
                                 </select>
                             </div>
-                            <button id="button-linker" onClick={handlePay}>Đặt hàng</button>
-                            <button id="button-linker" name="payUrl" onClick={handlePayMomo}>Đặt hàng</button>
+                            <button id="button-linker" onClick={handlePayVNPay}>Đặt hàng VNP</button>
+                            <button id="button-linker" name="payUrl" onClick={handlePayMomo}>Đặt hàng Momo</button>
                         </div>
                     </div>
                 </div>
