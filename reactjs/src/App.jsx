@@ -27,10 +27,11 @@ import Team from './admin/scenes/team'
 import Invoices from './admin/scenes/invoices'
 import Form from './admin/scenes/form'
 import Bar from './admin/scenes/bar'
+// import Calendar from './admin/scenes/calendar/calendar'
+import Line from './admin/scenes/line'
 import Pie from "./admin/scenes/pie";
 import FAQ from "./admin/scenes/faq";
 import Geography from "./admin/scenes/geography";
-// import LineChart from './admin/components/LineChart'
 import Sidebar from './admin/scenes/global/Sidebar'
 import Topbar from './admin/scenes/global/Topbar'
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -65,7 +66,6 @@ function App() {
       {role != 'admin'
         ?
         <ShopContext>
-          <BrowserRouter>
             <ScrollToTop />
             <Routes>
               <Route path='/' element={<Layout />}>
@@ -87,17 +87,16 @@ function App() {
                 <Route path='/category/:categoryStr' element={<Category />} />
               </Route>
             </Routes>
-          </BrowserRouter>
         </ShopContext>
         :
+        <ShopContext>
         <ColorModeContext.Provider value={colorMode}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <div className="app">
-              <Sidebar isSidebar={isSidebar} />
+              <Sidebar />
               <main className="content">
                 <Topbar setIsSidebar={setIsSidebar} />
-                <BrowserRouter>
                   <Routes>
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/team" element={<Team />} />
@@ -106,16 +105,16 @@ function App() {
                     <Route path="/form" element={<Form />} />
                     <Route path="/bar" element={<Bar />} />
                     <Route path="/pie" element={<Pie />} />
-                  {/* <Route path="/line" element={<Line />} />
-                  <Route path="/faq" element={<FAQ />} />
-                  <Route path="/calendar" element={<Calendar />} />
-                  <Route path="/geography" element={<Geography />} /> */}
+                    <Route path="/line" element={<Line />} />
+                    <Route path="/faq" element={<FAQ />} />
+                    {/* <Route path="/calendar" element={<Calendar />} /> */}
+                    <Route path="/geography" element={<Geography />} />
                   </Routes>
-                </BrowserRouter>
               </main>
             </div>
           </ThemeProvider>
         </ColorModeContext.Provider>
+        </ShopContext>
       }
     </>
   )
