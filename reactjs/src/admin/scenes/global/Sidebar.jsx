@@ -17,27 +17,21 @@ import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import LogoutIcon from '@mui/icons-material/Logout';
-// import Item from "./Item"
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   
-  const handleClick = () => {
-    const navigate = useNavigate();
-    setSelected(title);
-    navigate("/login");
-  }
   return (
       <MenuItem
         active={selected === title}
         style={{
           color: colors.grey[100],
         }}
-        onClick={() => handleClick()}
+        onClick={() => setSelected(title)}
         icon={icon}>
         <Typography>{title}</Typography>
-        {/* <Link to={basename+to} /> */}
+        {/* <Link to={to} /> */}
       </MenuItem>
   );
 };
