@@ -1,7 +1,7 @@
-import { useState } from "react";
-import {  Menu, MenuItem } from "react-pro-sidebar";
+import React, { useContext, useState, useEffect } from 'react'
+import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -16,22 +16,29 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import LogoutIcon from '@mui/icons-material/Logout';
+// import Item from "./Item"
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  
+  const handleClick = () => {
+    const navigate = useNavigate();
+    setSelected(title);
+    navigate("/login");
+  }
   return (
-    <MenuItem
-      active={selected === title}
-      style={{
-        color: colors.grey[100],
-      }}
-      onClick={() => setSelected(title)}
-      icon={icon}
-    >
-      <Typography>{title}</Typography>
-      <Link to={to} />
-    </MenuItem>
+      <MenuItem
+        active={selected === title}
+        style={{
+          color: colors.grey[100],
+        }}
+        onClick={() => handleClick()}
+        icon={icon}>
+        <Typography>{title}</Typography>
+        {/* <Link to={basename+to} /> */}
+      </MenuItem>
   );
 };
 
@@ -61,7 +68,7 @@ const Sidebar = () => {
         },
       }}
     >
-      {/* <ProSidebar collapsed={isCollapsed}> */}
+      <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
           {/* LOGO AND MENU ICON */}
           <MenuItem
@@ -218,9 +225,17 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+            More
+            <Item
+              title="Logout"
+              to="/login"
+              icon={<LogoutIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
           </Box>
         </Menu>
-      {/* </ProSidebar> */}
+      </ProSidebar>
     </Box>
   );
 };

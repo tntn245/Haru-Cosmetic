@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
+import { ShopContext } from '../components/shopcontext'
 import axios from '../api/axios.js';
 
 const User = () => {
@@ -8,6 +9,7 @@ const User = () => {
     const [user, setUser] = useState(null);
     const userEmail = localStorage.getItem("userEmail");
     const navigate = useNavigate();
+    const shopcontext = useContext(ShopContext);
     
     const handleLogout = () => {
         axios.post("/api/logout-user", {userID})
@@ -16,6 +18,8 @@ const User = () => {
                     console.log(response);
                     navigate('/login');
                     localStorage.clear();
+                    shopcontext.checkIsLogin();
+                    console.log("is",shopcontext.isLogin);
                 }
             )
             .catch(function (error) {

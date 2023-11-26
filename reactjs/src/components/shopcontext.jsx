@@ -19,6 +19,19 @@ const shopcontext = (props) => {
   const [productsRoot, setProductsRoot] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [productsChoosedToBuy, setProductsChoosedToBuy] = useState([]);
+  const [isLogin, setIsLogin] = useState(false);
+
+  const checkIsLogin = () => {
+    const user = localStorage.getItem('user');
+    console.log(user);
+    if (user != null) {
+      setIsLogin(true);
+    }
+    else{
+      setIsLogin(false);
+    }
+    console.log(isLogin);
+  }
 
   const createOrder = (userID, totalPrice, paymentMethod) => {
     if (userID !== 0) {
@@ -371,6 +384,8 @@ const shopcontext = (props) => {
     filteredProducts,
     productsCategory,
     productsRoot,
+    isLogin,
+    checkIsLogin,
     createOrder,
     updatePaymentStatus,
     updateOrderStatus,
@@ -401,6 +416,7 @@ const shopcontext = (props) => {
   };
 
   console.log("ShopContext ", cartItems);
+  console.log("islogin ", isLogin);
 
   return (
     <ShopContext.Provider value={contextValue}>

@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
+import { BrowserRouter, Route, useLocation, Routes } from 'react-router-dom'
 import Layout from './components/layout'
+import LayoutAdmin from './components/layoutadmin'
 import Home from './pages/home'
 import About from './pages/about'
 import Shop from './pages/shop'
@@ -32,6 +33,8 @@ import Geography from "./admin/scenes/geography";
 // import LineChart from './admin/components/LineChart'
 import Sidebar from './admin/scenes/global/Sidebar'
 import Topbar from './admin/scenes/global/Topbar'
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { ColorModeContext, useMode } from "./theme";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -47,6 +50,7 @@ function ScrollToTop() {
 function App() {
   const [role, setRole] = useState('');
   const [isSidebar, setIsSidebar] = useState(true);
+  const [theme, colorMode] = useMode();
 
   useEffect(() => {
     const user = localStorage.getItem('user');
@@ -59,57 +63,59 @@ function App() {
   return (
     <>
       {role != 'admin'
-      ?
-      <ShopContext>
-        <BrowserRouter>
-          <ScrollToTop />
-          <Routes>
-            <Route path='/' element={<Layout />}>
-              <Route index element={<Home />} />
-              <Route path='shop' element={<Shop />} />
-              <Route path='about' element={<About />} />
-              <Route path='contact' element={<Contact />} />
-              <Route path='/search/:query' element={<Search />} />
-              <Route path='login' element={<Login />} />
-              <Route path='/user/:query' element={<User />} />
-              <Route path='signup' element={<Signup />} />
-              <Route path='forgotpasword' element={<Forgotpasword />} />
-              <Route path='cart' element={<Cart />} />
-              <Route path='wishlist' element={<Wishlist />} />
-              <Route path='checkout/:query' element={<Checkout />} />
-              <Route path='thanks' element={<Thanks />} />
-              <Route path='details' element={<Details />} />
-              <Route path='img' element={<ImageUploadForm />} />
-              <Route path='/category/:categoryStr' element={<Category />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </ShopContext>
-      :
-      // <div className="app">
-      <ShopContext>
-        <BrowserRouter>
-          <Sidebar isSidebar={isSidebar} />
-            <Topbar setIsSidebar={setIsSidebar} />
+        ?
+        <ShopContext>
+          <BrowserRouter>
+            <ScrollToTop />
             <Routes>
               <Route path='/' element={<Layout />}>
-                <Route index element={<Dashboard />} />
-                <Route path="/team" element={<Team />} />
-                <Route path="/contacts" element={<Contacts />} />
-                <Route path="/invoices" element={<Invoices />} />
-                <Route path="/form" element={<Form />} />
-                <Route path="/bar" element={<Bar />} />
-                <Route path="/pie" element={<Pie />} />
-                {/* <Route path="/line" element={<Line />} /> */}
-                {/* <Route path="/faq" element={<FAQ />} /> */}
-                {/* <Route path="/calendar" element={<Calendar />} /> */}
-                <Route path="/geography" element={<Geography />} />
+                <Route index element={<Home />} />
+                <Route path='shop' element={<Shop />} />
+                <Route path='about' element={<About />} />
+                <Route path='contact' element={<Contact />} />
+                <Route path='/search/:query' element={<Search />} />
+                <Route path='login' element={<Login />} />
+                <Route path='/user/:query' element={<User />} />
+                <Route path='signup' element={<Signup />} />
+                <Route path='forgotpasword' element={<Forgotpasword />} />
+                <Route path='cart' element={<Cart />} />
+                <Route path='wishlist' element={<Wishlist />} />
+                <Route path='checkout/:query' element={<Checkout />} />
+                <Route path='thanks' element={<Thanks />} />
+                <Route path='details' element={<Details />} />
+                <Route path='img' element={<ImageUploadForm />} />
+                <Route path='/category/:categoryStr' element={<Category />} />
               </Route>
             </Routes>
-        </BrowserRouter>
-      </ShopContext>
-
-      // </div>
+          </BrowserRouter>
+        </ShopContext>
+        :
+        <ColorModeContext.Provider value={colorMode}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <div className="app">
+              <Sidebar isSidebar={isSidebar} />
+              <main className="content">
+                <Topbar setIsSidebar={setIsSidebar} />
+                <BrowserRouter>
+                  <Routes>
+                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/team" element={<Team />} />
+                    <Route path="/contacts" element={<Contacts />} />
+                    <Route path="/invoices" element={<Invoices />} />
+                    <Route path="/form" element={<Form />} />
+                    <Route path="/bar" element={<Bar />} />
+                    <Route path="/pie" element={<Pie />} />
+                  {/* <Route path="/line" element={<Line />} />
+                  <Route path="/faq" element={<FAQ />} />
+                  <Route path="/calendar" element={<Calendar />} />
+                  <Route path="/geography" element={<Geography />} /> */}
+                  </Routes>
+                </BrowserRouter>
+              </main>
+            </div>
+          </ThemeProvider>
+        </ColorModeContext.Provider>
       }
     </>
   )
