@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { BrowserRouter, Route, useLocation, Routes } from 'react-router-dom'
 import Layout from './components/layout'
 import LayoutAdmin from './components/layoutadmin'
@@ -52,53 +52,58 @@ function App() {
   const [role, setRole] = useState('');
   const [isSidebar, setIsSidebar] = useState(true);
   const [theme, colorMode] = useMode();
+  // const shopcontext = useContext(ShopContext);
 
   useEffect(() => {
     const user = localStorage.getItem('user');
     if (user != null) {
       const user_type = JSON.parse(user).type;
       setRole(user_type);
+      console.log(role);
+      // console.log("islogin", shopcontext.isLogin);
     }
   }, [role]);
 
   return (
     <>
-      {role != 'admin'
-        ?
-        <ShopContext>
-            <ScrollToTop />
-            <Routes>
-              <Route path='/' element={<Layout />}>
-                <Route index element={<Home />} />
-                <Route path='shop' element={<Shop />} />
-                <Route path='about' element={<About />} />
-                <Route path='contact' element={<Contact />} />
-                <Route path='/search/:query' element={<Search />} />
-                <Route path='login' element={<Login />} />
-                <Route path='/user/:query' element={<User />} />
-                <Route path='signup' element={<Signup />} />
-                <Route path='forgotpasword' element={<Forgotpasword />} />
-                <Route path='cart' element={<Cart />} />
-                <Route path='wishlist' element={<Wishlist />} />
-                <Route path='checkout/:query' element={<Checkout />} />
-                <Route path='thanks' element={<Thanks />} />
-                <Route path='details' element={<Details />} />
-                <Route path='img' element={<ImageUploadForm />} />
-                <Route path='/category/:categoryStr' element={<Category />} />
-              </Route>
-            </Routes>
-        </ShopContext>
-        :
-        <ShopContext>
-        <ColorModeContext.Provider value={colorMode}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <div className="app">
-              <Sidebar />
-              <main className="content">
-                <Topbar setIsSidebar={setIsSidebar} />
+      <ShopContext>
+        <ScrollToTop />
+        <Routes>
+          <Route path='login' element={<Login />} />
+        </Routes>
+        {role != 'admin'
+          ?
+          <Routes>
+            <Route path='/' element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path='shop' element={<Shop />} />
+              <Route path='about' element={<About />} />
+              <Route path='contact' element={<Contact />} />
+              <Route path='/search/:query' element={<Search />} />
+              {/* <Route path='login' element={<Login />} /> */}
+              <Route path='/user/:query' element={<User />} />
+              <Route path='signup' element={<Signup />} />
+              <Route path='forgotpasword' element={<Forgotpasword />} />
+              <Route path='cart' element={<Cart />} />
+              <Route path='wishlist' element={<Wishlist />} />
+              <Route path='checkout/:query' element={<Checkout />} />
+              <Route path='thanks' element={<Thanks />} />
+              <Route path='details' element={<Details />} />
+              <Route path='img' element={<ImageUploadForm />} />
+              <Route path='/category/:categoryStr' element={<Category />} />
+            </Route>
+          </Routes>
+          :
+          <ColorModeContext.Provider value={colorMode}>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <div className="app">
+                <Sidebar isSidebar={isSidebar} />
+                <main className="content">
+                  <Topbar setIsSidebar={setIsSidebar} />
                   <Routes>
                     <Route path="/" element={<Dashboard />} />
+                    {/* <Route path="login" element={<Login />} /> */}
                     <Route path="/team" element={<Team />} />
                     <Route path="/contacts" element={<Contacts />} />
                     <Route path="/invoices" element={<Invoices />} />
@@ -110,12 +115,12 @@ function App() {
                     {/* <Route path="/calendar" element={<Calendar />} /> */}
                     <Route path="/geography" element={<Geography />} />
                   </Routes>
-              </main>
-            </div>
-          </ThemeProvider>
-        </ColorModeContext.Provider>
-        </ShopContext>
-      }
+                </main>
+              </div>
+            </ThemeProvider>
+          </ColorModeContext.Provider>
+        }
+      </ShopContext>
     </>
   )
 }

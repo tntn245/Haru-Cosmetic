@@ -17,18 +17,49 @@ import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import LogoutIcon from '@mui/icons-material/Logout';
+import { ShopContext } from '../../../components/shopcontext';
+import axios from '../../../api/axios.js';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  
+  const shopcontext = useContext(ShopContext);
+  const [userID, setUserID] = useState(0);
+
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (user != null) {
+      const user_id = JSON.parse(user).id;
+      setUserID(user_id);
+      console.log("u", userID)
+    }    
+  }, [userID]);
+
+  const handleLogout = () => {
+    if(title=="Logout"){
+      axios.post("/api/logout-user", {userID})
+          .then(
+              (response) => {
+                  setSelected(title);
+                  console.log(response);
+                  localStorage.clear();
+                  shopcontext.checkIsLogin();
+                  console.log("is",shopcontext.isLogin);
+              }
+          )
+          .catch(function (error) {
+              console.log(error);
+          });
+    }
+  };
+
   return (
       <MenuItem
         active={selected === title}
         style={{
           color: colors.grey[100],
         }}
-        onClick={() => setSelected(title)}
+        onClick={handleLogout}
         icon={icon}>
         <Typography>{title}</Typography>
         <Link to={to} />
