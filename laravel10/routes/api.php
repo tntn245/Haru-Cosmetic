@@ -45,8 +45,10 @@ Route::namespace('App\Http\Controllers')->group(function(){
 
     Route::post('get-products', [ProductController::class, 'getProducts']);
 
-    Route::post('get-address', [AddressController::class, 'getAddress']);
+    Route::post('get-addresses', [AddressController::class, 'getAddresses']);
     Route::post('add-new-address', [AddressController::class, 'addNewAddress']);
+    Route::post('update-address', [AddressController::class, 'updateAddress']);
+    Route::post('delete-address', [AddressController::class, 'deleteAddress']);
 
     Route::post('get-reviews', [ReviewController::class, 'getReviews']);
     Route::post('add-new-review', [ReviewController::class, 'addNewReview']);

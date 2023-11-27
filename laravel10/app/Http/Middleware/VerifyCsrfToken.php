@@ -35,8 +35,10 @@ class VerifyCsrfToken extends Middleware
         'api/get-reviews',
         'api/add-new-review',
 
-        'api/get-address',
+        'api/get-addresses',
         'api/add-new-address',
+        'api/update-address',
+        'api/delete-address',
 
         'api/get-cart',
         'api/add-to-cart',

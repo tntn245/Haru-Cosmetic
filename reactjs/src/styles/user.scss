@@ -1,5 +1,7 @@
 /* user.scss */
-
+.btn-dark{
+  margin-right: 10px;
+}
 .step-wizard-list {
     list-style-type: none;
     border-radius: 10px;
@@ -106,7 +108,7 @@
   /* Add these styles to your existing CSS */
 
 .address-item {
-    margin-bottom: 10px;
+  margin-top: 20px;
 }
 
 .address-name {

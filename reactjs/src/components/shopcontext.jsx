@@ -21,6 +21,7 @@ const shopcontext = (props) => {
   const [productsChoosedToBuy, setProductsChoosedToBuy] = useState([]);
   const [isLogin, setIsLogin] = useState(false);
   const [reviews, setReviews] = useState([]);
+  const [addresses, setAddresses] = useState([]);
 
   const checkIsLogin = () => {
     const user = localStorage.getItem('user');
@@ -418,6 +419,63 @@ const shopcontext = (props) => {
     return reviews.filter((review) => review.stars === rating).length;
   };
 
+  const loadAddresses = (userID) => {
+    axios.post('/api/get-addresses', { userID })
+    .then(
+      (response) => {
+        setAddresses(response.data);
+        console.log('addresses',addresses);
+      }
+    )
+    .catch(function (error) {
+      console.log(error.message);
+    });
+  };
+
+  const addNewAddress = (userID, name, phone, address ) => {
+    axios.post('/api/add-new-address', { userID, name, phone, address })
+      .then(
+        (response) => {
+          console.log(response);
+          setAddresses(prevArray => [...prevArray, response.data]);
+        }
+      )
+      .catch(function (error) {
+        console.log(error.message);
+      });
+  }
+
+  const updateAddress = (index, name, phone, address ) => {
+    const id = addresses[index].id;
+    axios.post('/api/update-address', { id, name, phone, address })
+      .then(
+        (response) => {
+          console.log(response);
+          const updatedAddresses = [...addresses];
+          updatedAddresses[index] = response.data;
+          setAddresses(updatedAddresses);
+        }
+      )
+      .catch(function (error) {
+        console.log(error.message);
+      });
+  }
+
+  const deleteAddress = (index) => {
+    const id = addresses[index].id;
+    axios.post('/api/delete-address', { id })
+      .then(
+        (response) => {
+          console.log(response);
+          const updatedAddresses = addresses.filter(item => item.id !== id);
+          setAddresses(updatedAddresses);
+        }
+      )
+      .catch(function (error) {
+        console.log(error.message);
+      });
+  }
+
   const contextValue = {
     cartItems,
     favorites,
@@ -430,6 +488,11 @@ const shopcontext = (props) => {
     productsRoot,
     isLogin,
     reviews,
+    addresses,
+    loadAddresses,
+    addNewAddress,
+    updateAddress,
+    deleteAddress,
     loadReviews,
     addNewReviews,
     calculateAverageStars,
@@ -467,6 +530,7 @@ const shopcontext = (props) => {
   console.log("ShopContext ", cartItems);
   console.log("islogin ", isLogin);
   console.log("shopcontext reviews ", reviews);
+  console.log("shopcontext address ", addresses);
 
   return (
     <ShopContext.Provider value={contextValue}>
