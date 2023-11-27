@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
-import { ShopContext } from './shopcontext'
-import React, { useContext, useState, useEffect } from 'react'
-import { RiDeleteBack2Line } from 'react-icons/ri'
-import '../styles/cartitems.scss'
-const cartitem = (props) => {
+import { ShopContext } from './shopcontext';
+import React, { useContext, useState, useEffect } from 'react';
+import { RiDeleteBack2Line } from 'react-icons/ri';
+import '../styles/cartitems.scss';
+
+const CartItem = (props) => {
   const [showDiv, setShowDiv] = useState(true);
   const { id, name, price, image, brand, user_id, quantity, inventory_quantity } = props.data;
-  const [quantity_state, setQuantity] = useState(quantity)
+  const [quantity_state, setQuantity] = useState(quantity);
   const shopcontext = useContext(ShopContext);
   const [isChecked, setIsChecked] = useState(false);
 
@@ -15,40 +16,43 @@ const cartitem = (props) => {
     setIsChecked(event.target.checked);
     if (event.target.checked) {
       shopcontext.addToProductsChoosed(id, price, quantity_state);
-    }
-    else {
+    } else {
       shopcontext.removeFromProductsChoosed(id, price, quantity_state);
     }
-  }
+  };
 
   const handleIncreaseNumber = () => {
-    shopcontext.updateCartItemCount(Number(quantity_state + 1), id, user_id)
+    shopcontext.updateCartItemCount(Number(quantity_state + 1), id, user_id);
     setQuantity(quantity_state + 1);
-  }
+  };
+
   const handleDecreaseNumber = () => {
-    shopcontext.updateCartItemCount(Number(quantity_state - 1), id, user_id)
+    shopcontext.updateCartItemCount(Number(quantity_state - 1), id, user_id);
     setQuantity(quantity_state - 1);
     if (quantity_state < 1) {
       shopcontext.removeToCart(id, user_id);
       setShowDiv(false);
     }
-  }
+  };
+
   const handleUpdateNumber = (e) => {
     const newQuantity = Number(e.target.value);
     setQuantity(newQuantity);
     shopcontext.updateCartItemCount(newQuantity, id, user_id);
-    if (quantity_state < 1) {
+    if (newQuantity < 1) {
       shopcontext.removeToCart(id, user_id);
       setShowDiv(false);
     }
-  }
+  };
+
   const handleRemoveToCart = () => {
     shopcontext.removeToCart(id, user_id);
     setShowDiv(false);
-  }
+  };
+
   return (
     <>
-      {showDiv &&
+      {showDiv && (
         <div className="container card my-3">
           <div className="row g-3">
             <div className="cart-container col-12 col-md-5">
@@ -79,7 +83,7 @@ const cartitem = (props) => {
                 <div className="p-3 d-flex justify-content-between align-items-center">
                   <div className="count-handler">
                     <button className="btn btn-outline-secondary" onClick={handleDecreaseNumber}>-</button>
-                    <input className='text-danger fs-4 form-control' value={quantity_state} onChange={handleUpdateNumber} />
+                    <input className='text-danger fs-4 form-control' min="1" value={quantity_state} onChange={handleUpdateNumber} />
                     <button className="btn btn-outline-secondary" onClick={handleIncreaseNumber}>+</button>
                   </div>
                   <div className="btn-cart">
@@ -91,11 +95,10 @@ const cartitem = (props) => {
               </div>
             </div>
           </div>
-        </div >
-      }
+        </div>
+      )}
     </>
   );
+};
 
-}
-
-export default cartitem
+export default CartItem;

@@ -45,6 +45,7 @@
     "react-router-hash-link": "^2.4.3",
     "react-router-use-history": "^1.0.0",
     "react-slick": "^0.29.0",
+    "react-step-progress-bar": "^1.0.3",
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.1",
     "vanilla-lazyload": "^17.8.4",

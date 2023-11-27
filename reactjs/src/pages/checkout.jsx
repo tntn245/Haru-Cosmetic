@@ -225,11 +225,12 @@ const checkout = () => {
                                         </div>
                                     </button>
                                 </div>
+
                             </div>
                         </div>
                     </div>
 
-                    <div className="address col-md-6 p-2">
+                    <div className="address col-md-6 p-2 mt-3">
                         <h1 className=" mt-3 mb-3 fs-3">Địa chỉ giao hàng</h1>
                         <div className="row g-3 mb-3">
                             <div className="col-md-6">

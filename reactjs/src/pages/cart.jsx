@@ -90,7 +90,7 @@ const cart = (props) => {
                       <Link to={`/checkout/${shopcontext.totalChoosed}`} className={location.pathname === '/search' ? 'active' : 'not-active'}>
                         <button
                           className="mt-5">
-                          {isMobile ? "Check Out" : "Thanh Toán"}
+                          {isMobile ? "Check Out" : "Đi Đến Thanh Toán"}
                         </button>
                       </Link>
                     </div>
