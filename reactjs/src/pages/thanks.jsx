@@ -10,7 +10,7 @@ import CartItem from '../components/cartitem'
 import { useNavigate } from 'react-router-dom'
 
 
-const Thanks = () => {  
+const Thanks = () => {
   const shopcontext = useContext(ShopContext);
   const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ const Thanks = () => {
     }
   }, [userID]);
 
-  useEffect(() => {    
+  useEffect(() => {
     const currentURL = window.location.href;
     console.log(currentURL);
 
@@ -42,11 +42,11 @@ const Thanks = () => {
     setVNPTransactionStatus(params.get("vnp_TransactionStatus"));
 
     console.log(vnpTransactionStatus);
-    if(vnpTransactionStatus === '00'){
+    if (vnpTransactionStatus === '00') {
       shopcontext.updatePaymentStatus(vnpTxnRef, "Thành công")
       shopcontext.updateOrderStatus(vnpTxnRef, "Chờ duyệt")
     }
-    else{
+    else {
       shopcontext.updatePaymentStatus(vnpTxnRef, "Không thành công")
       shopcontext.updateOrderStatus(vnpTxnRef, "Đã hủy")
     }
@@ -55,11 +55,11 @@ const Thanks = () => {
   return <>
     <section className="cart">
       <div className="container-xxl p-5">
-          <div className="container-xxl">
-            <div className="row">
-              <div className="text-center p-5 mb-4">
-                <div className="container card my-3">
-                  {vnpTransactionStatus == '00'
+        <div className="container-xxl">
+          <div className="row">
+            <div className="text-center p-5 mb-4">
+              <div className="container card my-3">
+                {vnpTransactionStatus == '00'
                   ?
                   <div>
                     <h3>Cảm ơn quý khách rất nhiều :D !!!</h3>
@@ -83,11 +83,11 @@ const Thanks = () => {
                       Return cart
                     </button>
                   </div>
-                  }
-                </div>
+                }
               </div>
             </div>
           </div>
+        </div>
       </div>
     </section>
   </>;
