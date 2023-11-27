@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\FavouriteController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\OrderDetailsController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +44,12 @@ Route::namespace('App\Http\Controllers')->group(function(){
     Route::post('load-products-in-brand', [BrandController::class, 'loadProductsInBrand']);
 
     Route::post('get-products', [ProductController::class, 'getProducts']);
+
+    Route::post('get-address', [AddressController::class, 'getAddress']);
+    Route::post('add-new-address', [AddressController::class, 'addNewAddress']);
+
+    Route::post('get-reviews', [ReviewController::class, 'getReviews']);
+    Route::post('add-new-review', [ReviewController::class, 'addNewReview']);
 
     Route::post('get-cart', [CartController::class, 'getProductsInCart']);
     Route::post('add-to-cart', [CartController::class, 'addToCart']);

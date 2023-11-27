@@ -28,7 +28,7 @@ const header = () => {
   const [searchText, setSearchText] = useState('');
 
   const shopcontext = useContext(ShopContext);
-  const totalProducts = shopcontext.getTotalCartProducts();
+  // const totalProducts = shopcontext.getTotalCartProducts();
   const location = useLocation();
 
   useEffect(() => {
@@ -109,14 +109,14 @@ const header = () => {
             <button className="cart-span fs-3 d-md-none">
               <Link to='cart' className={location.pathname === '/wishlist' ? 'active' : 'not-active'}>
                 <AiOutlineHeart />
-                <b><span>{totalProducts}</span></b>
+                {/* <b><span>{totalProducts}</span></b> */}
               </Link>
             </button>
 
             <button className="cart-span fs-3 d-md-none">
               <Link to='cart' className={location.pathname === '/cart' ? 'active' : 'not-active'}>
                 <CgShoppingCart />
-                <b><span>{totalProducts}</span></b>
+                {/* <b><span>{totalProducts}</span></b> */}
               </Link>
 
             </button>
@@ -216,7 +216,7 @@ const header = () => {
                         to="/cart"
                         className="d-flex align-items-center color-nav me-3 cart-span-one">
                         <CgShoppingCart className='me-1 fs-2' />
-                        <b>{totalProducts}</b>
+                        {/* <b>{totalProducts}</b> */}
                       </Link>
                     </div>
                   </div>

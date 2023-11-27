@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState, useEffect } from 'react';
-import { ShopContext } from './shopcontext';
+import shopcontext, { ShopContext } from './shopcontext';
 import { PRODUCTS, PRODUCTS1 } from './products';
 import { GrDeliver } from "react-icons/gr";
 import { FaPhoneAlt } from "react-icons/fa";
@@ -10,13 +10,15 @@ import axios from '../api/axios.js';
 
 const ProductDetails = () => {
   const { selectedProduct, cartItems } = useContext(ShopContext);
+  const shopcontext = useContext(ShopContext);
   const [quantity, setQuantity] = useState(1);
   const [userID, setUserID] = useState(0);
+  const [averageStars, setAverageStars] = useState(4);
 
   // Set selectedProduct to 0
-  const productId = selectedProduct || 0;
+  const productID = selectedProduct || 0;
 
-  const product = PRODUCTS.find((p) => p.id === productId) || PRODUCTS1.find((p) => p.id === productId);
+  const product = PRODUCTS.find((p) => p.id === productID) || PRODUCTS1.find((p) => p.id === productID);
 
   if (!product) {
     return null;
@@ -28,18 +30,19 @@ const ProductDetails = () => {
     setActiveTab(tab);
   };
 
-
-  const [reviews, setReviews] = useState([
-    { id: 1, stars: 4, text: "Great product!", date: new Date("2023-11-01") },
-    { id: 2, stars: 5, text: "Highly recommended!", date: new Date("2023-11-05") },
-    { id: 3, stars: 3, text: "Average product.", date: new Date("2023-11-10") },
-  ]);
-
   // Tính số sao trung bình
   const calculateAverageStars = (reviews) => {
     if (reviews.length === 0) return 0;
-    const totalStars = reviews.reduce((sum, review) => sum + review.stars, 0);
-    return totalStars / reviews.length;
+
+    const starsSum = reviews.reduce((sum, obj) => {
+      if (obj.stars !== null) {
+        return sum + obj.stars;
+      }
+      return sum;
+    }, 0);
+
+    const averageStars = starsSum / reviews.length;
+    setAverageStars(averageStars.toFixed(1));
   };
 
   // Tính số sao trung bình cho mỗi rating
@@ -49,27 +52,23 @@ const ProductDetails = () => {
     return (ratingCount / reviews.length) * 100;
   };
 
-  // Đếm số review cho mỗi rating
-  const countReviewsByRating = (reviews, rating) => {
-    return reviews.filter((review) => review.stars === rating).length;
-  };
   const handleReviewSubmit = () => {
     // Validate the review trước khi submitting
     if (newReview.stars === 0 || newReview.text.trim() === '') {
       // You can show an error message or prevent submission if the review is not valid
       return;
     }
+    else {
+      const currentDate = new Date();
+      const formattedDate = currentDate.toISOString().split('T')[0];
+      shopcontext.addNewReviews(productID, userID, newReview.text, newReview.stars, formattedDate)
+      shopcontext.calculateAverageStars();
+      console.log("add new",shopcontext.reviews);
+      setNewReview({ stars: 0, text: '' });
+      setIsWritingReview(false);
+      calculateAverageStars(shopcontext.reviews)
+    }
 
-    // Add the new review to the existing reviews
-    const updatedReviews = [...reviews, { ...newReview, date: new Date() }];
-
-    // Reset the new review state
-    setNewReview({ stars: 0, text: '' });
-
-    // You can send the updatedReviews array to your backend or update the state as needed
-    // For now, let's just update the state locally
-    setReviews(updatedReviews);
-    setIsWritingReview(false);
   };
   // Render star icons dựa trên star rating
   const renderStarReview = (stars) => {
@@ -122,6 +121,10 @@ const ProductDetails = () => {
     }
   }, [userID]);
 
+  useEffect(() => {
+    shopcontext.loadReviews(productID);
+    calculateAverageStars(shopcontext.reviews);
+  },[]);
 
   return (
     <div className="container p-5">
@@ -249,11 +252,12 @@ const ProductDetails = () => {
                     <div className="d-flex flex-column align-items-center">
                       <div className="me-2">
                         <div className="text-muted mb-1">
-                          {calculateAverageStars(reviews).toFixed(1)}
+                          {shopcontext.calculateAverageStars()}
                         </div>
                         <ReactStars
+                          isHalf={true}
                           count={5}
-                          value={calculateAverageStars(reviews)}
+                          value={shopcontext.calculateAverageStars()}
                           size={24}
                           color1="#CCCCCC"
                           color2="#FFD700"
@@ -261,7 +265,7 @@ const ProductDetails = () => {
                         />
                       </div>
                       <div>
-                        <span className="text-muted">{reviews.length} Đánh Giá</span>
+                        <span className="text-muted">{shopcontext.reviews.length} Đánh Giá</span>
                       </div>
                     </div>
                   </div>
@@ -275,14 +279,14 @@ const ProductDetails = () => {
                           <div
                             className="progress-bar bg-success"
                             role="progressbar"
-                            style={{ width: `${calculateRatingPercentage(reviews, stars)}%` }}
-                            aria-valuenow={calculateRatingPercentage(reviews, stars)}
+                            style={{ width: `${calculateRatingPercentage(shopcontext.reviews, stars)}%` }}
+                            aria-valuenow={calculateRatingPercentage(shopcontext.reviews, stars)}
                             aria-valuemin="0"
                             aria-valuemax="100"
                           />
                         </div>
                         <div className="ms-2">
-                          {countReviewsByRating(reviews, stars)} Đánh Giá
+                          {shopcontext.countReviewsByRating(stars)} Đánh Giá
                         </div>
                         {index !== [5, 4, 3, 2, 1].length - 1 && <hr />}
                         <br />
@@ -329,7 +333,7 @@ const ProductDetails = () => {
                   </div>
                 </div>
                 {/* Review của mỗi khách hàng */}
-                {reviews.map((review) => (
+                {shopcontext.reviews.map((review) => (
                   <div key={review.id} className="card mb-3">
                     <div className="card-body d-flex justify-content-between align-items-center">
                       <div className="d-flex align-items-center">
@@ -341,7 +345,7 @@ const ProductDetails = () => {
                         </div>
                       </div>
                       <div className="text-end">
-                        <p className="card-text text-muted">{formatDate(review.date)}</p>
+                        <p className="card-text text-muted">{formatDate(new Date(review.date))}</p>
                       </div>
                     </div>
                   </div>

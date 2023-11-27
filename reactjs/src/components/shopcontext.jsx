@@ -20,6 +20,7 @@ const shopcontext = (props) => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [productsChoosedToBuy, setProductsChoosedToBuy] = useState([]);
   const [isLogin, setIsLogin] = useState(false);
+  const [reviews, setReviews] = useState([]);
 
   const checkIsLogin = () => {
     const user = localStorage.getItem('user');
@@ -374,6 +375,49 @@ const shopcontext = (props) => {
       });
   };
 
+  const loadReviews = (productID) => {
+    axios.post('/api/get-reviews', { productID })
+      .then(
+        (response) => {
+          setReviews(response.data);
+          console.log(reviews);
+        }
+      )
+      .catch(function (error) {
+        console.log(error.message);
+      });
+  }
+
+  const addNewReviews = (productID, userID, text, stars, date) => {
+    axios.post('/api/add-new-review', { productID, userID, text, stars, date })
+      .then(
+        (response) => {
+          console.log(response);
+          setReviews(prevArray => [...prevArray, response.data]);
+          console.log(reviews);
+        }
+      )
+      .catch(function (error) {
+        console.log(error.message);
+      });
+  }
+
+  const calculateAverageStars = () => {
+    if (reviews.length === 0) return 0;
+    const starsSum = reviews.reduce((sum, obj) => {
+      if (obj.stars !== null) {
+        return sum + obj.stars;
+      }
+      return sum;
+    }, 0);
+    const averageStars = starsSum / reviews.length;
+    return averageStars.toFixed(1);
+  };
+
+  const countReviewsByRating = (rating) => {
+    return reviews.filter((review) => review.stars === rating).length;
+  };
+
   const contextValue = {
     cartItems,
     favorites,
@@ -385,6 +429,11 @@ const shopcontext = (props) => {
     productsCategory,
     productsRoot,
     isLogin,
+    reviews,
+    loadReviews,
+    addNewReviews,
+    calculateAverageStars,
+    countReviewsByRating,
     checkIsLogin,
     createOrder,
     updatePaymentStatus,
@@ -417,6 +466,7 @@ const shopcontext = (props) => {
 
   console.log("ShopContext ", cartItems);
   console.log("islogin ", isLogin);
+  console.log("shopcontext reviews ", reviews);
 
   return (
     <ShopContext.Provider value={contextValue}>
