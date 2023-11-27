@@ -113,9 +113,14 @@ const User = () => {
                 <div className="card">
                     <div className="card-body">
                         <p>User ID: {user.id}</p>
-                        <h5 className="card-title">Email: {userEmail}</h5>
-                        <Link to="/edit-profile" className="btn btn-outline-danger">Edit Profile</Link>
-                        <button onClick={handleLogout}>Logout</button>
+                        <p>Email: {user.email}</p>
+                        <p>Name: {user.name}</p>
+                        {/* <h5 className="card-title">Email: {userEmail}</h5> */}
+                        
+                        <div className="container_btn">
+                            <Link to="/edit-profile" className="btn btn-outline-info">Edit Profile</Link>
+                            <button className="btn btn-outline-danger" onClick={handleLogout}>Logout</button>
+                        </div>
 
                         <ul className="step-wizard-list">
                             {steps.map((step, index) => (
