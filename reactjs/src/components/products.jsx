@@ -27,7 +27,7 @@ import axios from '../api/axios.js';
 
 loadProductsCart();
 loadProducts();
-loadCategories();
+// loadCategories();
 
 export const PRODUCTSCART = [];
 async function loadProductsCart() {

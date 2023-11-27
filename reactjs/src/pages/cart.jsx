@@ -28,21 +28,19 @@ const cart = (props) => {
   window.addEventListener("resize", handleResize)
 
   useEffect(() => {
-    shopcontext.loadProductsCart();
-    shopcontext.resetTotalChoosed();
-    console.log("totalAmount ", shopcontext.totalAmount);
-    console.log("totalChoosed ", shopcontext.totalChoosed);
-
     const user = localStorage.getItem('user');
     if (user != null) {
       const user_id = JSON.parse(user).id;
       setUserID(user_id);
-    }
+    }    
   }, []);
 
   useEffect(() => {
-    console.log(shopcontext.productsChoosedToBuy);
-  }, [shopcontext.productsChoosedToBuy]);
+    shopcontext.loadProductsCart(userID);
+    shopcontext.resetTotalChoosed();
+    console.log("totalAmount ", shopcontext.totalAmount);
+    console.log("totalChoosed ", shopcontext.totalChoosed);
+  }, [userID]);
 
   return <>
     <section className="cart">

@@ -19,6 +19,19 @@ const shopcontext = (props) => {
   const [productsRoot, setProductsRoot] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [productsChoosedToBuy, setProductsChoosedToBuy] = useState([]);
+  const [isLogin, setIsLogin] = useState(false);
+
+  const checkIsLogin = () => {
+    const user = localStorage.getItem('user');
+    console.log(user);
+    if (user != null) {
+      setIsLogin(true);
+    }
+    else{
+      setIsLogin(false);
+    }
+    console.log(isLogin);
+  }
 
   const createOrder = (userID, totalPrice, paymentMethod) => {
     if (userID !== 0) {
@@ -195,20 +208,22 @@ const shopcontext = (props) => {
       });
   }
 
-  const loadProductsCart = () => {
-    const userID = JSON.parse(localStorage.getItem('user')).id;
+  const loadProductsCart = (userID) => {
     const PRODUCTSCART = [];
+    setCartItems(PRODUCTSCART);
 
-    axios.post("/api/get-cart", { userID })
-      .then(
-        (response) => {
-          PRODUCTSCART.push(...response.data);
-          setCartItems(PRODUCTSCART);
-        }
-      )
-      .catch(function (error) {
-        console.log(error.message);
-      });
+    if(userID!=0){
+      axios.post("/api/get-cart", { userID })
+        .then(
+          (response) => {
+            PRODUCTSCART.push(...response.data);
+            setCartItems(PRODUCTSCART);
+          }
+        )
+        .catch(function (error) {
+          console.log(error.message);
+        });
+    }
   }
   // Cập nhật cái loại sản phẩm được chọn
   const updateSelectedCategory = (category) => {
@@ -369,6 +384,8 @@ const shopcontext = (props) => {
     filteredProducts,
     productsCategory,
     productsRoot,
+    isLogin,
+    checkIsLogin,
     createOrder,
     updatePaymentStatus,
     updateOrderStatus,
@@ -399,6 +416,7 @@ const shopcontext = (props) => {
   };
 
   console.log("ShopContext ", cartItems);
+  console.log("islogin ", isLogin);
 
   return (
     <ShopContext.Provider value={contextValue}>

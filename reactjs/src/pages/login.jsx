@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { ShopContext } from '../components/shopcontext'
 import axios from '../api/axios.js';
 import '../styles/login.scss';
 import { GoogleOAuthProvider } from '@react-oauth/google';
@@ -13,6 +14,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isShowPassword, setIsShowPassword] = useState(false);
+  const shopcontext = useContext(ShopContext);
 
   const navigate = useNavigate();
 
@@ -28,6 +30,7 @@ const Login = () => {
           console.log(response.data);
           localStorage.setItem("user", JSON.stringify(response.data.userDetails));
           const userType = response.data.userDetails.type;
+          shopcontext.checkIsLogin();
           // if(userType == 'admin')
             console.log(userType);
           navigate("/");
@@ -61,7 +64,7 @@ const Login = () => {
   useEffect(() => {
     google.accounts.id.initialize({
       client_id: "633767045331-hdief49o2fq3m6p5iiqh3h6brtf859v7.apps.googleusercontent.com",
-      callback: handleCallBackResponse
+      callback: handleCallBackResponse,
     });
 
     google.accounts.id.renderButton(
@@ -87,6 +90,7 @@ const Login = () => {
           console.log(response.data);
           navigate("/");
           localStorage.setItem("user", JSON.stringify(response.data.userDetails));
+          shopcontext.checkIsLogin();
         }
       )
       .catch(function (error) {

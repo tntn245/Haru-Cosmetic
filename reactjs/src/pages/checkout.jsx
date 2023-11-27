@@ -13,6 +13,9 @@ const checkout = () => {
     const [userID, setUserID] = useState(0);
     const shopcontext = useContext(ShopContext);
     const [selectedMethod, setSelectedMethod] = useState('');
+    const [showOptions, setShowOptions] = useState(false);
+    const [selectedOption, setSelectedOption] = useState('');
+
     const provinces = [
         "An Giang",
         "Bà Rịa - Vũng Tàu",
@@ -90,48 +93,55 @@ const checkout = () => {
     }, [userID]);
 
     const handlePay = () => {
-        // check if vnpay
-        axios.post("/vnpay", { query })
-            .then(
-                (response) => {
-                    console.log(response);
-                    const link = response.data.vnp_Url;
-                    window.location.href = link;
-                }
-            )
-            .catch(function (error) {
-                console.log(error);
-            });
-        setPaymentMethod("VNPay");
-        shopcontext.createOrder(userID, Number(query), paymentMethod);
-    };
-    
-    const handlePayMomo = () => {
-        axios.post("/momo", { query })
-            .then(
-                (response) => {
-                    console.log(response);
-                    const link = response.data.payUrl;
-                    window.location.href = link;
-                }
-            )
-            .catch(function (error) {
-                console.log(error);
-            });
-        
-        setPaymentMethod("Momo");
-        shopcontext.createOrder(userID, Number(query), paymentMethod);
+        if(selectedMethod=="VNPay"){
+            axios.post("/vnpay", { query })
+                .then(
+                    (response) => {
+                        console.log(response);
+                        const link = response.data.vnp_Url;
+                        window.location.href = link;
+                    }
+                )
+                .catch(function (error) {
+                    console.log(error);
+                });
+            setSelectedMethod("VNPay");
+            setPaymentMethod(selectedMethod);
+            shopcontext.createOrder(userID, Number(query), paymentMethod);
+        }
+        else if(selectedMethod=="Momo"){
+            axios.post("/momo", { query })
+                .then(
+                    (response) => {
+                        console.log(response);
+                        const link = response.data.payUrl;
+                        window.location.href = link;
+                    }
+                )
+                .catch(function (error) {
+                    console.log(error);
+                });
+            setSelectedMethod("Momo");
+            setPaymentMethod(selectedMethod);
+            shopcontext.createOrder(userID, Number(query), selectedMethod);
+        }
+        else{
+            
+        }
     };
 
-        setPaymentMethod(selectedMethod);
-        shopcontext.createOrder(userID, Number(query), selectedMethod);
-    };
-    const handleMethodSelect = (method) => {
-        setSelectedMethod(method); // Update the selected method
+    const handleClick = (method) => {
+        setShowOptions(true);
+        setSelectedMethod(method);
+    };  
+  
+    const handleOptionChange = (event) => {
+      setSelectedOption(event.target.value);
     };
     return <>
         <section className="checkout p-5">
             <div className="container-xxl">
+                    {/* <h1>{query}</h1> */}
                 <div className="row checkout-header">
                     <div className="col-md-6">
                         <h1 className="mb-4 fs-3">Phương thức thanh toán</h1>
@@ -144,7 +154,8 @@ const checkout = () => {
                                         data-bs-target="#collapseVNPAY"  // Unique target for VNPAY
                                         aria-expanded="false"
                                         aria-controls="collapseVNPAY"
-                                        onClick={() => handleMethodSelect('VNPAY')}>
+                                        onClick={() => handleClick("VNPay")}
+                                        >
                                         <div className="d-flex align-items-center justify-content-between">
                                             <div className='col-6' >
                                                 <span>VNPAY</span>
@@ -154,13 +165,42 @@ const checkout = () => {
                                             </div>
                                         </div>
                                     </button>
+                                    {/* {showOptions && (
+                                        <div>
+                                            <div className="radio-container">
+                                                <label>
+                                                    <input type="radio" name="option" value="NCB"
+                                                    checked={selectedOption === 'NCB'}
+                                                    onChange={handleOptionChange} />
+                                                    NCB
+                                                </label>
+                                            </div>
+                                            <div className="radio-container">
+                                                <label>
+                                                    <input type="radio" name="option" value="ACB" 
+                                                    checked={selectedOption === 'ACB'}
+                                                    onChange={handleOptionChange}/>
+                                                    ACB
+                                                </label>
+                                            </div>
+                                            <div className="radio-container">
+                                                <label>
+                                                    <input type="radio" name="option" value="BIDV" 
+                                                    checked={selectedOption === 'BIDV'}
+                                                    onChange={handleOptionChange} />
+                                                    BIDV
+                                                </label>
+                                            </div>
+                                        </div>
+                                    )} */}
                                     <button className={`btn col-12 btn-light btn-block text-start p-3 rounded-0 border-bottom-custom ${selectedMethod === 'MOMO' ? 'active' : ''}`}
                                         type="button"
                                         data-bs-toggle="collapse"
                                         data-bs-target="#collapseMOMO"  // Unique target for MOMO
                                         aria-expanded="false"
                                         aria-controls="collapseMOMO"
-                                        onClick={() => handleMethodSelect('MOMO')}>
+                                        onClick={() => handleClick("Momo")}
+                                        >
                                         <div className="d-flex align-items-center justify-content-between">
                                             <div className='col-6'>
                                                 <span>MOMO</span>
@@ -176,7 +216,8 @@ const checkout = () => {
                                         data-bs-target="#collapseCOD"  // Unique target for THANH TOAN COD
                                         aria-expanded="false"
                                         aria-controls="collapseCOD"
-                                        onClick={() => handleMethodSelect('THANH_TOAN_COD')}>
+                                        onClick={() => handleClick("COD")}
+                                        >
                                         <div className="d-flex align-items-center justify-content-between">
                                             <div className='col-6'>
                                                 <span>THANH TOÁN COD</span>
@@ -218,7 +259,6 @@ const checkout = () => {
                                 </select>
                             </div>
                             <button id="button-linker" onClick={handlePay}>Đặt hàng</button>
-                            <button id="button-linker" name="payUrl" onClick={handlePayMomo}>Đặt hàng</button>
                         </div>
                     </div>
                 </div>

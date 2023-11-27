@@ -27,17 +27,21 @@ const header = () => {
   const [brands, setBrands] = useState([]);
   const [searchText, setSearchText] = useState('');
 
-  const {getTotalCartProducts } = useContext(ShopContext);
-  const totalProducts = getTotalCartProducts();
+  const shopcontext = useContext(ShopContext);
+  const totalProducts = shopcontext.getTotalCartProducts();
   const location = useLocation();
 
   useEffect(() => {
+    shopcontext.checkIsLogin();
     const user = localStorage.getItem('user');
     if (user != null) {
       const user_id = JSON.parse(user).id;
       setUserID(user_id);
-
-      axios.post("/api/get-categories")
+    }
+  }, [userID]);
+  
+  useEffect(() => {
+    axios.post("/api/get-categories")
       .then(
         (response) => {
           setCategories(response.data);
@@ -54,16 +58,7 @@ const header = () => {
       .catch(function (error) {
         console.log(error.message);
       });
-    }
-  }, [userID]);
-  
-  useEffect(() => {
-    console.log(categories);
-  }, [categories]);
-  
-  useEffect(() => {
-    console.log(brands);
-  }, [brands]);
+  }, []);
 
 
   const toggleMenu = () => {
@@ -200,42 +195,42 @@ const header = () => {
             </div>
             <div className="col-md-3">
               <div className="row d-flex justify-content-center">
-                <div className="col-12 col-md-2 d-none d-md-flex d-lg-flex m-auto">
-                  <div className={location.pathname === 'wishlist' ? 'active' : 'not-active'}>
-                    <Link onClick={toggleMenu}
-                      to="/wishlist"
-                      className="d-flex align-items-center color-nav me-3"
-                    >
-                      <AiOutlineHeart className='me-1 fs-2' />
-                    </Link>
-                  </div>
-                  <div className={location.pathname === 'login' ? 'active' : 'not-active'}>
-                    {userID ?
-                      (<Link
+                {shopcontext.isLogin ?
+                  <div className="col-12 col-md-2 d-none d-md-flex d-lg-flex m-auto">
+                    <div className={location.pathname === 'wishlist' ? 'active' : 'not-active'}>
+                      <Link onClick={toggleMenu}
+                        to="/wishlist"
+                        className="d-flex align-items-center color-nav me-3">
+                        <AiOutlineHeart className='me-1 fs-2' />
+                      </Link>
+                    </div>
+                    <div className={location.pathname === 'login' ? 'active' : 'not-active'}>
+                      <Link
                         to={`/user/${userID}`}
-                        className="d-flex align-items-center color-nav me-3 cart-span-one"
-                      >
+                        className="d-flex align-items-center color-nav me-3 cart-span-one">
                         <VscAccount className='me-1 fs-2' />
-                      </Link>)
-                      :
-                      (<Link
+                      </Link>
+                    </div>
+                    <div className={location.pathname === 'cart' ? 'active' : 'not-active'}>
+                      <Link onClick={toggleMenu}
+                        to="/cart"
+                        className="d-flex align-items-center color-nav me-3 cart-span-one">
+                        <CgShoppingCart className='me-1 fs-2' />
+                        <b>{totalProducts}</b>
+                      </Link>
+                    </div>
+                  </div>
+                  :
+                  <div className="col-12 col-md-2 d-none d-md-flex d-lg-flex m-auto">
+                    <div className={location.pathname === 'login' ? 'active' : 'not-active'}>
+                      <Link
                         to="/login"
-                        className="d-flex align-items-center color-nav me-3"
-                      >
+                        className="d-flex align-items-center color-nav me-3">
                         <VscAccount className='me-1 fs-2' />
-                      </Link>)
-                    }
+                      </Link>
+                    </div>
                   </div>
-                  <div className={location.pathname === 'cart' ? 'active' : 'not-active'}>
-                    <Link onClick={toggleMenu}
-                      to="/cart"
-                      className="d-flex align-items-center color-nav me-3 cart-span-one"
-                    >
-                      <CgShoppingCart className='me-1 fs-2' />
-                      <b>{totalProducts}</b>
-                    </Link>
-                  </div>
-                </div>
+                }
               </div>
             </div>
 

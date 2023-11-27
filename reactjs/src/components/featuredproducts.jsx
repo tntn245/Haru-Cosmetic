@@ -15,20 +15,21 @@ const featuredproducts = () => {
   const shopcontext = useContext(ShopContext);
   const [addedToWishlist, setAddedToWishlist] = useState(false);
   const [removeFromWishlist, setRemoveFromWishlist] = useState(false);
+  const [notLogin, setNotLogin] = useState(false);
 
   useEffect(() => {
     const user = localStorage.getItem('user');
     if (user != null) {
       const user_id = JSON.parse(user).id;
       setUserID(user_id);
-      shopcontext.loadProducts();
     }
+    shopcontext.loadProducts();
   }, [userID]);
 
-  const handleAddToCart = async (productID) => {
-    if (userID !== 0) {
+  const handleAddToCart = (productID) => {
+    if (userID != 0) {
       var quantity = 1;
-      await axios.post("/api/add-to-cart", { userID, productID, quantity})
+      axios.post("/api/add-to-cart", { userID, productID, quantity })
         .then(
           (response) => {
             console.log(response);
@@ -38,6 +39,9 @@ const featuredproducts = () => {
           throw error;
         });
     }
+    else {
+      setNotLogin(true);
+    }
   }
 
   const handleViewProductDetails = (productID) => {
@@ -45,10 +49,16 @@ const featuredproducts = () => {
   };
 
   const handleAddToFavs = (productID) => {
-    shopcontext.addToFavs(userID, productID);
-    setFlagFaved(1);
-    setAddedToWishlist(true);
+    if (userID != 0) {
+      shopcontext.addToFavs(userID, productID);
+      setFlagFaved(1);
+      setAddedToWishlist(true);
+    }
+    else {
+      setNotLogin(true);
+    }
   };
+
   const handleRemoveFromFavs = (productID) => {
     shopcontext.removeFromFavs(userID, productID);
     setFlagFaved(0);
@@ -56,20 +66,18 @@ const featuredproducts = () => {
   };
 
   const handleCheckFaved = (productID) => {
-    if(userID!==0){
-      console.log(productID);
-      axios.post("/api/check-faved", { userID, productID })
-        .then(
-          (response) => {
-            setFlagFaved(response.data);
-            console.log("flag", flagFaved);
-            setHover(true);
-          }
-        )
-        .catch(function (error) {
-          console.log(error.message);
-        });
-      }
+    console.log(productID);
+    axios.post("/api/check-faved", { userID, productID })
+      .then(
+        (response) => {
+          setFlagFaved(response.data);
+          console.log("flag", flagFaved);
+          setHover(true);
+        }
+      )
+      .catch(function (error) {
+        console.log(error.message);
+      });
   };
 
   useEffect(() => {
@@ -89,6 +97,15 @@ const featuredproducts = () => {
       return () => clearTimeout(timer);
     }
   }, [removeFromWishlist]);
+
+  useEffect(() => {
+    if (notLogin) {
+      const timer = setTimeout(() => {
+        setNotLogin(false);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [notLogin]);
 
   return <>
     <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 p-3">
@@ -136,17 +153,23 @@ const featuredproducts = () => {
       ))}
     </div>
 
-    {addedToWishlist &&(
-        <div className="wishlist-notification">
-          <p>You've added {name} to your wishlist.</p>
-        </div>
-      )}
-            
-      {removeFromWishlist &&(
-        <div className="wishlist-notification">
-          <p>You've removed {name} from your wishlist.</p>
-        </div>
-      )}
+    {addedToWishlist && (
+      <div className="wishlist-notification">
+        <p>You've added {name} to your wishlist.</p>
+      </div>
+    )}
+
+    {removeFromWishlist && (
+      <div className="wishlist-notification">
+        <p>You've removed {name} from your wishlist.</p>
+      </div>
+    )}
+
+    {notLogin && (
+      <div className="wishlist-notification">
+        <p>You've not login.</p>
+      </div>
+    )}
   </>;
 }
 

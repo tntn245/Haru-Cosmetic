@@ -55,7 +55,7 @@ const CartItem = (props) => {
       {showDiv && (
         <div className="container card my-3">
           <div className="row g-3">
-            <div className="col-12 col-md-5">
+            <div className="cart-container col-12 col-md-5">
               <div className="p-3">
                 <div className="item-container">
                   <div className="checkbox-container">
