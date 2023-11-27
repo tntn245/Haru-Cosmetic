@@ -24,6 +24,7 @@ const header = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [userID, setUserID] = useState(0);
   const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
   const [searchText, setSearchText] = useState('');
 
   const {getTotalCartProducts } = useContext(ShopContext);
@@ -44,12 +45,26 @@ const header = () => {
       .catch(function (error) {
         console.log(error.message);
       });
+      
+      axios.post("/api/get-brands")
+      .then(
+        (response) => {
+          setBrands(response.data);
+        })
+      .catch(function (error) {
+        console.log(error.message);
+      });
     }
   }, [userID]);
   
   useEffect(() => {
     console.log(categories);
   }, [categories]);
+  
+  useEffect(() => {
+    console.log(brands);
+  }, [brands]);
+
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -79,8 +94,6 @@ const header = () => {
               <Link className='links fs-4'><BiPhoneCall /></Link>
             </div>
           </div>
-
-
         </div>
       </div>
     </header>
@@ -168,11 +181,9 @@ const header = () => {
                     show={showMenu2}
                     onMouseOver={handleMouseOver2}
                     onMouseLeave={closeMenu}>
-                    <NavDropdown.Item as={NavLink} to="/brandname/roundlab">Round Lab</NavDropdown.Item>
-                    <NavDropdown.Item as={NavLink} to="/brandname/purito">Purito</NavDropdown.Item>
-                    <NavDropdown.Item as={NavLink} to="/brandname/makeprem">Make P:rem</NavDropdown.Item>
-                    <NavDropdown.Item as={NavLink} to="/brandname/isntree">Isntree</NavDropdown.Item>
-                    <NavDropdown.Item as={NavLink} to="/brandname/realbarrier">Real Barrier</NavDropdown.Item>
+                    {brands.map((brand) => (
+                      <NavDropdown.Item as={NavLink} to={`/brandname/${brand.name_str}`}>{brand.name}</NavDropdown.Item>
+                    ))}
                   </NavDropdown>
                 </div>
                 <div className='ms-auto gap-3'>

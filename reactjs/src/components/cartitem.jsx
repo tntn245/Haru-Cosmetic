@@ -65,7 +65,9 @@ const cartitem = (props) => {
                   <div className="cart-item-image m-auto">
                     <img src={image} className="card-img-top img-fluid" alt="..." />
                   </div>
+
                 </div>
+              </div>
               </div>
             </div>
             <div className="cart-container col-12 col-md-7 d-flex align-items-center justify-content-center">
@@ -79,7 +81,7 @@ const cartitem = (props) => {
                 <div className="p-3 d-flex justify-content-between align-items-center">
                   <div className="count-handler">
                     <button className="btn btn-outline-secondary" onClick={handleDecreaseNumber}>-</button>
-                    <input className='text-danger fs-4 form-control' value={quantity_state} onChange={handleUpdateNumber} />
+                    <input className='text-danger fs-4 form-control'  min="1" value={quantity_state} onChange={handleUpdateNumber} />
                     <button className="btn btn-outline-secondary" onClick={handleIncreaseNumber}>+</button>
                   </div>
                   <div className="btn-cart">

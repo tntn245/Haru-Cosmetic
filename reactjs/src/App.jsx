@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 import Layout from './components/layout'
 import Home from './pages/home'
@@ -20,6 +20,19 @@ import User from './pages/user'
 import Wishlist from './pages/wishlist'
 import ImageUploadForm from './pages/testloadimg'
 import Category from './pages/category'
+import Dashboard from './admin/pages/dashboard'
+import Contacts from './admin/scenes/contacts'
+import Team from './admin/scenes/team'
+import Invoices from './admin/scenes/invoices'
+import Form from './admin/scenes/form'
+import Bar from './admin/scenes/bar'
+import Pie from "./admin/scenes/pie";
+import FAQ from "./admin/scenes/faq";
+import Geography from "./admin/scenes/geography";
+// import LineChart from './admin/components/LineChart'
+import Sidebar from './admin/scenes/global/Sidebar'
+import Topbar from './admin/scenes/global/Topbar'
+
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -32,9 +45,21 @@ function ScrollToTop() {
 
 
 function App() {
+  const [role, setRole] = useState('');
+  const [isSidebar, setIsSidebar] = useState(true);
+
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (user != null) {
+      const user_type = JSON.parse(user).type;
+      setRole(user_type);
+    }
+  }, [role]);
 
   return (
     <>
+      {role != 'admin'
+      ?
       <ShopContext>
         <BrowserRouter>
           <ScrollToTop />
@@ -60,7 +85,32 @@ function App() {
           </Routes>
         </BrowserRouter>
       </ShopContext>
+      :
+      // <div className="app">
+      <ShopContext>
+        <BrowserRouter>
+          <Sidebar isSidebar={isSidebar} />
+            <Topbar setIsSidebar={setIsSidebar} />
+            <Routes>
+              <Route path='/' element={<Layout />}>
+                <Route index element={<Dashboard />} />
+                <Route path="/team" element={<Team />} />
+                <Route path="/contacts" element={<Contacts />} />
+                <Route path="/invoices" element={<Invoices />} />
+                <Route path="/form" element={<Form />} />
+                <Route path="/bar" element={<Bar />} />
+                <Route path="/pie" element={<Pie />} />
+                {/* <Route path="/line" element={<Line />} /> */}
+                {/* <Route path="/faq" element={<FAQ />} /> */}
+                {/* <Route path="/calendar" element={<Calendar />} /> */}
+                <Route path="/geography" element={<Geography />} />
+              </Route>
+            </Routes>
+        </BrowserRouter>
+      </ShopContext>
 
+      // </div>
+      }
     </>
   )
 }

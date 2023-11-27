@@ -26,6 +26,9 @@ class VerifyCsrfToken extends Middleware
 
         'api/get-categories',
         'api/load-products-in-category',
+        
+        'api/get-brands',
+        'api/load-products-in-brand',
 
         'api/get-products',
 
@@ -50,6 +53,7 @@ class VerifyCsrfToken extends Middleware
         'search-product',
 
         'vnpay',
+        'momo',
         'next-order-id',
 
     ];

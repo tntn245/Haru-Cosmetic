@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { ShopContext } from './shopcontext';
 import ReactStars from 'react-rating-stars-component';
 
-const StarFilter = (flagCategory) => {
+const StarFilter = () => {
     const {filter_Category, filter } = useContext(ShopContext);
     const [selectedOption, setSelectedOption] = useState('');
 
@@ -10,10 +10,7 @@ const StarFilter = (flagCategory) => {
         setSelectedOption(event.target.value);
         const starRating = parseInt(event.target.value);
 
-        if(flagCategory)
-            filter_Category(starRating, 0, 0);
-        else
-            filter(starRating,0,0);
+        filter(starRating,0,0);
     };
 
     return (

@@ -27,10 +27,10 @@ const Login = () => {
         (response) => {
           console.log(response.data);
           localStorage.setItem("user", JSON.stringify(response.data.userDetails));
+          const userType = response.data.userDetails.type;
+          // if(userType == 'admin')
+            console.log(userType);
           navigate("/");
-          localStorage.setItem("userEmail", email);
-          const userID = response.data.userDetails.id; // Assuming the user ID is available in the response
-          navigate(`/user/${userID}`); // Navigate to the user page with the user ID
         }
       )
       .catch(function (error) {
@@ -57,19 +57,7 @@ const Login = () => {
         }
       });
   }
-
-  const handleGG = async (event) => {
-    await axios.get("/auth/google")
-      .then(
-        (response) => {
-          console.log(response);
-        }
-      )
-      .catch(function (error) {
-        console.log(error);
-      })
-  }
-
+  
   useEffect(() => {
     google.accounts.id.initialize({
       client_id: "633767045331-hdief49o2fq3m6p5iiqh3h6brtf859v7.apps.googleusercontent.com",

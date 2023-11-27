@@ -4,7 +4,7 @@ import React, { useContext } from 'react'
 // import ProductItems from '../components/productItems';
 import Newsletter from '../components/newsletter';
 import Hero from '../components/hero';
-import PriceFilter from '../components/PriceFilter';
+import Filter from './Filter';
 import StarFilter from '../components/starfilter';
 import '../styles/shop.scss'
 import Prod from './prod';
@@ -24,8 +24,7 @@ const ProductCategory =  ({ products })  => {
       <section className="featured-products my-5 py-4">
         <div className='content'>
           <div className='side-bar-content'>
-            <PriceFilter flagCategory={true}/>
-            <StarFilter flagCategory={true} />
+            <Filter/>
           </div>
           <div className="container-xxl">
             <div className="row productItems">

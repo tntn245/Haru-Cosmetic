@@ -11,7 +11,7 @@ const Category = () => {
     const shopcontext = useContext(ShopContext);
     
     useEffect(() => {
-        console.log("categoryID", categoryStr)
+        console.log("categoryStr", categoryStr)
         shopcontext.loadProductsCategory(categoryStr);
     }, [categoryStr]);    
     

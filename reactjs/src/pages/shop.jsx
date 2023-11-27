@@ -5,8 +5,7 @@ import Shopitems from '../components/shopitems';
 import Newsletter from '../components/newsletter';
 import Hero from '../components/hero';
 import Pagination from '../components/pagination';
-import PriceFilter from '../components/PriceFilter';
-import StarFilter from '../components/starfilter';
+import Filter from '../components/Filter';
 import '../styles/shop.scss'
 import { PRODUCTS } from '../components/products';
 import { PRODUCTS1 } from '../components/products';
@@ -55,8 +54,7 @@ const shop = () => {
       <div className='content'>
         <div className='side-bar'>
           <div className='side-bar-content'>
-            <PriceFilter flagCategory={false}/>
-            <StarFilter flagCategory={false}/>
+            <Filter/>
           </div>
         </div>
         <div className="container-xxl" >

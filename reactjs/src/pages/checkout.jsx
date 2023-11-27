@@ -102,6 +102,26 @@ const checkout = () => {
             .catch(function (error) {
                 console.log(error);
             });
+        setPaymentMethod("VNPay");
+        shopcontext.createOrder(userID, Number(query), paymentMethod);
+    };
+    
+    const handlePayMomo = () => {
+        axios.post("/momo", { query })
+            .then(
+                (response) => {
+                    console.log(response);
+                    const link = response.data.payUrl;
+                    window.location.href = link;
+                }
+            )
+            .catch(function (error) {
+                console.log(error);
+            });
+        
+        setPaymentMethod("Momo");
+        shopcontext.createOrder(userID, Number(query), paymentMethod);
+    };
 
         setPaymentMethod(selectedMethod);
         shopcontext.createOrder(userID, Number(query), selectedMethod);
@@ -198,6 +218,7 @@ const checkout = () => {
                                 </select>
                             </div>
                             <button id="button-linker" onClick={handlePay}>Đặt hàng</button>
+                            <button id="button-linker" name="payUrl" onClick={handlePayMomo}>Đặt hàng</button>
                         </div>
                     </div>
                 </div>

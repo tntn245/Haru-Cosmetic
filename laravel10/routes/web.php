@@ -28,6 +28,7 @@ Route::get('get-products', [ProductController::class, 'getProducts']);
 Route::post('upload-img-product', [ProductController::class, 'uploadImageProduct']);
 Route::get('search-product/{text}', [ProductController::class, 'searchProducts']);
 
+Route::post('momo', [CheckoutController::class, 'Momo']);
 Route::post('vnpay', [CheckoutController::class, 'VNPay']);
 Route::get('vnpay', [CheckoutController::class, 'VNPay']);
 Route::get('getvnpay', [CheckoutController::class, 'getVNPay']);

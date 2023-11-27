@@ -14,7 +14,7 @@ class Categories extends Model
      *
      * @var array<int, string>
      */
-    protected $table = 'category'; 
+    protected $table = 'categories'; 
 
     public $timestamps = false;
 
