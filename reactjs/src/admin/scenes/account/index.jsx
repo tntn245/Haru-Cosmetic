@@ -7,7 +7,7 @@ import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/Header";
 
-const Team = () => {
+const Account = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
@@ -17,13 +17,6 @@ const Team = () => {
       headerName: "Name",
       flex: 1,
       cellClassName: "name-column--cell",
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      headerAlign: "left",
-      align: "left",
     },
     {
       field: "phone",
@@ -70,7 +63,7 @@ const Team = () => {
 
   return (
     <Box m="20px" width="100%">
-      <Header title="TEAM" subtitle="Managing the Team Members" />
+      <Header title="TÀI KHOẢN" subtitle="Quản lý tài khoản" />
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -106,4 +99,4 @@ const Team = () => {
   );
 };
 
-export default Team;
+export default Account;
