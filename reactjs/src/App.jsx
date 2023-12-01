@@ -2,7 +2,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { BrowserRouter, Route, useLocation, Routes } from 'react-router-dom'
 import Layout from './components/layout'
-import LayoutAdmin from './components/layoutadmin'
 import Home from './pages/home'
 import About from './pages/about'
 import Shop from './pages/shop'
@@ -16,6 +15,7 @@ import Checkout from './pages/checkout'
 import Search from './pages/search'
 import './App.css'
 import ShopContext from './components/shopcontext'
+import {RoleContext} from './components/rolecontext'
 import Details from './pages/details'
 import User from './pages/user'
 import Wishlist from './pages/wishlist'
@@ -49,28 +49,14 @@ function ScrollToTop() {
 
 
 function App() {
-  const [role, setRole] = useState('');
   const [isSidebar, setIsSidebar] = useState(true);
   const [theme, colorMode] = useMode();
-  // const shopcontext = useContext(ShopContext);
-
-  useEffect(() => {
-    const user = localStorage.getItem('user');
-    if (user != null) {
-      const user_type = JSON.parse(user).type;
-      setRole(user_type);
-      console.log(role);
-      // console.log("islogin", shopcontext.isLogin);
-    }
-  }, [role]);
+  const { role } = useContext(RoleContext);
 
   return (
     <>
       <ShopContext>
         <ScrollToTop />
-        <Routes>
-          <Route path='login' element={<Login />} />
-        </Routes>
         {role != 'admin'
           ?
           <Routes>
@@ -80,7 +66,7 @@ function App() {
               <Route path='about' element={<About />} />
               <Route path='contact' element={<Contact />} />
               <Route path='/search/:query' element={<Search />} />
-              {/* <Route path='login' element={<Login />} /> */}
+              <Route path='login' element={<Login />} />
               <Route path='/user/:query' element={<User />} />
               <Route path='signup' element={<Signup />} />
               <Route path='forgotpasword' element={<Forgotpasword />} />

@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShopContext } from '../components/shopcontext'
+import { RoleContext } from '../components/rolecontext';
 import axios from '../api/axios.js';
 import '../styles/login.scss';
 import { GoogleOAuthProvider } from '@react-oauth/google';
@@ -15,7 +16,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const [isShowPassword, setIsShowPassword] = useState(false);
   const shopcontext = useContext(ShopContext);
-
+  const { updateRole } = useContext(RoleContext);
   const navigate = useNavigate();
 
   const csrf = () => axios.get('/sanctum/csrf-cookie');
@@ -31,8 +32,7 @@ const Login = () => {
           localStorage.setItem("user", JSON.stringify(response.data.userDetails));
           const userType = response.data.userDetails.type;
           shopcontext.checkIsLogin();
-          // if(userType == 'admin')
-            console.log(userType);
+          updateRole(userType);
           navigate("/");
         }
       )
