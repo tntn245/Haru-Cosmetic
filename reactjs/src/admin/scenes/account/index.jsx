@@ -1,7 +1,7 @@
 import { Box, Typography, useTheme } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
-import { mockDataTeam } from "../../data/mockData";
+import { users } from "../../data/mockData";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
@@ -14,14 +14,9 @@ const Account = () => {
     { field: "id", headerName: "ID" },
     {
       field: "name",
-      headerName: "Name",
+      headerName: "Tên",
       flex: 1,
       cellClassName: "name-column--cell",
-    },
-    {
-      field: "phone",
-      headerName: "Phone Number",
-      flex: 1,
     },
     {
       field: "email",
@@ -29,10 +24,10 @@ const Account = () => {
       flex: 1,
     },
     {
-      field: "accessLevel",
-      headerName: "Access Level",
+      field: "type",
+      headerName: "Loại tài khoản",
       flex: 1,
-      renderCell: ({ row: { access } }) => {
+      renderCell: ({ row: { type } }) => {
         return (
           <Box
             width="60%"
@@ -41,19 +36,16 @@ const Account = () => {
             display="flex"
             justifyContent="center"
             backgroundColor={
-              access === "admin"
+              type === "admin"
                 ? colors.greenAccent[600]
-                : access === "manager"
-                ? colors.greenAccent[700]
                 : colors.greenAccent[700]
             }
             borderRadius="4px"
           >
-            {access === "admin" && <AdminPanelSettingsOutlinedIcon />}
-            {access === "manager" && <SecurityOutlinedIcon />}
-            {access === "user" && <LockOpenOutlinedIcon />}
+            {type === "admin" && <AdminPanelSettingsOutlinedIcon />}
+            {type === "user" && <LockOpenOutlinedIcon />}
             <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-              {access}
+              {type}
             </Typography>
           </Box>
         );
@@ -91,9 +83,16 @@ const Account = () => {
           "& .MuiCheckbox-root": {
             color: `${colors.greenAccent[200]} !important`,
           },
+          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+            color: `${colors.grey[100]} !important`,
+          },
         }}
       >
-        <DataGrid checkboxSelection rows={mockDataTeam} columns={columns} />
+        <DataGrid checkboxSelection 
+        rows={users} 
+        columns={columns}
+        components={{ Toolbar: GridToolbar }}
+        />
       </Box>
     </Box>
   );

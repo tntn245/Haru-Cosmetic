@@ -1,81 +1,38 @@
+import axios from "../../api/axios";
 import { tokens } from "../../theme";
 
-export const mockDataTeam = [
-  {
-    id: 1,
-    name: "John Smith",
-    email: "jonsmith@gmail.com",
-    age: 35,
-    phone: "(665)121-5454",
-    access: "admin",
-  },
-  {
-    id: 2,
-    name: "Cersei William",
-    email: "williamc@gmail.com",
-    age: 42,
-    phone: "(421)314-2288",
-    access: "manager",
-  },
-  {
-    id: 3,
-    name: "Jaimes Watson",
-    email: "jameswatt@gmail.com",
-    age: 45,
-    phone: "(422)982-6739",
-    access: "user",
-  },
-  {
-    id: 4,
-    name: "Aisha Patel",
-    email: "aisha23@newwill.com",
-    age: 16,
-    phone: "(921)425-6742",
-    access: "admin",
-  },
-  {
-    id: 5,
-    name: "Witson Cortex",
-    email: "witson@gmail.com",
-    age: 31,
-    phone: "(421)445-1189",
-    access: "user",
-  },
-  {
-    id: 6,
-    name: "Simon Fox",
-    email: "simon@gmail.com",
-    age: 150,
-    phone: "(232)545-6483",
-    access: "manager",
-  },
-  {
-    id: 7,
-    name: "Ferrara Clifford",
-    email: "ferraraclifford@gmail.com",
-    age: 44,
-    phone: "(543)124-0123",
-    access: "user",
-  },
-  {
-    id: 8,
-    name: "Rossini Frances",
-    email: "rossinifrances@gmail.com",
-    age: 36,
-    phone: "(222)444-5555",
-    access: "user",
-  },
-  {
-    id: 9,
-    name: "Harvey Roxie",
-    email: "harveyroxie@gmail.com",
-    age: 65,
-    phone: "(444)555-6239",
-    access: "admin",
-  },
-];
+loadUsers();
+loadOrders();
+loadProducts();
 
-export const mockDataContacts = [
+export let users = [];
+async function loadUsers() {
+  axios.post("/api/get-users")
+    .then((response) => {
+      response.data.forEach((obj) => {
+        users.push(obj);
+      });
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
+
+export let mockDataContacts = [];
+async function loadProducts() {
+  axios.post("/api/get-products")
+    .then((response) => {
+      console.log(response.data);
+      response.data.forEach((obj) => {
+        mockDataContacts.push(obj);
+      });
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
+
+export const mockDataContacts1 = [
   {
     id: 1,
     name: "John Smith",
@@ -199,72 +156,19 @@ export const mockDataContacts = [
   },
 ];
 
-export const mockDataInvoices = [
-  {
-    id: 1,
-    name: "John Smith",
-    email: "jonsmith@gmail.com",
-    cost: "21.24",
-    phone: "(665)121-5454",
-    date: "03/12/2022",
-  },
-  {
-    id: 2,
-    name: "Cersei William",
-    email: "williamc@gmail.com",
-    cost: "1.24",
-    phone: "(421)314-2288",
-    date: "06/15/2021",
-  },
-  {
-    id: 3,
-    name: "Jaimes Watson",
-    email: "jameswatt@gmail.com",
-    cost: "11.24",
-    phone: "(422)982-6739",
-    date: "05/02/2022",
-  },
-  {
-    id: 4,
-    name: "Aisha Patel",
-    email: "aisha23@newwill.com",
-    cost: "80.55",
-    phone: "(921)425-6742",
-    date: "03/21/2022",
-  },
-  {
-    id: 5,
-    name: "Witson Cortex",
-    email: "witson@gmail.com",
-    cost: "1.24",
-    phone: "(421)445-1189",
-    date: "01/12/2021",
-  },
-  {
-    id: 6,
-    name: "Simon Fox",
-    email: "simon@gmail.com",
-    cost: "63.12",
-    phone: "(232)545-6483",
-    date: "11/02/2022",
-  },
-  {
-    id: 7,
-    name: "Ferrara Clifford",
-    email: "ferraraclifford@gmail.com",
-    cost: "52.42",
-    phone: "(543)124-0123",
-    date: "02/11/2022",
-  },
-  {
-    id: 8,
-    name: "Rossini Frances",
-    email: "rossinifrances@gmail.com",
-    cost: "21.24",
-    phone: "(222)444-5555",
-    date: "05/02/2021",
-  },
-];
+export let orders = [];
+async function loadOrders() {
+  axios.post("/api/get-orders")
+    .then((response) => {
+      console.log(response.data);
+      response.data.forEach((obj) => {
+        orders.push(obj);
+      });
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
 
 export const mockTransactions = [
   {

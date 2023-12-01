@@ -33,7 +33,7 @@ Route::namespace('App\Http\Controllers')->group(function(){
     Route::post('login-user', [UserController::class, 'loginUser']);
     Route::post('login-google', [UserController::class, 'loginGoogle']);
     Route::post('logout-user', [UserController::class, 'logoutUser']);
-    Route::post('get-user', [UserController::class, 'getUser']);
+    Route::post('get-users', [UserController::class, 'getUsers']);
     Route::post('update-user', [UserController::class, 'updateUser']);
     // Route::post('images', [UserController::class, 'uploadImg']);
 
@@ -65,6 +65,7 @@ Route::namespace('App\Http\Controllers')->group(function(){
     Route::post('check-faved', [FavouriteController::class, 'checkFaved']);
     Route::post('remove-from-favs', [FavouriteController::class, 'removeFromFavs']);
 
+    Route::post('get-orders', [OrderController::class, 'getOrders']);
     Route::post('create-order', [OrderController::class, 'createOrder']);
     Route::post('update-order-status', [OrderController::class, 'updateOrderStatus']);
     Route::post('update-payment-status', [OrderController::class, 'updatePaymentStatus']);

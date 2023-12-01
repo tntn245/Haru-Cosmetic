@@ -22,9 +22,9 @@ import Wishlist from './pages/wishlist'
 import ImageUploadForm from './pages/testloadimg'
 import Category from './pages/category'
 import Dashboard from './admin/pages/dashboard'
-import Contacts from './admin/scenes/contacts'
+import Products from './admin/scenes/products'
 import Account from './admin/scenes/account'
-import Invoices from './admin/scenes/invoices'
+import Orders from './admin/scenes/orders'
 import Form from './admin/scenes/form'
 import Bar from './admin/scenes/bar'
 // import Calendar from './admin/scenes/calendar/calendar'
@@ -89,10 +89,9 @@ function App() {
                   <Topbar setIsSidebar={setIsSidebar} />
                   <Routes>
                     <Route path="/" element={<Dashboard />} />
-                    {/* <Route path="login" element={<Login />} /> */}
                     <Route path="/account" element={<Account />} />
-                    <Route path="/contacts" element={<Contacts />} />
-                    <Route path="/invoices" element={<Invoices />} />
+                    <Route path="/products" element={<Products />} />
+                    <Route path="/orders" element={<Orders />} />
                     <Route path="/form" element={<Form />} />
                     <Route path="/bar" element={<Bar />} />
                     <Route path="/pie" element={<Pie />} />

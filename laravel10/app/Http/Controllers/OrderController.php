@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    public function getOrders()
+    {
+        $getOrders = DB::table('orders')
+        ->join('users', 'orders.user_id', '=', 'users.id')
+        ->select('orders.*', 'users.name', 'users.email')
+        ->get();
+        return $getOrders;
+    }
     public function getNextOrderID()
     {
         $maxID = DB::table('orders')->max('id');
