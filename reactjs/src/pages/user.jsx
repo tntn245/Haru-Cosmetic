@@ -2,7 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ShopContext } from '../components/shopcontext'
+import pro1 from '../assets/images/products/f1.jpg'
+import pro2 from '../assets/images/products/f2.jpg'
 import axios from '../api/axios.js';
+import { Card, Table } from 'react-bootstrap';
 import '../styles/user.scss';
 
 const User = () => {
@@ -12,7 +15,7 @@ const User = () => {
     const userEmail = localStorage.getItem("userEmail");
     const navigate = useNavigate();
     const shopcontext = useContext(ShopContext);
-  
+
     const handleLogout = () => {
         axios.post("/api/logout-user")
             .then(
@@ -21,7 +24,7 @@ const User = () => {
                     navigate('/login');
                     localStorage.clear();
                     shopcontext.checkIsLogin();
-                    console.log("is",shopcontext.isLogin);
+                    console.log("is", shopcontext.isLogin);
                 }
             )
             .catch(function (error) {
@@ -32,7 +35,8 @@ const User = () => {
     const [editedAddressIndex, setEditedAddressIndex] = useState(null);
     const [newAddress, setNewAddress] = useState({ name: '', phone: '', address: '' });
     const [showNewAddressFields, setShowNewAddressFields] = useState(false);
-
+    const [collapsedOrderId, setCollapsedOrderId] = useState(null);
+    const [expandedOrder, setExpandedOrder] = useState(null);
     useEffect(() => {
         try {
             const user = JSON.parse(localStorage.getItem('user'));
@@ -81,7 +85,7 @@ const User = () => {
             }
         } else {
             // Case: Editing an existing address
-            shopcontext.updateAddress(editedAddressIndex, newAddress.name, newAddress.phone, newAddress.address )
+            shopcontext.updateAddress(editedAddressIndex, newAddress.name, newAddress.phone, newAddress.address)
             setEditedAddressIndex(null);
             setNewAddress({ name: '', phone: '', address: '' }); // Clear new address fields
             setShowNewAddressFields(false); // Hide the input fields after editing an existing address
@@ -102,10 +106,34 @@ const User = () => {
     };
 
     const handleSaveAddress = () => {
-        shopcontext.updateAddress(editedAddressIndex, newAddress.name, newAddress.phone, newAddress.address )
+        shopcontext.updateAddress(editedAddressIndex, newAddress.name, newAddress.phone, newAddress.address)
         setEditedAddressIndex(null);
     };
 
+    const exampleOrders = [
+        {
+            orderId: 'Order1',
+            orderDate: '2023-11-28',
+            totalAmount: '$50.00',
+            items: [
+                { productId: 1, productName: 'Product A', price: '$10.00', quantity: 2, totalPrice: '$20.00' },
+                { productId: 2, productName: 'Product B', price: '$15.00', quantity: 1, totalPrice: '$15.00' },
+            ],
+        },
+        {
+            orderId: 'Order2',
+            orderDate: '2023-11-27',
+            totalAmount: '$35.00',
+            items: [
+                { productId: 3, productName: 'Product C', price: '$8.00', quantity: 3, totalPrice: '$24.00' },
+                { productId: 4, productName: 'Product D', price: '$5.00', quantity: 2, totalPrice: '$10.00' },
+            ],
+        },
+    ];
+
+    const handleOrderCollapse = (orderId) => {
+        setExpandedOrder(expandedOrder === orderId ? null : orderId);
+    };
     return (
         <section className="user-wrapper">
             <div className="container">
@@ -114,9 +142,9 @@ const User = () => {
                     <div className="card-body">
                         <p>User ID: {user.id}</p>
                         <p>Email: {user.email}</p>
-                        <p>Name: {user.name}</p>
+                        <p>Tên người dùng: {user.name}</p>
                         {/* <h5 className="card-title">Email: {userEmail}</h5> */}
-                        
+
                         <div className="container_btn">
                             <Link to="/edit-profile" className="btn btn-outline-info">Edit Profile</Link>
                             <button className="btn btn-outline-danger" onClick={handleLogout}>Logout</button>
@@ -201,15 +229,15 @@ const User = () => {
                                                         </>
                                                     ) : (
                                                         <>
-                                                        <button className="update btn btn-dark" onClick={() => handleEditAddress(index)}>Cập nhật</button>
-                                                        <button className="delete btn btn-dark" onClick={() => handleDeleteAddress(index)}>Xóa</button>
+                                                            <button className="update btn btn-dark" onClick={() => handleEditAddress(index)}>Cập nhật</button>
+                                                            <button className="delete btn btn-dark" onClick={() => handleDeleteAddress(index)}>Xóa</button>
                                                         </>
                                                     )}
                                                 </div>
                                                 <hr></hr>
                                             </div>
                                         ))}
-                                        
+
                                         <button className="btn btn-dark" onClick={() => handleAddAddress()}>Thêm địa chỉ mới</button>
                                         {editedAddressIndex === null && (
                                             <>
@@ -267,7 +295,75 @@ const User = () => {
                                 </div>
                             </div>
                         )}
-                        {orderStatus === 'pending' && <p>Show Pending Orders here</p>}
+                        {orderStatus === 'pending' &&
+                            <Card>
+                                <Card.Body>
+                                    <Card.Title className="mt-3 text-center">Đơn hàng của bạn</Card.Title>
+                                    <Table striped bordered hover> {/* Apply striped, bordered, and hover styles to the table */}
+                                        <thead>
+                                            <tr>
+                                                <th>Mã đơn hàng</th>
+                                                <th>Ngày đặt hàng</th>
+                                                <th>Tổng tiền</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {exampleOrders.map((order) => (
+                                                <React.Fragment key={order.orderId}>
+                                                    <tr onClick={() => handleOrderCollapse(order.orderId)}>
+                                                        <td>
+                                                            <Link to="#" className="order-link">
+                                                                {order.orderId}
+                                                            </Link>
+                                                        </td>
+                                                        <td>{order.orderDate}</td>
+                                                        <td>{order.totalAmount}</td>
+                                                    </tr>
+                                                    {expandedOrder === order.orderId && (
+                                                        <tr>
+                                                            <td colSpan="3">
+
+                                                                <Table striped bordered hover>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Tên sản phẩm</th>
+                                                                            <th>Giá</th>
+                                                                            <th>Số lượng</th>
+                                                                            <th>Tổng tiền</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        {/* You can map over order.items and render each product item */}
+                                                                        {/* For example: */}
+                                                                        {order.items.map((item) => (
+                                                                            <tr key={item.productId}>
+                                                                                <td>
+                                                                                    {item.productName}
+                                                                                    <img
+                                                                                        src={item.productId === 1 ? pro1 : pro2}
+                                                                                        alt={item.productName}
+                                                                                        style={{ maxWidth: '100px', maxHeight: '100px', width: 'auto', height: 'auto', marginLeft: '20px' }}
+                                                                                    />
+
+                                                                                </td>
+                                                                                <td>{item.price}</td>
+                                                                                <td>{item.quantity}</td>
+                                                                                <td>{item.totalPrice}</td>
+                                                                            </tr>
+                                                                        ))}
+                                                                    </tbody>
+                                                                </Table>
+
+                                                            </td>
+                                                        </tr>
+                                                    )}
+                                                </React.Fragment>
+                                            ))}
+                                        </tbody>
+                                    </Table>
+                                </Card.Body>
+                            </Card>
+                        }
                         {orderStatus === 'shipping' && <p>Show Shipping Orders here</p>}
                         {orderStatus === 'delivered' && <p>Show Delivered Orders here</p>}
                     </div>
