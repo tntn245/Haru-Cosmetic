@@ -17,21 +17,39 @@ import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import LogoutIcon from '@mui/icons-material/Logout';
-import { ShopContext } from '../../../components/shopcontext';
 import axios from '../../../api/axios.js';
+import { RoleContext } from '../../../components/rolecontext.jsx';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const shopcontext = useContext(ShopContext);
+  return (
+      <MenuItem
+        active={selected === title}
+        style={{
+          color: colors.grey[100],
+        }}
+        onClick={()=>setSelected(title)}
+        icon={icon}>
+        <Typography>{title}</Typography>
+        <Link to={to} />
+      </MenuItem>
+  );
+};
+
+
+const ItemLogout = ({ title, to, icon, selected, setSelected }) => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const { updateRole } = useContext(RoleContext);
   const [userID, setUserID] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const user = localStorage.getItem('user');
     if (user != null) {
       const user_id = JSON.parse(user).id;
       setUserID(user_id);
-      console.log("u", userID)
     }    
   }, [userID]);
 
@@ -43,9 +61,9 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
                   setSelected(title);
                   console.log(response);
                   localStorage.clear();
-                  shopcontext.checkIsLogin();
-                  console.log("is",shopcontext.isLogin);
-              }
+                  updateRole("");
+                  navigate("/");
+                }
           )
           .catch(function (error) {
               console.log(error);
@@ -59,7 +77,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
         style={{
           color: colors.grey[100],
         }}
-        onClick={handleLogout}
+        onClick={()=>handleLogout()}
         icon={icon}>
         <Typography>{title}</Typography>
         <Link to={to} />
@@ -258,12 +276,13 @@ const Sidebar = () => {
             >
               More
             </Typography>
-            <Item
+            <ItemLogout
               title="Logout"
               to="/login"
               icon={<LogoutIcon />}
               selected={selected}
               setSelected={setSelected}
+              onClick={()=>handleLogout()}
             />
           </Box>
         </Menu>

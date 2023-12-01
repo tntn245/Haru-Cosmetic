@@ -10,13 +10,12 @@ import axios from '../api/axios.js';
 import { useLocation } from 'react-router-dom';
 
 const checkout = () => {
-    const location = useLocation();
-    const receivedData = location?.state?.data || {};
+    // const location = useLocation();
+    // const receivedData = location?.state?.data || {};
     const [paymentMethod, setPaymentMethod] = useState('');
     const [userID, setUserID] = useState(0);
     const shopcontext = useContext(ShopContext);
     const [selectedMethod, setSelectedMethod] = useState('');
-    const [selectedOption, setSelectedOption] = useState(shopcontext.productsChoosedToBuy);
 
     const provinces = [
         "An Giang",
@@ -94,12 +93,6 @@ const checkout = () => {
         }
     }, [userID]);
 
-    useEffect(() => {
-        console.log("a", shopcontext.productsChoosedToBuy);
-        console.log("b", selectedOption);
-        console.log("c", myArray)
-    }, []);
-
     const handlePay = () => {
         if(selectedMethod=="VNPay"){
             axios.post("/vnpay", { query })
@@ -146,11 +139,7 @@ const checkout = () => {
     const handleOptionChange = (event) => {
       setSelectedOption(event.target.value);
     };
-    const myArray = [
-        { id: 1, category_id: 1, brand_id: null, name: 'Serum ABC', price: 100000 },
-        { id: 2, category_id: 2, brand_id: null, name: 'Lotion XYZ', price: 50000 },
-        // Add more objects as needed
-      ];
+    
     return <>
         <section className="checkout p-5">
             <div className="container-xxl">
