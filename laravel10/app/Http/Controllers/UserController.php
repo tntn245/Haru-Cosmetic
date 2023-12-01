@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    public function getUser()
+    public function getUsers()
     {
         $getUsers = User::get();
         return $getUsers;

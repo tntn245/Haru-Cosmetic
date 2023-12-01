@@ -1,63 +1,56 @@
-import { Box } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
-import { mockDataContacts } from "../../data/mockData";
+import { orders } from "../../data/mockData";
 import Header from "../../components/Header";
-import { useTheme } from "@mui/material";
 
-const Contacts = () => {
+const Orders = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
   const columns = [
-    { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "registrarId", headerName: "Registrar ID" },
+    { field: "id", headerName: "ID" },
     {
       field: "name",
-      headerName: "Name",
+      headerName: "Tên",
       flex: 1,
       cellClassName: "name-column--cell",
-    },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      headerAlign: "left",
-      align: "left",
-    },
-    {
-      field: "phone",
-      headerName: "Phone Number",
-      flex: 1,
     },
     {
       field: "email",
       headerName: "Email",
       flex: 1,
+      cellClassName: "name-column--cell",
     },
     {
-      field: "address",
-      headerName: "Address",
+      field: "payment_status",
+      headerName: "Tình trạng thanh toán",
       flex: 1,
     },
     {
-      field: "city",
-      headerName: "City",
+      field: "order_status",
+      headerName: "Tình trạng đơn hàng",
       flex: 1,
     },
     {
-      field: "zipCode",
-      headerName: "Zip Code",
+      field: "total_price",
+      headerName: "Tổng tiền",
+      flex: 1,
+      renderCell: (params) => (
+        <Typography color={colors.greenAccent[500]}>
+          {params.row.total_price}
+        </Typography>
+      ),
+    },
+    {
+      field: "payment_method",
+      headerName: "Phương thức thanh toán",
       flex: 1,
     },
   ];
 
   return (
     <Box m="20px" width="100%">
-      <Header
-        title="CONTACTS"
-        subtitle="List of Contacts for Future Reference"
-      />
+      <Header title="ĐƠN HÀNG" subtitle="Quản lý đơn hàng" />
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -90,14 +83,14 @@ const Contacts = () => {
           },
         }}
       >
-        <DataGrid
-          rows={mockDataContacts}
-          columns={columns}
-          components={{ Toolbar: GridToolbar }}
+      <DataGrid checkboxSelection 
+        rows={orders} 
+        columns={columns}
+        components={{ Toolbar: GridToolbar }}
         />
       </Box>
     </Box>
   );
 };
 
-export default Contacts;
+export default Orders;

@@ -13,7 +13,11 @@ class ProductController extends Controller
 {
     public function getProducts()
     {
-        $getProducts = Product::get();
+        $getProducts = DB::table('products')
+        ->leftJoin('categories', 'products.category_id', '=', 'categories.id')
+        ->leftJoin('brands', 'products.brand_id', '=', 'brands.id')
+        ->select('products.*', 'categories.name as category_name', 'brands.name as brand_name')
+        ->get();
         return $getProducts;
     }
     public function getProductInf(Request $request)

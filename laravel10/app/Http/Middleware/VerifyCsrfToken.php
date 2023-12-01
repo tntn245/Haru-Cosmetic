@@ -17,7 +17,7 @@ class VerifyCsrfToken extends Middleware
         'api/login-user',
         'api/login-google',
         'api/logout-user',
-        'api/get-user',
+        'api/get-users',
         'api/update-user',
         'google/callback',
         'google/redirect',
@@ -52,6 +52,7 @@ class VerifyCsrfToken extends Middleware
         'api/check-faved',
         'api/remove-from-favs',
         
+        'api/get-orders',
         'api/create-order',
         'api/update-order-status',
         'api/update-payment-status',
