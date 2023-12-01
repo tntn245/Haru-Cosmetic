@@ -10,12 +10,13 @@ import CartItem from '../components/cartitem'
 import { useNavigate } from 'react-router-dom'
 
 
-const cart = (props) => {
+const cart = () => {
   const shopcontext = useContext(ShopContext);
   const totalAmount = shopcontext.getTotalCartAmount();
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(false);
   const [userID, setUserID] = useState(0);
+  const [dataToPass, setDataToPass] = useState([]);
 
   const handleResize = () => {
     if (window.innerWidth < 576) {
@@ -38,7 +39,7 @@ const cart = (props) => {
   useEffect(() => {
     shopcontext.loadProductsCart(userID);
     shopcontext.resetTotalChoosed();
-    console.log("totalAmount ", shopcontext.totalAmount);
+    console.log("totalAmount ", totalAmount);
     console.log("totalChoosed ", shopcontext.totalChoosed);
   }, [userID]);
 
@@ -47,16 +48,15 @@ const cart = (props) => {
       <div className="container-xxl p-5">
         {totalAmount > 0 ?
           <div className="row">
-            <div className='p-2 text-center'>
+            <div className='pa-2 text-center'>
               <h2>Giỏ hàng</h2>
-
             </div>
-            <div className="col-12 col-md-5 text-center">
+            {/* <div className="col-12 col-md-5 text-center">
               <h5>Sản phẩm</h5>
             </div>
             <div className="col-12 col-md-5 text-center">
               <h5>Chi tiết</h5>
-            </div>
+            </div> */}
 
             <div className="p-3">
               {[...shopcontext.cartItems].map((product) => {
@@ -87,7 +87,7 @@ const cart = (props) => {
                           </p>
                         </div>
                       </div>
-                      <Link to={`/checkout/${shopcontext.totalChoosed}`} className={location.pathname === '/search' ? 'active' : 'not-active'}>
+                      <Link to={`/checkout/${shopcontext.totalChoosed}`} state={{ data: dataToPass }}>
                         <button
                           className="mt-5">
                           {isMobile ? "Check Out" : "Đi Đến Thanh Toán"}

@@ -44,6 +44,7 @@ Route::namespace('App\Http\Controllers')->group(function(){
     Route::post('load-products-in-brand', [BrandController::class, 'loadProductsInBrand']);
 
     Route::post('get-products', [ProductController::class, 'getProducts']);
+    Route::post('get-product-inf', [ProductController::class, 'getProductInf']);
 
     Route::post('get-addresses', [AddressController::class, 'getAddresses']);
     Route::post('add-new-address', [AddressController::class, 'addNewAddress']);

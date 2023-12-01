@@ -7,14 +7,16 @@ import { Link, useParams } from 'react-router-dom';
 import vnpay from '../assets/images/pay/vnpay.svg'
 import momo from '../assets/images/pay/momo.png'
 import axios from '../api/axios.js';
+import { useLocation } from 'react-router-dom';
 
 const checkout = () => {
+    const location = useLocation();
+    const receivedData = location?.state?.data || {};
     const [paymentMethod, setPaymentMethod] = useState('');
     const [userID, setUserID] = useState(0);
     const shopcontext = useContext(ShopContext);
     const [selectedMethod, setSelectedMethod] = useState('');
-    const [showOptions, setShowOptions] = useState(false);
-    const [selectedOption, setSelectedOption] = useState('');
+    const [selectedOption, setSelectedOption] = useState(shopcontext.productsChoosedToBuy);
 
     const provinces = [
         "An Giang",
@@ -92,6 +94,12 @@ const checkout = () => {
         }
     }, [userID]);
 
+    useEffect(() => {
+        console.log("a", shopcontext.productsChoosedToBuy);
+        console.log("b", selectedOption);
+        console.log("c", myArray)
+    }, []);
+
     const handlePay = () => {
         if(selectedMethod=="VNPay"){
             axios.post("/vnpay", { query })
@@ -138,10 +146,35 @@ const checkout = () => {
     const handleOptionChange = (event) => {
       setSelectedOption(event.target.value);
     };
+    const myArray = [
+        { id: 1, category_id: 1, brand_id: null, name: 'Serum ABC', price: 100000 },
+        { id: 2, category_id: 2, brand_id: null, name: 'Lotion XYZ', price: 50000 },
+        // Add more objects as needed
+      ];
     return <>
         <section className="checkout p-5">
             <div className="container-xxl">
-                    {/* <h1>{query}</h1> */}
+                {shopcontext.productsChoosedToBuy.map((product) => (
+                    <div key={product.id} className="container card my-3">
+                            <div className="row g-3">
+                                <div className="col-12 col-md-5">
+                                    <div className="p-3">
+                                        <div className="cart-item-image m-auto">
+                                            <img src={product.image} className="card-img-top img-fluid " alt="..." />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-12 col-md-7">
+                                    <div className="p-3">
+                                        <p>{product.name}</p>
+                                        <p className="cart-item-id">Nhãn hàng: <b className='text-center mb-1'>{product.brand}</b></p>
+                                        <p className="cart-item-id">Số lượng: <b className='text-center mb-3'>{product.quantity}</b></p>
+                                        <p className="cart-item-id">Giá bán: <b className='text-center mb-1'>{product.price} VND</b></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                ))}
                 <div className="row checkout-header">
                     <div className="col-md-6">
                         <h1 className="mb-4 fs-3">Phương thức thanh toán</h1>
@@ -165,34 +198,6 @@ const checkout = () => {
                                             </div>
                                         </div>
                                     </button>
-                                    {/* {showOptions && (
-                                        <div>
-                                            <div className="radio-container">
-                                                <label>
-                                                    <input type="radio" name="option" value="NCB"
-                                                    checked={selectedOption === 'NCB'}
-                                                    onChange={handleOptionChange} />
-                                                    NCB
-                                                </label>
-                                            </div>
-                                            <div className="radio-container">
-                                                <label>
-                                                    <input type="radio" name="option" value="ACB" 
-                                                    checked={selectedOption === 'ACB'}
-                                                    onChange={handleOptionChange}/>
-                                                    ACB
-                                                </label>
-                                            </div>
-                                            <div className="radio-container">
-                                                <label>
-                                                    <input type="radio" name="option" value="BIDV" 
-                                                    checked={selectedOption === 'BIDV'}
-                                                    onChange={handleOptionChange} />
-                                                    BIDV
-                                                </label>
-                                            </div>
-                                        </div>
-                                    )} */}
                                     <button className={`btn col-12 btn-light btn-block text-start p-3 rounded-0 border-bottom-custom ${selectedMethod === 'MOMO' ? 'active' : ''}`}
                                         type="button"
                                         data-bs-toggle="collapse"

@@ -107,6 +107,7 @@ const shopcontext = (props) => {
 
   const resetTotalChoosed = () => {
     setTotalChoosed(0);
+    setProductsChoosedToBuy([]);
   }
 
   const addToProductsChoosed = (productID, price, quantity) => {
@@ -114,13 +115,17 @@ const shopcontext = (props) => {
     sum += Number(price) * Number(quantity);
     setTotalChoosed(sum);
 
-    const newProduct = {
-      product_id: productID,
-      quantity: quantity,
-      price: price
-    };
-    setProductsChoosedToBuy([...productsChoosedToBuy, newProduct]);
-    console.log(productsChoosedToBuy);
+    axios.post("api/get-product-inf", { productID })
+      .then(
+        (response) => {
+          const newProduct = { ...response.data[0], quantity: quantity }
+          setProductsChoosedToBuy([...productsChoosedToBuy, newProduct]);
+          console.log(productsChoosedToBuy);
+        }
+      )
+      .catch(function (error) {
+        console.log(error.message);
+      });
   }
 
   const removeFromProductsChoosed = (productID, price, quantity) => {
@@ -128,7 +133,7 @@ const shopcontext = (props) => {
     sum -= Number(price) * Number(quantity);
     setTotalChoosed(sum);
 
-    const filteredItems = productsChoosedToBuy.filter((item) => item.key !== productID);
+    const filteredItems = productsChoosedToBuy.filter((item) => item.product_id !== productID);
     setProductsChoosedToBuy(filteredItems);
     console.log(productsChoosedToBuy);
   };
@@ -138,8 +143,8 @@ const shopcontext = (props) => {
       axios.post("/api/get-favs", { userID })
         .then(
           (response) => {
-            setFavorites(response.data);
-            console.log(response.data);
+            setFavorites(response.data[0]);
+            console.log(response.data[0]);
           }
         )
         .catch(function (error) {
@@ -154,7 +159,7 @@ const shopcontext = (props) => {
       axios.post("/api/add-to-favs", { userID, productID })
         .then(
           (response) => {
-            setFavorites(response.data);
+            setFavorites([...favorites,response.data[0]]);
             console.log(response);
           }
         )
@@ -170,6 +175,8 @@ const shopcontext = (props) => {
         .then(
           (response) => {
             console.log(response);
+            const removedFavs = favorites.filter((item) => item.product_id !== productID);
+            setFavorites(removedFavs);
           }
         )
         .catch(function (error) {
@@ -527,10 +534,12 @@ const shopcontext = (props) => {
     updateSelectedCategory,
   };
 
-  console.log("ShopContext ", cartItems);
+  console.log("shopcontext cartitem ", cartItems);
+  console.log("total cart amount ", totalAmount);
   console.log("islogin ", isLogin);
   console.log("shopcontext reviews ", reviews);
   console.log("shopcontext address ", addresses);
+  console.log("shopcontext productchoosed ", productsChoosedToBuy);
 
   return (
     <ShopContext.Provider value={contextValue}>

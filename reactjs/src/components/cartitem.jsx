@@ -15,8 +15,10 @@ const CartItem = (props) => {
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
     if (event.target.checked) {
+      console.log("choose ", id);
       shopcontext.addToProductsChoosed(id, price, quantity_state);
     } else {
+      console.log("not choose ", id);
       shopcontext.removeFromProductsChoosed(id, price, quantity_state);
     }
   };

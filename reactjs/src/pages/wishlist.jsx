@@ -52,7 +52,7 @@ const Wishlist = () => {
                                 </div>
                                 <div className="col-12 col-md-7">
                                     <div className="p-3">
-                                        <h2>{product.name}</h2>
+                                        <p>{product.name}</p>
                                         <p className="cart-item-id">Nhãn hàng: <b className='text-center mb-1'>{product.brand}</b></p>
                                         <p className="cart-item-id">Giá bán: <b className='text-center mb-1'>{product.price} VND</b></p>
                                         <p className="cart-item-id">Mã sản phẩm: <b className='text-center mb-3'>{product.id}</b></p>

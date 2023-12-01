@@ -13,10 +13,15 @@ class ProductController extends Controller
 {
     public function getProducts()
     {
-        $getProduct = Product::get();
+        $getProducts = Product::get();
+        return $getProducts;
+    }
+    public function getProductInf(Request $request)
+    {
+        $data = $request->input();
+        $getProduct = Product::where('id',  $data['productID'])->get();
         return $getProduct;
     }
-    
     public function uploadImageProduct(Request $request)
     {
         if ($request->hasFile('image') && $request->file('image')->isValid()) {

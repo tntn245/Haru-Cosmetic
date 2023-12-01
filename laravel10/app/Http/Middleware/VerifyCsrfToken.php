@@ -31,6 +31,7 @@ class VerifyCsrfToken extends Middleware
         'api/load-products-in-brand',
 
         'api/get-products',
+        'api/get-product-inf',
 
         'api/get-reviews',
         'api/add-new-review',
