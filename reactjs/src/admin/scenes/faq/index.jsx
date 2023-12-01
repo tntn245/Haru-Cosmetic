@@ -11,7 +11,8 @@ const FAQ = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
-    <Box m="20px">
+    <Box m="20px" width="100%">
+
       <Header title="FAQ" subtitle="Frequently Asked Questions Page" />
 
       <Accordion defaultExpanded>
