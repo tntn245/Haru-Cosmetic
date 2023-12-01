@@ -23,7 +23,7 @@ import ImageUploadForm from './pages/testloadimg'
 import Category from './pages/category'
 import Dashboard from './admin/pages/dashboard'
 import Contacts from './admin/scenes/contacts'
-import Team from './admin/scenes/team'
+import Account from './admin/scenes/account'
 import Invoices from './admin/scenes/invoices'
 import Form from './admin/scenes/form'
 import Bar from './admin/scenes/bar'
@@ -90,7 +90,7 @@ function App() {
                   <Routes>
                     <Route path="/" element={<Dashboard />} />
                     {/* <Route path="login" element={<Login />} /> */}
-                    <Route path="/team" element={<Team />} />
+                    <Route path="/account" element={<Account />} />
                     <Route path="/contacts" element={<Contacts />} />
                     <Route path="/invoices" element={<Invoices />} />
                     <Route path="/form" element={<Form />} />

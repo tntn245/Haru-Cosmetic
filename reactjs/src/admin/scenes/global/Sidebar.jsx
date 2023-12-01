@@ -184,8 +184,8 @@ const Sidebar = () => {
               Data
             </Typography>
             <Item
-              title="Manage Team"
-              to="/team"
+              title="Tài khoản"
+              to="/account"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -278,7 +278,7 @@ const Sidebar = () => {
             </Typography>
             <ItemLogout
               title="Logout"
-              to="/login"
+              to="/"
               icon={<LogoutIcon />}
               selected={selected}
               setSelected={setSelected}
