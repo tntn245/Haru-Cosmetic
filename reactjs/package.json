@@ -21,6 +21,7 @@
     "@mui/material": "^5.14.18",
     "@mui/styled-engine-sc": "^6.0.0-alpha.6",
     "@mui/x-data-grid": "^6.18.2",
+    "@mui/x-data-grid-generator": "^6.18.2",
     "@nivo/bar": "^0.84.0",
     "@nivo/geo": "^0.84.0",
     "@nivo/line": "^0.84.0",
