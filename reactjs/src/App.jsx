@@ -67,7 +67,7 @@ function App() {
               <Route path='contact' element={<Contact />} />
               <Route path='/search/:query' element={<Search />} />
               <Route path='login' element={<Login />} />
-              <Route path='/user/:query' element={<User />} />
+              <Route path='/user' element={<User />} />
               <Route path='signup' element={<Signup />} />
               <Route path='forgotpasword' element={<Forgotpasword />} />
               <Route path='cart' element={<Cart />} />

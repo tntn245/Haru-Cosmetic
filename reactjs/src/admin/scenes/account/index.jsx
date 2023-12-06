@@ -1,15 +1,42 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme, IconButton } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
-import { users } from "../../data/mockData";
+import { users, updateUsers } from "../../data/mockData";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/Header";
+import React, { useState } from 'react'
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const Account = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [rowSelectionModel, setRowSelectionModel] = React.useState([]);
+
+  const handleDeleteRow = (rowId) => {
+    // Thực hiện xóa các hàng đã chọn
+    console.log("Delete rows:", rowId);
+    const updatedRows = users.filter((row) => row.id !== rowId);
+    updateUsers(updatedRows);
+  };
+  
+  const handleEditRow = (rowId) => {
+    // Handle edit logic for the selected row
+    console.log('Edit row:', rowId);
+  };
+
+  const handleViewRow = (rowId) => {
+    // Handle view logic for the selected row
+    console.log('View row:', rowId);
+  };
+
+  const handleSelectionModelChange = (newRowSelectionModel) =>{
+    setRowSelectionModel(newRowSelectionModel);
+  };
+
   const columns = [
     { field: "id", headerName: "ID" },
     {
@@ -37,8 +64,8 @@ const Account = () => {
             justifyContent="center"
             backgroundColor={
               type === "admin"
-                ? colors.greenAccent[600]
-                : colors.greenAccent[700]
+                ? colors.greenAccent[700]
+                : colors.greenAccent[600]
             }
             borderRadius="4px"
           >
@@ -51,6 +78,74 @@ const Account = () => {
         );
       },
     },
+    {
+      field: "actions",
+      headerName: "Actions",
+      renderCell: (params) => {
+        const { id, type } = params.row;
+        
+        if (type !== "admin") {
+          return (
+            <div>
+              <IconButton
+                onClick={() => handleViewRow(id)}
+                size="small"
+                color="inherit"
+              >
+                <VisibilityIcon />
+              </IconButton>
+              <IconButton
+                onClick={() => handleEditRow(id)}
+                size="small"
+                style={{ color: '#FFD700' }}
+              >
+                <EditIcon />
+              </IconButton>
+              <IconButton
+                onClick={() => handleDeleteRow(id)}
+                size="small"
+                color="error"
+              >
+                <DeleteIcon />
+              </IconButton>
+            </div>
+          );
+        }
+        return null;
+      },
+    }
+    // {
+    //   field: "actions",
+    //   headerName: "Actions",
+    //   renderCell: (params) => {
+    //     const { id } = params.row;
+    //     return (
+    //       <div>
+    //         <IconButton
+    //           onClick={() => handleViewRow(id)}
+    //           size="small"
+    //           color="inherit"
+    //         >
+    //           <VisibilityIcon />
+    //         </IconButton>
+    //         <IconButton
+    //           onClick={() => handleEditRow(id)}
+    //           size="small"
+    //           style={{ color: '#FFD700' }}
+    //         >
+    //           <EditIcon />
+    //         </IconButton>
+    //         <IconButton
+    //           onClick={() => handleDeleteRow(id)}
+    //           size="small"
+    //           color="error"
+    //         >
+    //           <DeleteIcon />
+    //         </IconButton>
+    //       </div>
+    //     );
+    //   }
+    // },
   ];
 
   return (
@@ -88,10 +183,15 @@ const Account = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection 
-        rows={users} 
-        columns={columns}
-        components={{ Toolbar: GridToolbar }}
+      <DataGrid 
+          disableRowSelectionOnClick 
+          rows={users}
+          columns={columns}
+          components={{ Toolbar: GridToolbar }}
+          onRowSelectionModelChange={(newRowSelectionModel) => {
+            handleSelectionModelChange(newRowSelectionModel);
+          }}
+          rowSelectionModel={rowSelectionModel}
         />
       </Box>
     </Box>

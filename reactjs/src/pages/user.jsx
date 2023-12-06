@@ -9,12 +9,20 @@ import { Card, Table } from 'react-bootstrap';
 import '../styles/user.scss';
 
 const User = () => {
-    const { userID } = useParams();
+    // const { userID } = useParams();
     const [user, setUser] = useState(null);
+    const [userID, setUserID] = useState(0);
     const [orderStatus, setOrderStatus] = useState('address');
-    const userEmail = localStorage.getItem("userEmail");
     const navigate = useNavigate();
     const shopcontext = useContext(ShopContext);
+    const [userOrders, setUserOrders] = useState([]);
+    useEffect(() => {
+        const user = localStorage.getItem('user');
+        if (user != null) {
+            const user_id = JSON.parse(user).id;
+            setUserID(user_id);
+        }
+    }, []);
 
     const handleLogout = () => {
         axios.post("/api/logout-user")
@@ -38,14 +46,56 @@ const User = () => {
     const [collapsedOrderId, setCollapsedOrderId] = useState(null);
     const [expandedOrder, setExpandedOrder] = useState(null);
     useEffect(() => {
-        try {
-            const user = JSON.parse(localStorage.getItem('user'));
-            if (user != null) {
-                setUser(user);
-                shopcontext.loadAddresses(user.id);
-            }
-        } catch (error) {
-            console.error("Error fetching user data:", error);
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user != null) {
+            setUser(user);
+            shopcontext.loadAddresses(user.id);
+
+            axios.post("/api/get-user-orders", { userID })
+                .then(
+                    (response) => {
+                        const fetchOrders = [];
+                        const orders = response.data;
+
+                        
+                            orders.map(async (order) => {
+                                const orderID = order.id;
+                                axios.post("/api/get-user-orders-details", { orderID })
+                                .then(
+                                    (response) => {
+                                        const orderDetails = response.data;
+
+                                        const items = orderDetails.map((detail) => {
+                                            return {
+                                              productID: detail.product_id,
+                                              productName: detail.name,
+                                              productImage: detail.image,
+                                              price: detail.price,
+                                              quantity: detail.quantity,
+                                              totalPriceItem: Number(detail.price) * Number(detail.quantity),
+                                            };
+                                        });
+
+                                        const arr = {
+                                            id: order.id,
+                                            total_price: order.total_price,
+                                            items: items,
+                                        };
+                                        fetchOrders.push(arr);
+                                    })
+                                .catch(function (error) {
+                                    console.log('Error', error.message);
+                                })
+
+                            })
+                        setUserOrders(fetchOrders);
+                        console.log("userOrders ",userOrders)
+                    }
+                )
+                .catch(function (error) {
+                    console.log('Error', error.message);
+                })
+
         }
     }, [userID]);
 
@@ -109,27 +159,6 @@ const User = () => {
         shopcontext.updateAddress(editedAddressIndex, newAddress.name, newAddress.phone, newAddress.address)
         setEditedAddressIndex(null);
     };
-
-    const exampleOrders = [
-        {
-            orderId: 'Order1',
-            orderDate: '2023-11-28',
-            totalAmount: '$50.00',
-            items: [
-                { productId: 1, productName: 'Product A', price: '$10.00', quantity: 2, totalPrice: '$20.00' },
-                { productId: 2, productName: 'Product B', price: '$15.00', quantity: 1, totalPrice: '$15.00' },
-            ],
-        },
-        {
-            orderId: 'Order2',
-            orderDate: '2023-11-27',
-            totalAmount: '$35.00',
-            items: [
-                { productId: 3, productName: 'Product C', price: '$8.00', quantity: 3, totalPrice: '$24.00' },
-                { productId: 4, productName: 'Product D', price: '$5.00', quantity: 2, totalPrice: '$10.00' },
-            ],
-        },
-    ];
 
     const handleOrderCollapse = (orderId) => {
         setExpandedOrder(expandedOrder === orderId ? null : orderId);
@@ -299,7 +328,7 @@ const User = () => {
                             <Card>
                                 <Card.Body>
                                     <Card.Title className="mt-3 text-center">Đơn hàng của bạn</Card.Title>
-                                    <Table striped bordered hover> {/* Apply striped, bordered, and hover styles to the table */}
+                                    <Table striped bordered hover> 
                                         <thead>
                                             <tr>
                                                 <th>Mã đơn hàng</th>
@@ -308,18 +337,18 @@ const User = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {exampleOrders.map((order) => (
-                                                <React.Fragment key={order.orderId}>
-                                                    <tr onClick={() => handleOrderCollapse(order.orderId)}>
+                                            {userOrders.map((order) => (
+                                                <React.Fragment key={order.id}>
+                                                    <tr onClick={() => handleOrderCollapse(order.id)}>
                                                         <td>
                                                             <Link to="#" className="order-link">
-                                                                {order.orderId}
+                                                                {order.id}
                                                             </Link>
                                                         </td>
                                                         <td>{order.orderDate}</td>
-                                                        <td>{order.totalAmount}</td>
+                                                        <td>{order.total_price}</td>
                                                     </tr>
-                                                    {expandedOrder === order.orderId && (
+                                                    {expandedOrder === order.id && (
                                                         <tr>
                                                             <td colSpan="3">
 
@@ -333,22 +362,19 @@ const User = () => {
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        {/* You can map over order.items and render each product item */}
-                                                                        {/* For example: */}
                                                                         {order.items.map((item) => (
-                                                                            <tr key={item.productId}>
+                                                                            <tr key={item.productID}>
                                                                                 <td>
                                                                                     {item.productName}
                                                                                     <img
-                                                                                        src={item.productId === 1 ? pro1 : pro2}
+                                                                                        src={item.productImage}
                                                                                         alt={item.productName}
                                                                                         style={{ maxWidth: '100px', maxHeight: '100px', width: 'auto', height: 'auto', marginLeft: '20px' }}
                                                                                     />
-
                                                                                 </td>
                                                                                 <td>{item.price}</td>
                                                                                 <td>{item.quantity}</td>
-                                                                                <td>{item.totalPrice}</td>
+                                                                                <td>{item.totalPriceItem}</td>
                                                                             </tr>
                                                                         ))}
                                                                     </tbody>
