@@ -26,6 +26,8 @@ const Products = () => {
 
   const handleEditRow = (rowId) => {
     console.log('Edit row:', rowId);
+    setSelectedRow(rowId);
+    setOpen(true);
   };
 
   const handleViewRow = (rowId) => {
