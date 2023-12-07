@@ -57,28 +57,29 @@ const User = () => {
                         const fetchOrders = [];
                         const orders = response.data;
 
-                        
-                            orders.map(async (order) => {
-                                const orderID = order.id;
-                                axios.post("/api/get-user-orders-details", { orderID })
+
+                        orders.map(async (order) => {
+                            const orderID = order.id;
+                            axios.post("/api/get-user-orders-details", { orderID })
                                 .then(
                                     (response) => {
                                         const orderDetails = response.data;
 
                                         const items = orderDetails.map((detail) => {
                                             return {
-                                              productID: detail.product_id,
-                                              productName: detail.name,
-                                              productImage: detail.image,
-                                              price: detail.price,
-                                              quantity: detail.quantity,
-                                              totalPriceItem: Number(detail.price) * Number(detail.quantity),
+                                                productID: detail.product_id,
+                                                productName: detail.name,
+                                                productImage: detail.image,
+                                                price: detail.price,
+                                                quantity: detail.quantity,
+                                                totalPriceItem: Number(detail.price) * Number(detail.quantity),
                                             };
                                         });
 
                                         const arr = {
                                             id: order.id,
                                             total_price: order.total_price,
+                                            payment_status: order.payment_status,
                                             items: items,
                                         };
                                         fetchOrders.push(arr);
@@ -87,9 +88,9 @@ const User = () => {
                                     console.log('Error', error.message);
                                 })
 
-                            })
+                        })
                         setUserOrders(fetchOrders);
-                        console.log("userOrders ",userOrders)
+                        console.log("userOrders ", userOrders)
                     }
                 )
                 .catch(function (error) {
@@ -328,61 +329,67 @@ const User = () => {
                             <Card>
                                 <Card.Body>
                                     <Card.Title className="mt-3 text-center">Đơn hàng của bạn</Card.Title>
-                                    <Table striped bordered hover> 
+                                    <Table striped bordered hover>
                                         <thead>
                                             <tr>
                                                 <th>Mã đơn hàng</th>
                                                 <th>Ngày đặt hàng</th>
                                                 <th>Tổng tiền</th>
+                                                <th>Tình trạng thanh toán</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {userOrders.map((order) => (
                                                 <React.Fragment key={order.id}>
-                                                    <tr onClick={() => handleOrderCollapse(order.id)}>
-                                                        <td>
-                                                            <Link to="#" className="order-link">
-                                                                {order.id}
-                                                            </Link>
-                                                        </td>
-                                                        <td>{order.orderDate}</td>
-                                                        <td>{order.total_price}</td>
-                                                    </tr>
-                                                    {expandedOrder === order.id && (
-                                                        <tr>
-                                                            <td colSpan="3">
+                                                    {order.payment_status != "Không thành công" &&
+                                                        <>
+                                                            <tr onClick={() => handleOrderCollapse(order.id)}>
+                                                                <td>
+                                                                    <Link to="#" className="order-link">
+                                                                        {order.id}
+                                                                    </Link>
+                                                                </td>
+                                                                <td>{order.orderDate}</td>
+                                                                <td>{order.total_price}</td>
+                                                                <td>{order.payment_status}</td>
+                                                            </tr>
+                                                            {expandedOrder === order.id && (
+                                                                <tr>
+                                                                    <td colSpan="4">
+                                                                        <Table striped bordered hover>
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>Sản phẩm</th>
+                                                                                    <th>Giá</th>
+                                                                                    <th>Số lượng</th>
+                                                                                    <th>Tổng tiền</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                {order.items.map((item) => (
+                                                                                    <tr key={item.productID}>
+                                                                                        <td>
+                                                                                            <img
+                                                                                                src={item.productImage}
+                                                                                                alt={item.productName}
+                                                                                                style={{ maxWidth: '100px', maxHeight: '100px', width: 'auto', height: 'auto', marginRight: '20px' }}
+                                                                                            />
+                                                                                            {item.productName}
+                                                                                        </td>
+                                                                                        <td>{item.price}</td>
+                                                                                        <td>{item.quantity}</td>
+                                                                                        <td>{item.totalPriceItem}</td>
+                                                                                    </tr>
+                                                                                ))}
+                                                                            </tbody>
+                                                                        </Table>
 
-                                                                <Table striped bordered hover>
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Tên sản phẩm</th>
-                                                                            <th>Giá</th>
-                                                                            <th>Số lượng</th>
-                                                                            <th>Tổng tiền</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        {order.items.map((item) => (
-                                                                            <tr key={item.productID}>
-                                                                                <td>
-                                                                                    {item.productName}
-                                                                                    <img
-                                                                                        src={item.productImage}
-                                                                                        alt={item.productName}
-                                                                                        style={{ maxWidth: '100px', maxHeight: '100px', width: 'auto', height: 'auto', marginLeft: '20px' }}
-                                                                                    />
-                                                                                </td>
-                                                                                <td>{item.price}</td>
-                                                                                <td>{item.quantity}</td>
-                                                                                <td>{item.totalPriceItem}</td>
-                                                                            </tr>
-                                                                        ))}
-                                                                    </tbody>
-                                                                </Table>
-
-                                                            </td>
-                                                        </tr>
-                                                    )}
+                                                                    </td>
+                                                                </tr>
+                                                            )}
+                                                            <tr></tr>
+                                                        </>
+                                                    }
                                                 </React.Fragment>
                                             ))}
                                         </tbody>

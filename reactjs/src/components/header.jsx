@@ -206,7 +206,7 @@ const header = () => {
                     </div>
                     <div className={location.pathname === 'login' ? 'active' : 'not-active'}>
                       <Link
-                        to={`/user/${userID}`}
+                        to={'user'}
                         className="d-flex align-items-center color-nav me-3 cart-span-one">
                         <VscAccount className='me-1 fs-2' />
                       </Link>
