@@ -18,8 +18,6 @@ const Products = () => {
   const [rowSelectionModel, setRowSelectionModel] = React.useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
   const [rows, setRows] = useState(products);
-  const [activeEditStatus, setActiveEditStatus] = useState(false);
-  const [activeButtonEdit, setActiveButtonEdit] = useState(true);
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -36,17 +34,7 @@ const Products = () => {
     setOpen(true);
   };
 
-  const handleEditButton = () => {
-    setActiveEditStatus(true);
-    setActiveButtonEdit(false);
-  };
-
   const handleSave = () => {
-  };
-
-  const handleCancel = () => {
-    setActiveEditStatus(false);
-    setActiveButtonEdit(true);
   };
 
   const handleSelectionModelChange = (newRowSelectionModel) => {
@@ -117,20 +105,20 @@ const Products = () => {
         const { id } = params.row;
         return (
           <div>
-            <IconButton
+            {/* <IconButton
               onClick={() => handleViewRow(id)}
               size="small"
               color="inherit"
             >
               <VisibilityIcon />
-            </IconButton>
-            {/* <IconButton
+            </IconButton> */}
+            <IconButton
               onClick={() => handleEditRow(id)}
               size="small"
               style={{ color: '#FFD700' }}
             >
               <EditIcon />
-            </IconButton> */}
+            </IconButton>
             {/* <IconButton
               onClick={() => handleDeleteRow(id)}
               size="small"
@@ -222,15 +210,7 @@ const Products = () => {
           <p>Nội dung của panel...</p>
           <p>Nội dung của panel...</p>
           <p>Nội dung của panel...</p>
-          {activeButtonEdit &&
-            <Button onClick={handleEditButton}>Chỉnh sửa</Button>
-          }
-          {activeEditStatus &&
-            <>
-              <Button onClick={handleSave}>Lưu</Button>
-              <Button onClick={handleCancel}>Hủy</Button>
-            </>
-          }
+          <Button onClick={handleSave}>Lưu</Button>
         </Box>
       </Modal>
     </Box>
