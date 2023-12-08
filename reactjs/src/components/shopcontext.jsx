@@ -29,7 +29,7 @@ const shopcontext = (props) => {
     if (user != null) {
       setIsLogin(true);
     }
-    else{
+    else {
       setIsLogin(false);
     }
     console.log(isLogin);
@@ -159,7 +159,7 @@ const shopcontext = (props) => {
       axios.post("/api/add-to-favs", { userID, productID })
         .then(
           (response) => {
-            setFavorites([...favorites,response.data[0]]);
+            setFavorites([...favorites, response.data[0]]);
             console.log(response);
           }
         )
@@ -221,7 +221,7 @@ const shopcontext = (props) => {
     const PRODUCTSCART = [];
     setCartItems(PRODUCTSCART);
 
-    if(userID!=0){
+    if (userID != 0) {
       axios.post("/api/get-cart", { userID })
         .then(
           (response) => {
@@ -267,7 +267,7 @@ const shopcontext = (props) => {
   const addToCart = (productID, userID, quantity) => {
     if (userID !== 0) {
       try {
-        axios.post("/api/add-to-cart", { userID, productID, quantity})
+        axios.post("/api/add-to-cart", { userID, productID, quantity })
           .then(
             (response) => {
               console.log(response);
@@ -358,12 +358,12 @@ const shopcontext = (props) => {
     const filteredProducts = productsRoot.filter((product) => {
       const star = product.star;
       const price = product.price;
-      if(starRating == 0)
+      if (starRating == 0)
         return price >= minPrice && price <= maxPrice;
-      else if(minPrice == 0 && maxPrice == 0)
+      else if (minPrice == 0 && maxPrice == 0)
         return star == starRating;
       else
-        return price >= minPrice && price <= maxPrice &&  star == starRating;
+        return price >= minPrice && price <= maxPrice && star == starRating;
     });
     setFilteredProducts(filteredProducts);
   };
@@ -428,18 +428,18 @@ const shopcontext = (props) => {
 
   const loadAddresses = (userID) => {
     axios.post('/api/get-addresses', { userID })
-    .then(
-      (response) => {
-        setAddresses(response.data);
-        console.log('addresses',addresses);
-      }
-    )
-    .catch(function (error) {
-      console.log(error.message);
-    });
+      .then(
+        (response) => {
+          setAddresses(response.data);
+          console.log('addresses', addresses);
+        }
+      )
+      .catch(function (error) {
+        console.log(error.message);
+      });
   };
 
-  const addNewAddress = (userID, name, phone, address ) => {
+  const addNewAddress = (userID, name, phone, address) => {
     axios.post('/api/add-new-address', { userID, name, phone, address })
       .then(
         (response) => {
@@ -452,7 +452,7 @@ const shopcontext = (props) => {
       });
   }
 
-  const updateAddress = (index, name, phone, address ) => {
+  const updateAddress = (index, name, phone, address) => {
     const id = addresses[index].id;
     axios.post('/api/update-address', { id, name, phone, address })
       .then(

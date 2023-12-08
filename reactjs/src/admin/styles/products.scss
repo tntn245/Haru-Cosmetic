@@ -10,9 +10,15 @@
     align-items: center;
     justify-content: center;
   }
-  
-  .panel {
-    background-color: white;
-    padding: 20px;
-    z-index: 1000; /* Độ ưu tiên cao hơn overlay */
-  }
+  .edit-panel__field
+    label {
+      display: block;
+      margin-bottom: 3px;
+      margin-top: 3px;
+      color: black;
+    }
+    .edit-panel__buttons {
+      display: flex;
+      justify-content: center; // Center buttons horizontally
+      margin-top: 16px; // Adjust as needed for spacing
+    }

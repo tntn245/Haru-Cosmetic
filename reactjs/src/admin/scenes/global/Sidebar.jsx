@@ -19,21 +19,21 @@ import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import LogoutIcon from '@mui/icons-material/Logout';
 import axios from '../../../api/axios.js';
 import { RoleContext } from '../../../components/rolecontext.jsx';
-
+import '../../styles/sidebar.scss';
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
-      <MenuItem
-        active={selected === title}
-        style={{
-          color: colors.grey[100],
-        }}
-        onClick={()=>setSelected(title)}
-        icon={icon}>
-        <Typography>{title}</Typography>
-        <Link to={to} />
-      </MenuItem>
+    <MenuItem
+      active={selected === title}
+      style={{
+        color: colors.grey[100],
+      }}
+      onClick={() => setSelected(title)}
+      icon={icon}>
+      <Typography>{title}</Typography>
+      <Link to={to} />
+    </MenuItem>
   );
 };
 
@@ -50,38 +50,38 @@ const ItemLogout = ({ title, to, icon, selected, setSelected }) => {
     if (user != null) {
       const user_id = JSON.parse(user).id;
       setUserID(user_id);
-    }    
+    }
   }, [userID]);
 
   const handleLogout = () => {
-    if(title=="Logout"){
-      axios.post("/api/logout-user", {userID})
-          .then(
-              (response) => {
-                  setSelected(title);
-                  console.log(response);
-                  localStorage.clear();
-                  updateRole("");
-                  navigate("/");
-                }
-          )
-          .catch(function (error) {
-              console.log(error);
-          });
+    if (title == "Logout") {
+      axios.post("/api/logout-user", { userID })
+        .then(
+          (response) => {
+            setSelected(title);
+            console.log(response);
+            localStorage.clear();
+            updateRole("");
+            navigate("/");
+          }
+        )
+        .catch(function (error) {
+          console.log(error);
+        });
     }
   };
 
   return (
-      <MenuItem
-        active={selected === title}
-        style={{
-          color: colors.grey[100],
-        }}
-        onClick={()=>handleLogout()}
-        icon={icon}>
-        <Typography>{title}</Typography>
-        <Link to={to} />
-      </MenuItem>
+    <MenuItem
+      active={selected === title}
+      style={{
+        color: colors.grey[100],
+      }}
+      onClick={() => handleLogout()}
+      icon={icon}>
+      <Typography>{title}</Typography>
+      <Link to={to} />
+    </MenuItem>
   );
 };
 
@@ -189,6 +189,7 @@ const Sidebar = () => {
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+
             />
             <Item
               title="Đơn hàng"
@@ -196,6 +197,7 @@ const Sidebar = () => {
               icon={<ReceiptOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+
             />
             <Item
               title="Sản phẩm"
@@ -282,7 +284,7 @@ const Sidebar = () => {
               icon={<LogoutIcon />}
               selected={selected}
               setSelected={setSelected}
-              onClick={()=>handleLogout()}
+              onClick={() => handleLogout()}
             />
           </Box>
         </Menu>

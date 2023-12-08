@@ -1,7 +1,7 @@
 import { Box, IconButton, Modal, Button } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
-import { products, updateProducts } from "../../data/mockData";
+import { products as mockProducts, updateProducts } from "../../data/mockData";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import ReactStars from "react-rating-stars-component";
@@ -17,9 +17,9 @@ const Products = () => {
   const colors = tokens(theme.palette.mode);
   const [rowSelectionModel, setRowSelectionModel] = React.useState([]);
   const [selectedRow, setSelectedRow] = useState(null);
-  const [rows, setRows] = useState(products);
+  const [rows, setRows] = useState(mockProducts);
   const [open, setOpen] = useState(false);
-
+  const [editedRows, setEditedRows] = useState({});
   const handleClose = () => {
     setOpen(false);
   };
@@ -35,8 +35,36 @@ const Products = () => {
     setSelectedRow(rowId);
     setOpen(true);
   };
-
+  const handleEditField = (field, value) => {
+    setEditedRows((prev) => ({ ...prev, [field]: value }));
+  };
   const handleSave = () => {
+    // Implement your save logic using editedRows
+    const updatedRows = rows.map((row) => {
+      if (row.id === selectedRow) {
+        return { ...row, ...editedRows };
+      }
+      return row;
+    });
+
+    // Update the state with the new rows
+    setRows(updatedRows);
+
+    // Update the columns with the edited values
+    const updatedColumns = columns.map((column) => {
+      if (column.field in editedRows) {
+        return { ...column, valueGetter: (params) => params.row[column.field] };
+      }
+      return column;
+    });
+
+    // Reset edited rows after saving
+    setEditedRows({});
+    handleClose();
+  };
+  const handleCancelEdit = () => {
+    setEditedRows({});
+    handleClose();
   };
 
   const handleSelectionModelChange = (newRowSelectionModel) => {
@@ -74,7 +102,6 @@ const Products = () => {
     {
       field: "price",
       headerName: "Đơn giá",
-      type: "number",
       headerAlign: "left",
       align: "left",
     },
@@ -133,7 +160,115 @@ const Products = () => {
       }
     },
   ];
+  const renderEditPanel = () => {
+    if (!selectedRow) {
+      return null;
+    }
 
+    const selectedProduct = rows.find((row) => row.id === selectedRow);
+
+    return (
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          bgcolor: 'white',
+          boxShadow: 24,
+          p: 4,
+          width:'320px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <IconButton
+          sx={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+          }}
+          onClick={handleClose}
+          style={{ color: '#D80032' }}
+        >
+          <CloseIcon />
+        </IconButton>
+
+        <div className="edit-panel">
+          <div className="edit-panel__field">
+            <label>Hình ảnh:</label>
+            <img src={selectedProduct.image} alt="Hình ảnh" style={{ width: '70%', height: 'auto', objectFit: 'cover' }} />
+          </div>
+
+          <div className="edit-panel__field">
+            <label >Tên sản phẩm:</label>
+            <input
+              type="text"
+              value={editedRows.name || selectedProduct.name}
+              onChange={(e) => handleEditField('name', e.target.value)}
+              style={{ fontSize: '14px', padding: '5px', width: '250px' }}
+            />
+          </div>
+
+          <div className="edit-panel__field">
+            <label>Tên loại sản phẩm:</label>
+            <input
+            style={{ fontSize: '14px', padding: '5px', width: '250px' }}
+              type="text"
+              value={editedRows.category_name || selectedProduct.category_name}
+              onChange={(e) => handleEditField('category_name', e.target.value)}
+            />
+          </div>
+
+          <div className="edit-panel__field">
+            <label>Tên thương hiệu:</label>
+            <input
+            style={{ fontSize: '14px', padding: '5px', width: '250px' }}
+              type="text"
+              value={editedRows.brand_name || selectedProduct.brand_name}
+              onChange={(e) => handleEditField('brand_name', e.target.value)}
+            />
+          </div>
+
+          <div className="edit-panel__field">
+            <label>Đơn giá:</label>
+            <input
+            style={{ fontSize: '14px', padding: '5px', width: '250px' }}
+              type="number"
+              value={editedRows.price !== undefined ? editedRows.price : selectedProduct.price}
+              onChange={(e) => {
+                const newValue = e.target.value;
+                handleEditField('price', newValue);
+              }}
+            />
+          </div>
+
+          <div className="edit-panel__field">
+            <label>Số lượng đã bán:</label>
+            <input
+            style={{ fontSize: '14px', padding: '5px', width: '250px' }}
+              type="number"
+              value={editedRows.quantity_sold !== undefined ? editedRows.quantity_sold : selectedProduct.quantity_sold}
+              onChange={(e) => {
+                const newValue = e.target.value;
+                handleEditField('quantity_sold', newValue);
+              }}
+            />
+          </div>
+
+          <div className="edit-panel__buttons">
+            <Button variant="contained" color="primary" onClick={handleSave} style={{ marginRight: '15px', marginTop: '16px' }}>
+              Lưu
+            </Button>
+            <Button variant="contained" color="secondary" onClick={handleCancelEdit} style={{ marginTop: '16px' }}>
+              Hủy
+            </Button>
+          </div>
+        </div>
+      </Box>
+    );
+  };
   return (
     <Box m="20px" width="100%">
       <Header
@@ -184,36 +319,9 @@ const Products = () => {
         />
       </Box>
 
-      <Modal open={open} onClose={handleClose}>
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            bgcolor: 'white',
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <IconButton
-            sx={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-            }}
-            onClick={handleClose}
-            style={{ color: '#D80032' }}
-          >
-            <CloseIcon />
-          </IconButton>
-          <p>Nội dung của panel...</p>
-          <p>Nội dung của panel...</p>
-          <p>Nội dung của panel...</p>
-          <p>Nội dung của panel...</p>
-          <p>Nội dung của panel...</p>
-          <Button onClick={handleSave}>Lưu</Button>
-        </Box>
+      <Modal open={open} onClose={handleClose}>       
+          {renderEditPanel()}
+
       </Modal>
     </Box>
   );
