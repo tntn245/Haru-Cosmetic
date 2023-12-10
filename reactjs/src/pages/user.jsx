@@ -16,11 +16,14 @@ const User = () => {
     const navigate = useNavigate();
     const shopcontext = useContext(ShopContext);
     const [userOrders, setUserOrders] = useState([]);
+    const [dataToPass, setDataToPass] = useState([]);
+
     useEffect(() => {
         const user = localStorage.getItem('user');
         if (user != null) {
             const user_id = JSON.parse(user).id;
             setUserID(user_id);
+            setDataToPass(JSON.parse(user));
         }
     }, []);
 
@@ -176,7 +179,7 @@ const User = () => {
                         {/* <h5 className="card-title">Email: {userEmail}</h5> */}
 
                         <div className="container_btn">
-                            <Link to="/editprofile" className="btn btn-outline-info">Edit Profile</Link>
+                            <Link to="/editprofile" state={{ data: dataToPass }} className="btn btn-outline-info">Edit Profile</Link>
                             <button className="btn btn-outline-danger" onClick={handleLogout}>Logout</button>
                         </div>
 

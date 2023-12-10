@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\OrderDetailsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewController;
@@ -78,5 +79,11 @@ Route::namespace('App\Http\Controllers')->group(function(){
     Route::group(['middleware' => ['auth:sanctum']], function(){
         Route::post('get-user', [UserController::class, 'getUser']);
     });
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'forgotPassword']
+    );
+    Route::post('/verify/pin', [ForgotPasswordController::class, 'verifyPin']
+    );
+    Route::post('/reset-password',[ForgotPasswordController::class, 'resetPassword']
+    );
 });
 

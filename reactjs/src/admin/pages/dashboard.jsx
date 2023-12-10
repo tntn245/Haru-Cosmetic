@@ -1,6 +1,6 @@
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import { mockTransactions } from "../data/mockData";
+// import { mockTransactions } from "../data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
@@ -183,7 +183,7 @@ const Dashboard = () => {
               Recent Transactions
             </Typography>
           </Box>
-          {mockTransactions.map((transaction, i) => (
+          {/* {mockTransactions.map((transaction, i) => (
             <Box
               key={`${transaction.txId}-${i}`}
               display="flex"
@@ -213,10 +213,9 @@ const Dashboard = () => {
                 ${transaction.cost}
               </Box>
             </Box>
-          ))}
+          ))} */}
         </Box>
 
-        {/* ROW 3 */}
         <Box
           gridColumn="span 4"
           gridRow="span 2"
