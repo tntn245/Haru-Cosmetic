@@ -39,7 +39,7 @@ const header = () => {
       setUserID(user_id);
     }
   }, [userID]);
-  
+
   useEffect(() => {
     axios.post("/api/get-categories")
       .then(
@@ -49,8 +49,8 @@ const header = () => {
       .catch(function (error) {
         console.log(error.message);
       });
-      
-      axios.post("/api/get-brands")
+
+    axios.post("/api/get-brands")
       .then(
         (response) => {
           setBrands(response.data);
@@ -177,7 +177,7 @@ const header = () => {
                     onMouseOver={handleMouseOver2}
                     onMouseLeave={closeMenu}>
                     {brands.map((brand) => (
-                      <NavDropdown.Item as={NavLink} to={`/brandname/${brand.name_str}`}>{brand.name}</NavDropdown.Item>
+                      <NavDropdown.Item as={NavLink} to={`/brands/${brand.name_str}`}>{brand.name}</NavDropdown.Item>
                     ))}
                   </NavDropdown>
                 </div>

@@ -8,19 +8,22 @@ import Shop from './pages/shop'
 import Contact from './pages/contact'
 import Login from './pages/login'
 import Signup from './pages/signup'
+import EditUserProfile from './pages/editprofile'
 import Forgotpasword from './pages/forgotpasword'
 import Cart from './pages/cart'
 import Thanks from './pages/thanks'
 import Checkout from './pages/checkout'
 import Search from './pages/search'
+import Brands from './pages/brand'
 import './App.css'
 import ShopContext from './components/shopcontext'
-import {RoleContext} from './components/rolecontext'
+import { RoleContext } from './components/rolecontext'
 import Details from './pages/details'
 import User from './pages/user'
 import Wishlist from './pages/wishlist'
 import ImageUploadForm from './pages/testloadimg'
 import Category from './pages/category'
+import Brandname from './pages/brandname'
 import Dashboard from './admin/pages/dashboard'
 import Products from './admin/scenes/products'
 import Account from './admin/scenes/account'
@@ -74,9 +77,12 @@ function App() {
               <Route path='wishlist' element={<Wishlist />} />
               <Route path='checkout/:query' element={<Checkout />} />
               <Route path='thanks' element={<Thanks />} />
+              <Route path='editprofile' element={<EditUserProfile />} />
               <Route path='details' element={<Details />} />
               <Route path='img' element={<ImageUploadForm />} />
               <Route path='/category/:categoryStr' element={<Category />} />
+              <Route path='/brands/:brandStr' element={<Brandname />} />
+              <Route path='brand' element={<Brands />} />
             </Route>
           </Routes>
           :

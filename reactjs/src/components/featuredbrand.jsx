@@ -36,7 +36,6 @@ const PrevArrow = ({ className, style, onClick }) => {
   );
 };
 
-
 const FeaturedBrands = () => {
   const brands = [
     { name: 'Round Lab', image: roundlab, link: '/brandname/roundlab' },

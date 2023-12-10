@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-
 const EditUserProfile = () => {
   const [userProfile, setUserProfile] = useState({
     name: '',
     email: '',
-    bio: '',
   });
 
   const handleChange = (e) => {
@@ -23,10 +21,10 @@ const EditUserProfile = () => {
 
   return (
     <div className="container">
-      <h2>Edit User Profile</h2>
+      <h2 class="text-center mt-4">Chỉnh Sửa Thông Tin Cá Nhân</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label htmlFor="name" className="form-label">Name:</label>
+          <label htmlFor="name" className="form-label">Tên người dùng:</label>
           <input
             type="text"
             id="name"
@@ -47,17 +45,7 @@ const EditUserProfile = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="bio" className="form-label">Bio:</label>
-          <textarea
-            id="bio"
-            name="bio"
-            className="form-control"
-            value={userProfile.bio}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">Save</button>
+        <button type="submit" className="btn btn-dark">Lưu</button>
       </form>
     </div>
   );

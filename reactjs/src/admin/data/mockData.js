@@ -1,8 +1,11 @@
 import axios from "../../api/axios";
 import { tokens } from "../../theme";
-
+import pr5 from '../../assets/images/products/f5.jpg';
+import pr6 from '../../assets/images/products/f6.jpg';
+import pr7 from '../../assets/images/products/f7.jpg';
 loadUsers();
 loadOrders();
+
 loadProducts();
 countPaymentMethodOrders();
 
@@ -21,20 +24,53 @@ async function loadUsers() {
 export const updateUsers = (updatedRows) => {
   users = updatedRows;
 };
+export let products = [
+  // ... your mock product data here
+  {
+    id: 1,
+    image: pr5, // Remove the curly braces
+    name: "Product 1",
+    category_name: "Category A",
+    brand_name: "Brand X",
+    price: 100,
+    quantity_sold: 50,
+    star: 4,
+  },
+  {
+    id: 2,
+    image: pr6, // Remove the curly braces
+    name: "Product 2",
+    category_name: "Category B",
+    brand_name: "Brand Y",
+    price: 150,
+    quantity_sold: 30,
+    star: 5,
+  },
+  {
+    id: 3,
+    image: pr7, // Remove the curly braces
+    name: "Product 3",
+    category_name: "Category C",
+    brand_name: "Brand Z",
+    price: 120,
+    quantity_sold: 25,
+    star: 3,
+  }
+];
 
-export let products = [];
-async function loadProducts() {
-  axios.post("/api/get-products")
-    .then((response) => {
-      console.log(response.data);
-      response.data.forEach((obj) => {
-        products.push(obj);
-      });
-    })
-    .catch((error) => {
-      throw error;
-    });
-}
+// export let products = [];
+// async function loadProducts() {
+//   axios.post("/api/get-products")
+//     .then((response) => {
+//       console.log(response.data);
+//       response.data.forEach((obj) => {
+//         products.push(obj);
+//       });
+//     })
+//     .catch((error) => {
+//       throw error;
+//     });
+// }
 export const updateProducts = (updatedRows) => {
   products = updatedRows;
 };

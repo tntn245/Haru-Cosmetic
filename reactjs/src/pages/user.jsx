@@ -176,7 +176,7 @@ const User = () => {
                         {/* <h5 className="card-title">Email: {userEmail}</h5> */}
 
                         <div className="container_btn">
-                            <Link to="/edit-profile" className="btn btn-outline-info">Edit Profile</Link>
+                            <Link to="/editprofile" className="btn btn-outline-info">Edit Profile</Link>
                             <button className="btn btn-outline-danger" onClick={handleLogout}>Logout</button>
                         </div>
 
