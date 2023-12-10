@@ -134,13 +134,6 @@ const Products = () => {
         const { id } = params.row;
         return (
           <div>
-            {/* <IconButton
-              onClick={() => handleViewRow(id)}
-              size="small"
-              color="inherit"
-            >
-              <VisibilityIcon />
-            </IconButton> */}
             <IconButton
               onClick={() => handleEditRow(id)}
               size="small"
@@ -148,13 +141,6 @@ const Products = () => {
             >
               <EditIcon />
             </IconButton>
-            {/* <IconButton
-              onClick={() => handleDeleteRow(id)}
-              size="small"
-              color="error"
-            >
-              <DeleteIcon />
-            </IconButton> */}
           </div>
         );
       }

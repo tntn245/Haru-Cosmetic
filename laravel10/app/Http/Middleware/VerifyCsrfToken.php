@@ -12,17 +12,21 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        // 
         'api/register-user',
         'api/login-user',
         'api/login-google',
         'api/logout-user',
         'api/get-users',
         'api/update-user',
+
         'google/callback',
         'google/redirect',
         'auth/google',
         'auth/google/callback',
+        
+        'api/forgot-password',
+        'api/verify/pin',
+        'api/reset-password',
 
         'api/get-categories',
         'api/load-products-in-category',

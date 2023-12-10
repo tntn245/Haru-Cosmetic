@@ -1,11 +1,8 @@
 import axios from "../../api/axios";
 import { tokens } from "../../theme";
-import pr5 from '../../assets/images/products/f5.jpg';
-import pr6 from '../../assets/images/products/f6.jpg';
-import pr7 from '../../assets/images/products/f7.jpg';
+
 loadUsers();
 loadOrders();
-
 loadProducts();
 countPaymentMethodOrders();
 
@@ -24,53 +21,20 @@ async function loadUsers() {
 export const updateUsers = (updatedRows) => {
   users = updatedRows;
 };
-export let products = [
-  // ... your mock product data here
-  {
-    id: 1,
-    image: pr5, // Remove the curly braces
-    name: "Product 1",
-    category_name: "Category A",
-    brand_name: "Brand X",
-    price: 100,
-    quantity_sold: 50,
-    star: 4,
-  },
-  {
-    id: 2,
-    image: pr6, // Remove the curly braces
-    name: "Product 2",
-    category_name: "Category B",
-    brand_name: "Brand Y",
-    price: 150,
-    quantity_sold: 30,
-    star: 5,
-  },
-  {
-    id: 3,
-    image: pr7, // Remove the curly braces
-    name: "Product 3",
-    category_name: "Category C",
-    brand_name: "Brand Z",
-    price: 120,
-    quantity_sold: 25,
-    star: 3,
-  }
-];
 
-// export let products = [];
-// async function loadProducts() {
-//   axios.post("/api/get-products")
-//     .then((response) => {
-//       console.log(response.data);
-//       response.data.forEach((obj) => {
-//         products.push(obj);
-//       });
-//     })
-//     .catch((error) => {
-//       throw error;
-//     });
-// }
+export let products = [];
+async function loadProducts() {
+  axios.post("/api/get-products")
+    .then((response) => {
+      console.log(response.data);
+      response.data.forEach((obj) => {
+        products.push(obj);
+      });
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
 export const updateProducts = (updatedRows) => {
   products = updatedRows;
 };
@@ -89,59 +53,7 @@ async function loadOrders() {
     });
 }
 
-export const mockTransactions = [
-  {
-    txId: "01e4dsa",
-    user: "johndoe",
-    date: "2021-09-01",
-    cost: "43.95",
-  },
-  {
-    txId: "0315dsaa",
-    user: "jackdower",
-    date: "2022-04-01",
-    cost: "133.45",
-  },
-  {
-    txId: "01e4dsa",
-    user: "aberdohnny",
-    date: "2021-09-01",
-    cost: "43.95",
-  },
-  {
-    txId: "51034szv",
-    user: "goodmanave",
-    date: "2022-11-05",
-    cost: "200.95",
-  },
-  {
-    txId: "0a123sb",
-    user: "stevebower",
-    date: "2022-11-02",
-    cost: "13.55",
-  },
-  {
-    txId: "01e4dsa",
-    user: "aberdohnny",
-    date: "2021-09-01",
-    cost: "43.95",
-  },
-  {
-    txId: "120s51a",
-    user: "wootzifer",
-    date: "2019-04-15",
-    cost: "24.20",
-  },
-  {
-    txId: "0315dsaa",
-    user: "jackdower",
-    date: "2022-04-01",
-    cost: "133.45",
-  },
-];
-
 export let paymentMethodOrdersByMonth = [];
-
 async function countPaymentMethodOrders() {
   const year = new Date().getFullYear();
   
@@ -158,7 +70,6 @@ async function countPaymentMethodOrders() {
           VNPayColor: "hsl(296, 70%, 50%)",
         }
         paymentMethodOrdersByMonth.push(ordersByMonth);
-
       })
       .catch((error) => {
         throw error;
@@ -166,142 +77,6 @@ async function countPaymentMethodOrders() {
   }
   console.log(paymentMethodOrdersByMonth);
 }
-
-export const mockBarData = [
-  {
-    time: "1",
-    COD: 20,
-    CODColor: "hsl(229, 70%, 50%)",
-    VNPay: 96,
-    VNPayColor: "hsl(296, 70%, 50%)",
-    Momo: 70,
-    MomoColor: "hsl(97, 70%, 50%)",
-    Canceled: 10,
-    CanceledColor: "hsl(340, 70%, 50%)",
-  },
-  {
-    time: "2",
-    COD: 50,
-    CODColor: "hsl(229, 70%, 50%)",
-    VNPay: 96,
-    VNPayColor: "hsl(296, 70%, 50%)",
-    Momo: 70,
-    MomoColor: "hsl(97, 70%, 50%)",
-    Canceled: 10,
-    CanceledColor: "hsl(340, 70%, 50%)",
-  },
-  {
-    time: "3",
-    COD: 137,
-    CODColor: "hsl(229, 70%, 50%)",
-    VNPay: 96,
-    VNPayColor: "hsl(296, 70%, 50%)",
-    Momo: 140,
-    MomoColor: "hsl(97, 70%, 50%)",
-    Canceled: 70,
-    CanceledColor: "hsl(340, 70%, 50%)",
-  },
-  {
-    time: "4",
-    COD: 137,
-    CODColor: "hsl(229, 70%, 50%)",
-    VNPay: 96,
-    VNPayColor: "hsl(296, 70%, 50%)",
-    Momo: 140,
-    MomoColor: "hsl(97, 70%, 50%)",
-    Canceled: 70,
-    CanceledColor: "hsl(340, 70%, 50%)",
-  },
-  {
-    time: "5",
-    COD: 137,
-    CODColor: "hsl(229, 70%, 50%)",
-    VNPay: 96,
-    VNPayColor: "hsl(296, 70%, 50%)",
-    Momo: 140,
-    MomoColor: "hsl(97, 70%, 50%)",
-    Canceled: 70,
-    CanceledColor: "hsl(340, 70%, 50%)",
-  },
-  {
-    time: "6",
-    COD: 137,
-    CODColor: "hsl(229, 70%, 50%)",
-    VNPay: 96,
-    VNPayColor: "hsl(296, 70%, 50%)",
-    Momo: 140,
-    MomoColor: "hsl(97, 70%, 50%)",
-    Canceled: 70,
-    CanceledColor: "hsl(340, 70%, 50%)",
-  },
-  {
-    time: "7",
-    COD: 137,
-    CODColor: "hsl(229, 70%, 50%)",
-    VNPay: 96,
-    VNPayColor: "hsl(296, 70%, 50%)",
-    Momo: 140,
-    MomoColor: "hsl(97, 70%, 50%)",
-    Canceled: 70,
-    CanceledColor: "hsl(340, 70%, 50%)",
-  },
-  {
-    time: "8",
-    COD: 137,
-    CODColor: "hsl(229, 70%, 50%)",
-    VNPay: 96,
-    VNPayColor: "hsl(296, 70%, 50%)",
-    Momo: 140,
-    MomoColor: "hsl(97, 70%, 50%)",
-    Canceled: 70,
-    CanceledColor: "hsl(340, 70%, 50%)",
-  },
-  {
-    time: "9",
-    COD: 137,
-    CODColor: "hsl(229, 70%, 50%)",
-    VNPay: 96,
-    VNPayColor: "hsl(296, 70%, 50%)",
-    Momo: 140,
-    MomoColor: "hsl(97, 70%, 50%)",
-    Canceled: 70,
-    CanceledColor: "hsl(340, 70%, 50%)",
-  },
-  {
-    time: "10",
-    COD: 137,
-    CODColor: "hsl(229, 70%, 50%)",
-    VNPay: 96,
-    VNPayColor: "hsl(296, 70%, 50%)",
-    Momo: 140,
-    MomoColor: "hsl(97, 70%, 50%)",
-    Canceled: 70,
-    CanceledColor: "hsl(340, 70%, 50%)",
-  },
-  {
-    time: "11",
-    COD: 137,
-    CODColor: "hsl(229, 70%, 50%)",
-    VNPay: 96,
-    VNPayColor: "hsl(296, 70%, 50%)",
-    Momo: 140,
-    MomoColor: "hsl(97, 70%, 50%)",
-    Canceled: 70,
-    CanceledColor: "hsl(340, 70%, 50%)",
-  },
-  {
-    time: "12",
-    COD: 137,
-    CODColor: "hsl(229, 70%, 50%)",
-    VNPay: 96,
-    VNPayColor: "hsl(296, 70%, 50%)",
-    Momo: 140,
-    MomoColor: "hsl(97, 70%, 50%)",
-    Canceled: 70,
-    CanceledColor: "hsl(340, 70%, 50%)",
-  },
-
-];
 
 export const mockPieData = [
   {

@@ -51,13 +51,7 @@ const cart = () => {
             <div className='pa-2 text-center'>
               <h2>Giỏ hàng</h2>
             </div>
-            {/* <div className="col-12 col-md-5 text-center">
-              <h5>Sản phẩm</h5>
-            </div>
-            <div className="col-12 col-md-5 text-center">
-              <h5>Chi tiết</h5>
-            </div> */}
-
+            
             <div className="p-3">
               {[...shopcontext.cartItems].map((product) => {
                 return <CartItem key={product.id} data={product} />;

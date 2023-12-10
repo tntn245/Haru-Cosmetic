@@ -1,41 +1,220 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import CloseIcon from "@mui/icons-material/Close";
+import { Box, IconButton, Button, Modal } from "@mui/material";
+import axios from '../api/axios.js';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+  const [password, setNewPassword] = useState('');
+  const [password_confirmation, setPasswordConfirmation] = useState('');
+  const [token, setToken] = useState('');
+  const [messagePIN, setMessagePIN] = useState('');
+  const [messageEmail, setMessageEmail] = useState('');
+  const [messagePassword, setMessagePassword] = useState('');
+  const [panelPIN, setPanelPIN] = useState(false);
+  const [panelPassword, setPanelPassword] = useState(false);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch('/api/reset-password', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
-      const data = await response.json();
-      setMessage(data.message);
-    } catch (error) {
-      console.error(error);
-      setMessage('Có lỗi xảy ra. Vui lòng thử lại sau!');
-    }
+  const navigate = useNavigate();
+
+  const handleClose = () => {
+    setPanelPIN(false);
   };
+
+  const handleSubmitEmail = async (event) => {
+    event.preventDefault();
+    axios.post("/api/forgot-password", { email })
+      .then(
+        (response) => {
+          console.log(response.data.success);
+          const success = response.data.success;
+          if (success) {
+            setPanelPIN(true);
+          }
+          else{
+            setMessageEmail("Email không tồn tại");
+          }
+        }
+      )
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const handleVerifyPIN = async () => {
+    console.log("aaa")
+    axios.post("/api/verify/pin", { email, token })
+      .then(
+        (response) => {
+          console.log(response.data)
+          const status = response.status;
+          if (status==200) {
+            setPanelPIN(false);
+            setPanelPassword(true);
+          }
+        }
+      )
+      .catch(function (error) {
+        const status = error.response.status;
+        if(status==401){
+          setMessagePIN("Sai mã PIN");
+        }
+        else if(status==400){
+          setMessagePIN("PIN đã hết hạn");
+        }
+        else if(status==422){
+          setMessagePIN("Sai định dạng");
+        }
+      });
+  };
+
+  const handleNewPassWord = async () =>{
+    if(password != password_confirmation)
+      setMessagePassword("Mật khẩu không trùng khớp");
+    else{
+      axios.post("/api/reset-password", { email, password, password_confirmation})
+      .then(
+        (response) => {
+          console.log(response.data)
+          setPanelPassword(false);
+          navigate('/login');
+        }
+      )
+      .catch(function (error) {
+        console.log(error);
+        const status = error.response.status;
+        if(status==422)
+          setMessagePIN("Mật khẩu phải từ 8 kí tự");
+        else 
+          setMessagePassword("Có lỗi xảy ra");
+      });
+    }
+  }
 
   return (
     <section className="login-wrapper p-5">
       <div className="container-xxl">
+
+        {panelPIN && (
+          <Modal open={open} onClose={handleClose}>
+            <Box
+              sx={{
+                position: 'absolute',
+                width: '50%',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                bgcolor: 'white',
+                boxShadow: 24,
+                p: 4,
+              }}
+            >
+              <IconButton
+                sx={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                }}
+                onClick={handleClose}
+                style={{ color: '#D80032' }}
+              >
+                <CloseIcon />
+              </IconButton>
+
+              <h2>PIN đang được gửi qua email của bạn</h2>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  // alignItems: 'center',
+                  flexDirection: 'column',
+                  gap: '16px',
+                }}
+              >
+                <hr></hr>
+                <input
+                  type="number"
+                  onChange={(event) => setToken(event.target.value)}
+                  required
+                  style={{
+                    width: '100%'
+                  }}
+                />
+                {messagePIN && <div class="alert alert-danger">{messagePIN}</div>}
+                <button type="submit" onClick={handleVerifyPIN} style={{width: '100%'}}>Tiếp tục</button>
+              </div>
+            </Box>
+          </Modal>
+        )}
+
+        {panelPassword && (
+          <Modal open={open}>
+            <Box
+              sx={{
+                position: 'absolute',
+                width: '50%',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                bgcolor: 'white',
+                boxShadow: 24,
+                p: 4,
+              }}
+            >
+              <IconButton
+                sx={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                }}
+                onClick={handleClose}
+                style={{ color: '#D80032' }}
+              >
+                <CloseIcon />
+              </IconButton>
+
+              <h2>Đặt lại mật khẩu của bạn</h2>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  flexDirection: 'column',
+                  gap: '16px',
+                }}
+              >
+                <hr></hr>
+                <input
+                  type="text"
+                  onChange={(event) => setNewPassword(event.target.value)}
+                  placeholder='Mật khẩu mới'
+                  required
+                  style={{
+                    width: '100%'
+                  }}
+                />
+                <input
+                  type="text"
+                  onChange={(event) => setPasswordConfirmation(event.target.value)}
+                  placeholder='Xác nhận lại mật khẩu'
+                  required
+                  style={{
+                    width: '100%'
+                  }}
+                />
+                {messagePassword && <div class="alert alert-danger">{messagePassword}</div>}
+                <button type="submit" onClick={handleNewPassWord} style={{width: '100%'}}>Xác nhận</button>
+              </div>
+            </Box>
+          </Modal>
+        )}
+
         <div className="row justify-content-center">
           <div className="col-lg-4 col-md-8 col-sm-10">
             <div className="card">
               <div className="card-body p-4">
                 <h2 className="text-center">Quên mật khẩu</h2>
-                <p className="text-center mb-4">
-                  Nhập địa chỉ email khôi phục mật khẩu
-                </p>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmitEmail}>
                   <div className="mb-3">
                     <label
                       htmlFor="exampleFormControlInput1"
@@ -54,10 +233,11 @@ const ForgotPassword = () => {
                     />
                   </div>
                   <div className="d-grid gap-2">
-                    <button type="submit">Xác Nhận</button>
+                    <button type="submit" onClick={handleSubmitEmail}>Xác Nhận</button>
                   </div>
                 </form>
-                {message && <p className="text-center mt-4">{message}</p>}
+                {messageEmail && <div class="alert alert-danger">{messageEmail}</div>}
+                {/* {message && <p className="text-center mt-4">{message}</p>} */}
               </div>
             </div>
           </div>
