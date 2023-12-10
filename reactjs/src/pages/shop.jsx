@@ -37,8 +37,8 @@ const shop = () => {
 
   useEffect(() => {
     shopcontext.loadProducts();
-    console.log("filteredProducts",shopcontext.filteredProducts);
-  }, []);    
+    console.log("filteredProducts", shopcontext.filteredProducts);
+  }, []);
 
   return (<>
     <section className="shop-banner p-5">
@@ -54,7 +54,7 @@ const shop = () => {
       <div className='content'>
         <div className='side-bar'>
           <div className='side-bar-content'>
-            <Filter/>
+            <Filter />
           </div>
         </div>
         <div className="container-xxl" >

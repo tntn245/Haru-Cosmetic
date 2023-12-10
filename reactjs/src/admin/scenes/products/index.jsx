@@ -177,7 +177,7 @@ const Products = () => {
           bgcolor: 'white',
           boxShadow: 24,
           p: 4,
-          width:'320px',
+          width: '320px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -214,7 +214,7 @@ const Products = () => {
           <div className="edit-panel__field">
             <label>Tên loại sản phẩm:</label>
             <input
-            style={{ fontSize: '14px', padding: '5px', width: '250px' }}
+              style={{ fontSize: '14px', padding: '5px', width: '250px' }}
               type="text"
               value={editedRows.category_name || selectedProduct.category_name}
               onChange={(e) => handleEditField('category_name', e.target.value)}
@@ -224,7 +224,7 @@ const Products = () => {
           <div className="edit-panel__field">
             <label>Tên thương hiệu:</label>
             <input
-            style={{ fontSize: '14px', padding: '5px', width: '250px' }}
+              style={{ fontSize: '14px', padding: '5px', width: '250px' }}
               type="text"
               value={editedRows.brand_name || selectedProduct.brand_name}
               onChange={(e) => handleEditField('brand_name', e.target.value)}
@@ -234,7 +234,7 @@ const Products = () => {
           <div className="edit-panel__field">
             <label>Đơn giá:</label>
             <input
-            style={{ fontSize: '14px', padding: '5px', width: '250px' }}
+              style={{ fontSize: '14px', padding: '5px', width: '250px' }}
               type="number"
               value={editedRows.price !== undefined ? editedRows.price : selectedProduct.price}
               onChange={(e) => {
@@ -247,7 +247,7 @@ const Products = () => {
           <div className="edit-panel__field">
             <label>Số lượng đã bán:</label>
             <input
-            style={{ fontSize: '14px', padding: '5px', width: '250px' }}
+              style={{ fontSize: '14px', padding: '5px', width: '250px' }}
               type="number"
               value={editedRows.quantity_sold !== undefined ? editedRows.quantity_sold : selectedProduct.quantity_sold}
               onChange={(e) => {
@@ -319,8 +319,8 @@ const Products = () => {
         />
       </Box>
 
-      <Modal open={open} onClose={handleClose}>       
-          {renderEditPanel()}
+      <Modal open={open} onClose={handleClose}>
+        {renderEditPanel()}
 
       </Modal>
     </Box>

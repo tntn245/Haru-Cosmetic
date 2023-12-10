@@ -9,10 +9,10 @@ import StarFilter from '../components/starfilter';
 import '../styles/shop.scss'
 import Prod from './prod';
 
-const ProductCategory =  ({ products })  => {
+const ProductCategory = ({ products }) => {
   return (
     <>
-      <section className="shop-banner p-5">
+      <section className="shop-banner">
         <div className="container-xxl">
           <div className="row justify-content-center align-items-center">
             <div className="col-md-8 col-lg-6 text-center">
@@ -21,10 +21,11 @@ const ProductCategory =  ({ products })  => {
         </div>
       </section>
 
+
       <section className="featured-products my-5 py-4">
         <div className='content'>
           <div className='side-bar-content'>
-            <Filter/>
+            <Filter />
           </div>
           <div className="container-xxl">
             <div className="row productItems">
