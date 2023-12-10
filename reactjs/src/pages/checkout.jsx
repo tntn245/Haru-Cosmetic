@@ -204,7 +204,7 @@ const checkout = () => {
                                             </div>
                                         </div>
                                     </button>
-                                    <button className={`btn col-12 btn-light btn-block text-start p-3 rounded-0 border-bottom-custom ${selectedMethod === 'THANH_TOAN_COD' ? 'active' : ''}`}
+                                    <button className={`btn col-12 btn-light btn-block text-start p-3 rounded-0 border-bottom-custom ${selectedMethod === 'COD' ? 'active' : ''}`}
                                         type="button"
                                         data-bs-toggle="collapse"
                                         data-bs-target="#collapseCOD"  // Unique target for THANH TOAN COD

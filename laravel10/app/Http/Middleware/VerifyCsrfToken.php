@@ -53,6 +53,7 @@ class VerifyCsrfToken extends Middleware
         'api/remove-from-favs',
         
         'api/get-orders',
+        'api/count-orders',
         'api/get-user-orders',
         'api/get-user-orders-details',
         'api/create-order',

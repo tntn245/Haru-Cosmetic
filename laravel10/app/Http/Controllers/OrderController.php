@@ -28,8 +28,6 @@ class OrderController extends Controller
 
         $getUserOrders = DB::table('orders')
         ->where('user_id',  $data['userID'])
-        // ->join('order_details', 'orders.id', '=', 'order_details.order_id')
-        // ->select('orders.*', 'users.name', 'users.email')
         ->get();
         return $getUserOrders;
     }
@@ -44,6 +42,17 @@ class OrderController extends Controller
         ->select('order_details.*', 'products.name', 'products.image')
         ->get();
         return $getUserOrderDetails;
+    }
+    public function countOrdersByMonth(Request $request)
+    {
+        $data = $request->input();
+
+        $counts = Order::select('payment_method', DB::raw('COUNT(*) as count'))
+        ->whereYear('created_date', $data['year'])
+        ->whereMonth('created_date', $data['month'])
+        ->groupBy('payment_method')
+        ->get();
+        return $counts;
     }
     public function createOrder(Request $request)
     {

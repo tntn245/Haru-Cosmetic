@@ -66,6 +66,7 @@ Route::namespace('App\Http\Controllers')->group(function(){
     Route::post('remove-from-favs', [FavouriteController::class, 'removeFromFavs']);
 
     Route::post('get-orders', [OrderController::class, 'getOrders']);
+    Route::post('count-orders', [OrderController::class, 'countOrdersByMonth']);
     Route::post('get-user-orders', [OrderController::class, 'getUserOrders']);
     Route::post('get-user-orders-details', [OrderController::class, 'getUserOrderDetails']);
     Route::post('create-order', [OrderController::class, 'createOrder']);
