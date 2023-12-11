@@ -109,4 +109,15 @@ class OrderController extends Controller
             ], 201);
         }
     }
+    public function deleteOrder(Request $request)
+    {
+            $data = $request->input();
+
+            Order::where('id', $data['id'])->update(['status' => 0]);
+            
+            return response()->json([
+                'status' => true,
+                'message' => 'Delete product successful'
+            ], 201);
+    }
 }

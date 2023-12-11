@@ -37,6 +37,7 @@ Route::namespace('App\Http\Controllers')->group(function(){
     Route::post('get-users', [UserController::class, 'getUsers']);
     Route::post('check-user-password', [UserController::class, 'checkUserPassword']);
     Route::post('update-user', [UserController::class, 'updateUser']);
+    Route::post('delete-user', [UserController::class, 'deleteUser']);
     // Route::post('images', [UserController::class, 'uploadImg']);
 
     Route::post('get-categories', [CategoriesController::class, 'getCategories']);
@@ -48,6 +49,8 @@ Route::namespace('App\Http\Controllers')->group(function(){
     Route::post('get-products', [ProductController::class, 'getProducts']);
     Route::post('get-product-inf', [ProductController::class, 'getProductInf']);
     Route::post('update-product', [ProductController::class, 'updateProduct']);
+    Route::post('delete-product', [ProductController::class, 'deleteProduct']);
+    Route::post('add-product', [ProductController::class, 'addProduct']);
 
     Route::post('get-addresses', [AddressController::class, 'getAddresses']);
     Route::post('add-new-address', [AddressController::class, 'addNewAddress']);

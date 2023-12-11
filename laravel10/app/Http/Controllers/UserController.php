@@ -16,7 +16,6 @@ class UserController extends Controller
         $getUsers = User::get();
         return $getUsers;
     }
-
     public function registerUser(Request $request)
     {
         if ($request->isMethod('post')) {
@@ -56,7 +55,6 @@ class UserController extends Controller
             ], 201);
         }
     }
-
     public function loginUser(Request $request)
     {
         if ($request->isMethod('post')) {
@@ -101,7 +99,6 @@ class UserController extends Controller
             }
         }
     }
-
     public function checkUserPassword(Request $request)
     {
             $data = $request->input();
@@ -124,7 +121,6 @@ class UserController extends Controller
                 ], 422);
             }
     }
-
     public function logoutUser()
     {
         // auth()->user()->tokens()->delete();
@@ -134,7 +130,17 @@ class UserController extends Controller
             'message' => 'Logged out'
         ];
     }
+    public function deleteUser(Request $request)
+    {
+            $data = $request->input();
 
+            User::where('id', $data['id'])->update(['status' => false]);
+            
+            return response()->json([
+                'status' => true,
+                'message' => 'Delete user successful'
+            ], 201);
+    }
     public function updateUser(Request $request)
     {
         if ($request->isMethod('post')) {
@@ -147,10 +153,7 @@ class UserController extends Controller
                     $updateData['password'] = bcrypt($updateData['password']);
                 User::where('id', $data['id'])->update($updateData);
 
-                $userDetails = User::where('id', $data['id'])->first();
-
                 return response()->json([
-                    'userDetails' => $userDetails,
                     'status' => true,
                     'message' => 'User update successfully'
                 ], 201);
