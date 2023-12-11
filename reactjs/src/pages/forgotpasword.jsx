@@ -43,7 +43,6 @@ const ForgotPassword = () => {
   };
 
   const handleVerifyPIN = async () => {
-    console.log("aaa")
     axios.post("/api/verify/pin", { email, token })
       .then(
         (response) => {
@@ -185,7 +184,7 @@ const ForgotPassword = () => {
               >
                 <hr></hr>
                 <input
-                  type="text"
+                  type="password"
                   onChange={(event) => setNewPassword(event.target.value)}
                   placeholder='Mật khẩu mới'
                   required
@@ -194,7 +193,7 @@ const ForgotPassword = () => {
                   }}
                 />
                 <input
-                  type="text"
+                  type="password"
                   onChange={(event) => setPasswordConfirmation(event.target.value)}
                   placeholder='Xác nhận lại mật khẩu'
                   required

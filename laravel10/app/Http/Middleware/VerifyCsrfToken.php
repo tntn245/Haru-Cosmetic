@@ -18,6 +18,7 @@ class VerifyCsrfToken extends Middleware
         'api/logout-user',
         'api/get-users',
         'api/update-user',
+        'api/check-user-password',
 
         'google/callback',
         'google/redirect',
