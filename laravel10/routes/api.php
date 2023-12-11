@@ -35,6 +35,7 @@ Route::namespace('App\Http\Controllers')->group(function(){
     Route::post('login-google', [UserController::class, 'loginGoogle']);
     Route::post('logout-user', [UserController::class, 'logoutUser']);
     Route::post('get-users', [UserController::class, 'getUsers']);
+    Route::post('check-user-password', [UserController::class, 'checkUserPassword']);
     Route::post('update-user', [UserController::class, 'updateUser']);
     // Route::post('images', [UserController::class, 'uploadImg']);
 

@@ -102,6 +102,29 @@ class UserController extends Controller
         }
     }
 
+    public function checkUserPassword(Request $request)
+    {
+            $data = $request->input();
+
+            $userCount = User::where('email', $data['email'])->count();
+            if ($userCount > 0) {
+                $userDetails = User::where('email', $data['email'])->first();
+
+                if (password_verify($data['password'], $userDetails->password)) {
+                    return response()->json([
+                        'status' => true,
+                    ], 201);
+                } else {
+                    return response()->json(['status' => false, 'message' => "Password is incorrect"], 422);
+                }
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Email does not exists'
+                ], 422);
+            }
+    }
+
     public function logoutUser()
     {
         // auth()->user()->tokens()->delete();
@@ -119,10 +142,11 @@ class UserController extends Controller
 
             $userCount = User::where('id', $data['id'])->count();
             if ($userCount > 0) {
-                //Update
-                User::where('id', $data['id'])->update(array_filter($request->all()));
+                $updateData = array_filter($request->all());
+                if ($request->has('password'))
+                    $updateData['password'] = bcrypt($updateData['password']);
+                User::where('id', $data['id'])->update($updateData);
 
-                //Fetch
                 $userDetails = User::where('id', $data['id'])->first();
 
                 return response()->json([
@@ -136,7 +160,6 @@ class UserController extends Controller
             }
         }
     }
-    
     public function loginGoogle(Request $request)
     {
         if ($request->isMethod('post')) {

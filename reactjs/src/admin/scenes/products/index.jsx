@@ -307,7 +307,6 @@ const Products = () => {
 
       <Modal open={open} onClose={handleClose}>
         {renderEditPanel()}
-
       </Modal>
     </Box>
   );
