@@ -26,6 +26,28 @@ class ProductController extends Controller
         $getProduct = Product::where('id',  $data['productID'])->get();
         return $getProduct;
     }
+    public function updateProduct(Request $request)
+    {
+            $data = $request->input();
+
+            $productCount = Product::where('id', $data['id'])->count();
+            if ($productCount > 0) {
+                $updateData = array_filter($request->all());
+
+                Product::where('id', $data['id'])->update($updateData);
+                // Product::where('id', $data['id'])->update(['image' =>$request->all()['image']]);
+
+                $productDetails = Product::where('id', $data['id'])->first();
+
+                return response()->json([
+                    '$productDetails' => $productDetails,
+                    'status' => true,
+                    'message' => 'Product update successfully'
+                ], 201);
+            } else {
+                return response()->json(['status' => false, 'message' => "Product does not exists"], 422);
+            }
+    }
     public function uploadImageProduct(Request $request)
     {
         if ($request->hasFile('image') && $request->file('image')->isValid()) {

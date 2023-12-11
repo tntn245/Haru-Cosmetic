@@ -5,12 +5,13 @@ import { products as mockProducts, updateProducts } from "../../data/mockData";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import ReactStars from "react-rating-stars-component";
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ReactDOM from 'react-dom';
 import '../../styles/products.scss';
+import axios from "../../../api/axios";
 
 const Products = () => {
   const theme = useTheme();
@@ -20,25 +21,116 @@ const Products = () => {
   const [rows, setRows] = useState(mockProducts);
   const [open, setOpen] = useState(false);
   const [editedRows, setEditedRows] = useState({});
+  const [selectedImage, setSelectedImage] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
+  // const [imageUrl, setImageUrl] = useState('');
+  let imageUrl;
+
+  useEffect(() => {
+    axios.post("/api/get-categories")
+      .then(
+        (response) => {
+          setCategories(response.data);
+        })
+      .catch(function (error) {
+        console.log(error.message);
+      });
+
+    axios.post("/api/get-brands")
+      .then(
+        (response) => {
+          setBrands(response.data);
+        })
+      .catch(function (error) {
+        console.log(error.message);
+      });
+  }, []);
+
+  const handleImageUpload = async() => {
+    const formData = new FormData();
+    formData.append("image", selectedImage);
+
+    await axios.post("/upload-img-product", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "x-rapidapi-host": "file-upload8.p.rapidapi.com",
+        "x-rapidapi-key": "your-rapidapi-key-here",
+      },
+    })
+      .then((response) => {
+        console.log(response);
+        imageUrl = response.data.url;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleImageChange = async(e) => {
+    setSelectedImage(e.target.files[0]);
+
+    const formData = new FormData();
+    formData.append("image", e.target.files[0]);
+
+    await axios.post("/upload-img-product", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "x-rapidapi-host": "file-upload8.p.rapidapi.com",
+        "x-rapidapi-key": "your-rapidapi-key-here",
+      },
+    })
+      .then((response) => {
+        console.log(response);
+        handleEditField('image', response.data.url);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const handleClose = () => {
     setOpen(false);
   };
 
   const handleEditRow = (rowId) => {
     console.log('Edit row:', rowId);
+    handleEditField('id', rowId);
     setSelectedRow(rowId);
     setOpen(true);
   };
 
-  const handleViewRow = (rowId) => {
-    console.log('View row:', rowId);
-    setSelectedRow(rowId);
-    setOpen(true);
-  };
   const handleEditField = (field, value) => {
     setEditedRows((prev) => ({ ...prev, [field]: value }));
   };
-  const handleSave = () => {
+
+  const handleChangeCategory = (e) =>{
+    handleEditField('category_name', e.target.value);
+    handleEditField('category_id',e.target.options[e.target.selectedIndex].getAttribute('data-key'));
+  }
+
+  const handleChangeBrand = (e) =>{
+    handleEditField('brand_name', e.target.value);
+    handleEditField('brand_id',e.target.options[e.target.selectedIndex].getAttribute('data-key'));
+  }
+
+  const handleSave = async() => {
+    console.log(editedRows);
+    
+    const { category_name, brand_name, ...data } = editedRows;
+
+    axios.post("/api/update-product", data)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+
+
+
+
     // Implement your save logic using editedRows
     const updatedRows = rows.map((row) => {
       if (row.id === selectedRow) {
@@ -146,24 +238,21 @@ const Products = () => {
       }
     },
   ];
-  const renderEditPanel = () => {
-    if (!selectedRow) {
-      return null;
-    }
 
+  const renderEditPanel = () => {
     const selectedProduct = rows.find((row) => row.id === selectedRow);
 
     return (
       <Box
         sx={{
           position: 'absolute',
+          width: '50%',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
           bgcolor: 'white',
           boxShadow: 24,
           p: 4,
-          width: '320px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -181,67 +270,83 @@ const Products = () => {
           <CloseIcon />
         </IconButton>
 
-        <div className="edit-panel">
-          <div className="edit-panel__field">
-            <label>Hình ảnh:</label>
-            <img src={selectedProduct.image} alt="Hình ảnh" style={{ width: '70%', height: 'auto', objectFit: 'cover' }} />
+        <div className="edit-panel container">
+          <div className="row">
+            <div className="edit-panel__field col-md-6">
+              <label>Hình ảnh:</label>
+              <img src={selectedProduct.image} alt="Hình ảnh" style={{ width: '70%', height: 'auto', objectFit: 'cover' }} />
+            </div>
+
+            <div className="col-md-6">
+              <div className="edit-panel__field">
+                <label >Tên sản phẩm:</label>
+                <input
+                  type="text"
+                  value={editedRows.name || selectedProduct.name}
+                  onChange={(e) => handleEditField('name', e.target.value)}
+                  style={{ fontSize: '14px', padding: '5px', width: '250px' }}
+                />
+              </div>
+
+              <div className="edit-panel__field">
+                <label>Tên loại sản phẩm:</label>
+                <select id="categories" name="categories" style={{ fontSize: '14px', padding: '5px', width: '250px' }}
+                value={editedRows.category_name || selectedProduct.category_name}
+                onChange={handleChangeCategory}>
+                  {categories.map((category) => (
+                    <option data-key={category.id} value={category.name}>{category.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="edit-panel__field">
+                <label>Tên thương hiệu:</label>
+                <select id="brands" name="brands" style={{ fontSize: '14px', padding: '5px', width: '250px' }}
+                value={editedRows.brand_name || selectedProduct.brand_name}
+                onChange={(e) => handleChangeBrand(e)}>
+                  {brands.map((brand) => (
+                    <option data-key={brand.id} value={brand.id}>{brand.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="edit-panel__field">
+                <label>Đơn giá:</label>
+                <input
+                  style={{ fontSize: '14px', padding: '5px', width: '250px' }}
+                  type="number"
+                  value={editedRows.price !== undefined ? editedRows.price : selectedProduct.price}
+                  onChange={(e) => {
+                    const newValue = e.target.value;
+                    handleEditField('price', newValue);
+                  }}
+                />
+              </div>
+
+              <div className="edit-panel__field">
+                <label>Số lượng đã bán:</label>
+                <input
+                  style={{ fontSize: '14px', padding: '5px', width: '250px' }}
+                  type="number"
+                  value={editedRows.quantity_sold !== undefined ? editedRows.quantity_sold : selectedProduct.quantity_sold}
+                  onChange={(e) => {
+                    const newValue = e.target.value;
+                    handleEditField('quantity_sold', newValue);
+                  }}
+                />
+              </div>
+
+              <div className="edit-panel__field">
+                <label>Chọn hình ảnh:</label>
+                <form onSubmit={handleImageUpload} encType="multipart/form-data">
+                  <input type="file" accept="image/*" style={{ color: 'black' }} onChange={handleImageChange} />
+                  {/* <button type="submit">Upload</button> */}
+                </form>
+              </div>
+
+            </div>
           </div>
 
-          <div className="edit-panel__field">
-            <label >Tên sản phẩm:</label>
-            <input
-              type="text"
-              value={editedRows.name || selectedProduct.name}
-              onChange={(e) => handleEditField('name', e.target.value)}
-              style={{ fontSize: '14px', padding: '5px', width: '250px' }}
-            />
-          </div>
-
-          <div className="edit-panel__field">
-            <label>Tên loại sản phẩm:</label>
-            <input
-              style={{ fontSize: '14px', padding: '5px', width: '250px' }}
-              type="text"
-              value={editedRows.category_name || selectedProduct.category_name}
-              onChange={(e) => handleEditField('category_name', e.target.value)}
-            />
-          </div>
-
-          <div className="edit-panel__field">
-            <label>Tên thương hiệu:</label>
-            <input
-              style={{ fontSize: '14px', padding: '5px', width: '250px' }}
-              type="text"
-              value={editedRows.brand_name || selectedProduct.brand_name}
-              onChange={(e) => handleEditField('brand_name', e.target.value)}
-            />
-          </div>
-
-          <div className="edit-panel__field">
-            <label>Đơn giá:</label>
-            <input
-              style={{ fontSize: '14px', padding: '5px', width: '250px' }}
-              type="number"
-              value={editedRows.price !== undefined ? editedRows.price : selectedProduct.price}
-              onChange={(e) => {
-                const newValue = e.target.value;
-                handleEditField('price', newValue);
-              }}
-            />
-          </div>
-
-          <div className="edit-panel__field">
-            <label>Số lượng đã bán:</label>
-            <input
-              style={{ fontSize: '14px', padding: '5px', width: '250px' }}
-              type="number"
-              value={editedRows.quantity_sold !== undefined ? editedRows.quantity_sold : selectedProduct.quantity_sold}
-              onChange={(e) => {
-                const newValue = e.target.value;
-                handleEditField('quantity_sold', newValue);
-              }}
-            />
-          </div>
 
           <div className="edit-panel__buttons">
             <Button variant="contained" color="primary" onClick={handleSave} style={{ marginRight: '15px', marginTop: '16px' }}>
@@ -305,9 +410,11 @@ const Products = () => {
         />
       </Box>
 
-      <Modal open={open} onClose={handleClose}>
-        {renderEditPanel()}
-      </Modal>
+      {selectedRow &&
+        <Modal open={open} onClose={handleClose}>
+          {renderEditPanel()}
+        </Modal>
+      }
     </Box>
   );
 };
