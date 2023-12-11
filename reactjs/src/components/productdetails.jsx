@@ -18,7 +18,7 @@ const ProductDetails = () => {
   // Set selectedProduct to 0
   const productID = selectedProduct || 0;
 
-  const product = PRODUCTS.find((p) => p.id === productID) || PRODUCTS1.find((p) => p.id === productID);
+  const product = PRODUCTS.find((p) => p.id === productID);
 
   if (!product) {
     return null;
