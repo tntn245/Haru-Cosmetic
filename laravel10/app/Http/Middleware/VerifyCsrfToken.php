@@ -18,6 +18,7 @@ class VerifyCsrfToken extends Middleware
         'api/logout-user',
         'api/get-users',
         'api/update-user',
+        'api/delete-user',
         'api/check-user-password',
 
         'google/callback',
@@ -37,6 +38,9 @@ class VerifyCsrfToken extends Middleware
 
         'api/get-products',
         'api/get-product-inf',
+        'api/update-product',
+        'api/delete-product',
+        'api/add-product',
 
         'api/get-reviews',
         'api/add-new-review',

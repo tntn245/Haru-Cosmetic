@@ -1,9 +1,9 @@
 import axios from "../../api/axios";
 import { tokens } from "../../theme";
 
-loadUsers();
-loadOrders();
-loadProducts();
+// loadUsers();
+// loadOrders();
+// loadProducts();
 countPaymentMethodOrders();
 
 export let users = [];
@@ -20,6 +20,16 @@ async function loadUsers() {
 }
 export const updateUsers = (updatedRows) => {
   users = updatedRows;
+  // axios.post("/api/get-products")
+  //   .then((response) => {
+  //     console.log(response.data);
+  //     response.data.forEach((obj) => {
+  //       products.push(obj);
+  //     });
+  //   })
+  //   .catch((error) => {
+  //     throw error;
+  //   });
 };
 
 export let products = [];

@@ -1,32 +1,55 @@
-import { Box, Typography, useTheme, IconButton } from "@mui/material";
+import { Box, Typography, useTheme, IconButton, Button } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
-import { orders } from "../../data/mockData";
+// import { orders } from "../../data/mockData";
 import Header from "../../components/Header";
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import axios from "../../../api/axios";
 
 const Orders = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [rowSelectionModel, setRowSelectionModel] = React.useState([]);
-
-  const handleDeleteRow = (rowId) => {
-    // Thực hiện xóa các hàng đã chọn
-    console.log("Delete rows:", rowId);
-  };
+  const [rows, setRows] = useState([]);
   
-  const handleEditRow = (rowId) => {
-    // Handle edit logic for the selected row
-    console.log('Edit row:', rowId);
+  useEffect(() => {
+    axios.post("/api/get-orders")
+    .then((response) => {
+      setRows(response.data);
+    })
+    .catch((error) => {
+      throw error;
+    });
+  })
+
+  const handleDeleteRow = (id) => {
+    console.log("Delete rows:", id);
+
+    axios.post("/api/delete-product", {id})
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      throw error;
+    });
+    
+    const updatedRows = rows.filter((row) => row.id !== id);
+    setRows(updatedRows);
   };
 
-  const handleViewRow = (rowId) => {
-    // Handle view logic for the selected row
-    console.log('View row:', rowId);
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
+
+  // const handleEditRow = (rowId) => {
+  //   console.log('Edit row:', rowId);
+  //   handleEditField('id', rowId);
+  //   setSelectedRow(rowId);
+  //   setOpen(true);
+  // };
 
   const handleSelectionModelChange = (newRowSelectionModel) =>{
     setRowSelectionModel(newRowSelectionModel);
@@ -108,9 +131,10 @@ const Orders = () => {
   return (
     <Box m="20px" width="100%">
       <Header title="ĐƠN HÀNG" subtitle="Quản lý đơn hàng" />
+      <Button variant="contained" color="primary">Thêm mới</Button>
       <Box
         m="40px 0 0 0"
-        height="75vh"
+        height="70vh"
         sx={{
           "& .MuiDataGrid-root": {
             border: "none",
@@ -142,7 +166,7 @@ const Orders = () => {
       >
       <DataGrid 
           disableRowSelectionOnClick 
-          rows={orders} 
+          rows={rows} 
           columns={columns}
           components={{ Toolbar: GridToolbar }}
           onRowSelectionModelChange={(newRowSelectionModel) => {

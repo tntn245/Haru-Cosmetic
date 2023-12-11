@@ -1,36 +1,49 @@
-import { Box, Typography, useTheme, IconButton } from "@mui/material";
+import { Box, Typography, useTheme, IconButton, Button } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
-import { users, updateUsers } from "../../data/mockData";
+// import { users, updateUsers } from "../../data/mockData";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/Header";
-import React, { useState } from 'react'
+import React, { useState, useEffect} from 'react'
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import axios from "../../../api/axios";
 
 const Account = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [rowSelectionModel, setRowSelectionModel] = React.useState([]);
+  const [users, setUsers] = useState([]);
+  
+  useEffect(() => {
+    axios.post("/api/get-users")
+    .then((response) => {
+      setUsers(response.data);
+    })
+    .catch((error) => {
+      throw error;
+    });
+  }, []);
 
-  const handleDeleteRow = (rowId) => {
-    // Thực hiện xóa các hàng đã chọn
-    console.log("Delete rows:", rowId);
-    const updatedRows = users.filter((row) => row.id !== rowId);
-    updateUsers(updatedRows);
+  const handleDeleteRow = (id) => {
+    console.log("Delete rows:", id);
+    const updatedRows = users.filter((row) => row.id !== id);
+    setUsers(updatedRows);
+
+    axios.post("/api/delete-user", {id})
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      throw error;
+    });
   };
   
-  const handleEditRow = (rowId) => {
-    // Handle edit logic for the selected row
-    console.log('Edit row:', rowId);
-  };
-
-  const handleViewRow = (rowId) => {
-    // Handle view logic for the selected row
-    console.log('View row:', rowId);
+  const handleEditRow = (id) => {
+    console.log('Edit row:', id);
   };
 
   const handleSelectionModelChange = (newRowSelectionModel) =>{
@@ -88,13 +101,6 @@ const Account = () => {
           return (
             <div>
               <IconButton
-                onClick={() => handleViewRow(id)}
-                size="small"
-                color="inherit"
-              >
-                <VisibilityIcon />
-              </IconButton>
-              <IconButton
                 onClick={() => handleEditRow(id)}
                 size="small"
                 style={{ color: '#FFD700' }}
@@ -114,46 +120,15 @@ const Account = () => {
         return null;
       },
     }
-    // {
-    //   field: "actions",
-    //   headerName: "Actions",
-    //   renderCell: (params) => {
-    //     const { id } = params.row;
-    //     return (
-    //       <div>
-    //         <IconButton
-    //           onClick={() => handleViewRow(id)}
-    //           size="small"
-    //           color="inherit"
-    //         >
-    //           <VisibilityIcon />
-    //         </IconButton>
-    //         <IconButton
-    //           onClick={() => handleEditRow(id)}
-    //           size="small"
-    //           style={{ color: '#FFD700' }}
-    //         >
-    //           <EditIcon />
-    //         </IconButton>
-    //         <IconButton
-    //           onClick={() => handleDeleteRow(id)}
-    //           size="small"
-    //           color="error"
-    //         >
-    //           <DeleteIcon />
-    //         </IconButton>
-    //       </div>
-    //     );
-    //   }
-    // },
   ];
 
   return (
     <Box m="20px" width="100%">
       <Header title="TÀI KHOẢN" subtitle="Quản lý tài khoản" />
+      <Button variant="contained" color="primary">Thêm mới</Button>
       <Box
         m="40px 0 0 0"
-        height="75vh"
+        height="70vh"
         sx={{
           "& .MuiDataGrid-root": {
             border: "none",
