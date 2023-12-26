@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OrderDetails;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -11,6 +12,15 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
+    public function getAllProducts()
+    {
+        $getProducts = DB::table('products')
+        ->leftJoin('categories', 'products.category_id', '=', 'categories.id')
+        ->leftJoin('brands', 'products.brand_id', '=', 'brands.id')
+        ->select('products.*', 'categories.name as category_name', 'brands.name as brand_name')
+        ->get();
+        return $getProducts;
+    }
     public function getProducts()
     {
         $getProducts = DB::table('products')
@@ -41,7 +51,7 @@ class ProductController extends Controller
                 $productDetails = Product::where('id', $data['id'])->first();
 
                 return response()->json([
-                    '$productDetails' => $productDetails,
+                    'productDetails' => $productDetails,
                     'status' => true,
                     'message' => 'Product update successfully'
                 ], 201);
@@ -103,17 +113,36 @@ class ProductController extends Controller
     public function deleteProduct(Request $request)
     {
             $data = $request->input();
-
-            Product::where('id', $data['id'])->update(['status' => 0]);
+        $orderWithProducts = OrderDetails::where('product_id',  $data['id'])->first();
             
-            return response()->json([
-                'status' => true,
-                'message' => 'Delete product successful'
-            ], 201);
+        if ($orderWithProducts) {
+            // Nếu id của address đã được sử dụng trong bảng order, cập nhật status của address thành 0
+            $product = Product::find( $data['id']);
+            if ($product) {
+                $product->status = 0;
+                $product->save();
+
+                return response()->json(['message' => 'Product status updated to 0'], 204);
+            } else {
+                return response()->json(['error' => 'Product not found'], 404);
+            }
+        } else {
+            // Nếu id của address không được sử dụng trong bảng order, xóa address
+            $product = Product::find( $data['id']);
+            if ($product) {
+                $product->delete();
+
+                return response()->json(['message' => 'Product deleted'], 200);
+            } else {
+                return response()->json(['error' => 'Product not found'], 404);
+            }
+        }
     }
     public function searchProducts($text)
     {
-        $searchProducts =  Product::where('name', 'LIKE', '%' . $text . '%')->get();
+        $searchProducts =  Product::where('name', 'LIKE', '%' . $text . '%')
+                                ->where('status', 1)
+                                ->get();
         return $searchProducts;
     }
 }

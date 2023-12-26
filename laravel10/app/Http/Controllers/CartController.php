@@ -50,7 +50,7 @@ class CartController extends Controller
                 return response()->json([
                     'status' => true,
                     'message' => 'Update quantity successful'
-                ], 201);
+                ], 200);
             }
             
             if(!$flag){
@@ -83,7 +83,7 @@ class CartController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Delete product in cart successful'
-            ], 201);
+            ], 200);
         }
     }
     public function updateToCart(Request $request)
@@ -102,7 +102,7 @@ class CartController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Update quantity successful'
-            ], 201);
+            ], 200);
         }
     }
     public function clearCart(Request $request)
@@ -118,7 +118,7 @@ class CartController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Clear cart successful'
-            ], 201);
+            ], 200);
         }
     }
 }

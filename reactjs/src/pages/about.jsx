@@ -40,7 +40,6 @@ const about = () => {
           <div className="col-12">
             <div className="shop-details text-center align-items-center">
               <h1 className="text-black">Câu chuyện của Haru</h1>
-              <p className='text-black fs-3'>Get to know us more</p>
             </div>
           </div>
         </div>
@@ -52,7 +51,7 @@ const about = () => {
           <img src={a6} alt="" className='img-fluid p-5' />
         </div>
         <div className="col-md-6 d-flex flex-column align-items-center justify-content-center">
-          <h1><b>Chúng mình là ai?</b></h1>
+          <h1 style={{marginBottom: '10px'}}><b>Chúng mình là ai?</b></h1>
           <div className="text-content">
             <p className="card-text mb-3">Chào các bạn, chúng mình là Haru – một công ty đi theo mô hình “Best Selected”, tức là lựa chọn những sản phẩm làm đẹp tốt nhất từ các thương hiệu được đánh giá cao tại Hàn Quốc để đem đến cho khách hàng Việt Nam. <br /> Đối với các sản phẩm dưỡng da, chúng mình luôn theo đuổi những thương hiệu lành tính mà ngay cả những bạn da siêu nhạy cảm, da đang bị mụn hay các mẹ bầu cần cẩn thận trong thai kỳ đều có thể sử dụng được. Đồng thời, chúng mình cũng xem xét thật kĩ bảng thành phần, đọc thêm nhiều nhận xét trên các website uy tín và dùng thử sản phẩm trước khi quyết định giới thiệu sản phẩm đó tới khách hàng Việt Nam. Vì có những cảm nhận chung về làn da châu Á đỏng đảnh đặc trưng, Seoulista tin rằng những thương hiệu được chúng mình lựa chọn sẽ đem đến những kết quả tuyệt vời cho làn da của các bạn.</p>
           </div>

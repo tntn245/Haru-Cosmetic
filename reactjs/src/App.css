@@ -255,7 +255,6 @@
   }
 
   #button-linker:hover {
-    background-color: var(--primary);
     border          : 1px solid transparent;
     color           : white;
   }
@@ -530,10 +529,6 @@
     color: #98c1ae;
   }
 
-  .footer {
-    margin-top: 60px;
-  }
-
   footer .footer-title {
     border-bottom: 2px solid #FEFEFA;
     width        : 30%;
@@ -592,7 +587,6 @@
 
   .pagination .page-item .page-link {
     font-size : 18px;
-    padding   : 0 8px;
     color     : var(--darken);
     transition: 0.5s ease;
   }
@@ -698,7 +692,7 @@
   }
 
   .cart {
-    background: var(--lighter2);
+    background: #f0f0f0;
   }
 
   .cart button {

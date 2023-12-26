@@ -12,6 +12,7 @@ import axios from '../api/axios.js';
 
 const Prod = (props) => {
   const { id, name, price, image, brand, star } = props.data;
+  const [addedToCart, setAddedToCart] = useState(false);
   const [addedToWishlist, setAddedToWishlist] = useState(false);
   const [removeFromWishlist, setRemoveFromWishlist] = useState(false);
   const shopcontext = useContext(ShopContext);
@@ -33,6 +34,7 @@ const Prod = (props) => {
       await axios.post("/api/add-to-cart", { userID, productID, quantity })
         .then(
           (response) => {
+            setAddedToCart(true)
             console.log(response);
           }
         )
@@ -43,6 +45,7 @@ const Prod = (props) => {
   }
 
   const handleViewProductDetails = (productID) => {
+    console.log(productID)
     shopcontext.viewProductDetails(productID);
   };
 
@@ -74,6 +77,15 @@ const Prod = (props) => {
   };
 
   useEffect(() => {
+    if (addedToCart) {
+      const timer = setTimeout(() => {
+        setAddedToCart(false);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [addedToCart]);
+  
+  useEffect(() => {
     if (addedToWishlist) {
       const timer = setTimeout(() => {
         setAddedToWishlist(false);
@@ -93,6 +105,7 @@ const Prod = (props) => {
 
   return (
     <>
+      <Link to="/details" onClick={() => handleViewProductDetails(id)}>
       <div
         className="col mb-5"
         onMouseEnter={() => handleCheckFaved(id)}
@@ -129,12 +142,19 @@ const Prod = (props) => {
 
             <div className="mb-3">
               <p className="price mb-2">
-                <span className="red">{price} </span>&nbsp; <strike>{price * 2}đ</strike>
+                <span className="red">{price} VNĐ</span>&nbsp; 
               </p>
             </div>
           </div>
         </Link>
       </div>
+      </Link>
+
+      {addedToCart && (
+            <div className="wishlist-notification">
+              <p>You've added {name} to your cart.</p>
+            </div>
+          )}
 
       {addedToWishlist &&(
         <div className="wishlist-notification">

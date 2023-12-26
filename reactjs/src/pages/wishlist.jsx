@@ -35,7 +35,7 @@ const Wishlist = () => {
     }, [userID]);
     
     return (
-        <div className='Wishlist'>
+        <div className='Wishlist' style={{margin: '60px'}}>
             {favorites.length === 0 ? (
                 <p>Sản phẩm yêu thích của bạn đang trống.</p>
             ) : (

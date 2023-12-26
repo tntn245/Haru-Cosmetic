@@ -1,0 +1,478 @@
+import { Box, IconButton, Modal, Button } from "@mui/material";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { tokens } from "../../../theme";
+// import { products as mockProducts, updateProducts } from "../../data/mockData";
+import Header from "../../components/Header";
+import { useTheme } from "@mui/material";
+import ReactStars from "react-rating-stars-component";
+import React, { useState, useEffect, useRef } from 'react'
+import CloseIcon from "@mui/icons-material/Close";
+import EditIcon from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import ReactDOM from 'react-dom';
+import DeleteIcon from "@mui/icons-material/Delete";
+import '../../styles/products.scss';
+import axios from "../../../api/axios";
+import browse from '../../../assets/images/browse.png'
+
+const Brand = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const selectRefCategory = useRef(null);
+  const selectRefBrand = useRef(null);
+  const [rowSelectionModel, setRowSelectionModel] = React.useState([]);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [rows, setRows] = useState([]);
+  const [openViewPanel, setOpenViewPanel] = useState(false);
+  const [openEditPanel, setOpenEditPanel] = useState(false);
+  const [openAddPanel, setOpenAddPanel] = useState(false);
+  const [addedRow, setAddedRow] = useState({});
+  const [editedRows, setEditedRows] = useState({});
+  const [selectedImage, setSelectedImage] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [productDetails, setProductDetails] = useState([]);
+
+  useEffect(() => {
+    axios.post("/api/get-categories")
+    .then((response) => {
+      console.log(response.data);
+      setRows(response.data);
+    })
+    .catch((error) => {
+      throw error;
+    });
+
+  }, []);
+
+  const convertToSlug = (str) => {
+    return str
+      .toLowerCase() // Chuyển đổi chuỗi thành chữ thường
+      .normalize('NFD') // Chuẩn hóa chuỗi unicode
+      .replace(/[\u0300-\u036f]/g, '') // Loại bỏ các ký tự dấu
+      .replace(/đ/g, 'd') // Thay thế ký tự đ
+      .replace(/[^a-z0-9]+/g, '-') // Thay thế khoảng trắng và ký tự đặc biệt bằng dấu gạch ngang
+      .replace(/-+/g, '-') // Loại bỏ nhiều dấu gạch ngang liên tiếp
+      .replace(/^-|-$/g, ''); // Loại bỏ dấu gạch ngang ở đầu và cuối chuỗi
+  };
+
+  const handleClose = () => {
+    setOpenViewPanel(false);
+    setOpenEditPanel(false);
+    setOpenAddPanel(false);
+  };
+
+  const handleAddNew = () => {
+    setOpenAddPanel(true);
+  };
+
+  const handleChangeCategoryName = (e) => {
+    setEditedRows((prev) => ({ ...prev, 'name': e.target.value }))
+    setEditedRows((prev) => ({ ...prev, 'name_str': convertToSlug(e.target.value)}))
+  }
+  const handleAddCategoryName = (e) => {
+    setAddedRow((prev) => ({ ...prev, 'name': e.target.value }))
+    setAddedRow((prev) => ({ ...prev, 'name_str': convertToSlug(e.target.value)}))
+  }
+
+  const handleEditRow = (row) => {
+    console.log('Edit row:', row);
+    setSelectedRow(row.id);
+    setEditedRows(row)
+    setOpenEditPanel(true);
+  };
+
+  const handleViewRow = (id) => {
+    console.log('View row:', id);
+    setSelectedRow(id);
+
+    axios.post("/api/load-products-in-category-id", { id })
+      .then(
+        (response) => {
+            setProductDetails(response.data);
+        })
+      .catch(function (error) {
+        console.log('Error', error.message);
+      })
+    setOpenViewPanel(true);
+  };
+
+
+  const handleAdd = async() => {
+    const { category_name, brand_name, ...data } = addedRow;
+    console.log(addedRow);
+    console.log(data);
+    
+    axios.post("/api/add-product", data)
+      .then((response) => {
+        console.log(response.data.productDetails.id);
+        const newdata = Object.assign({}, data, { id: response.data.productDetails.id });
+        setRows([...rows, newdata]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    handleClose();
+  };
+
+  const handleSave = async() => {
+    console.log(editedRows);
+    
+    axios.post("/api/update-category", editedRows)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    // Implement your save logic using editedRows
+    const updatedRows = rows.map((row) => {
+      if (row.id === editedRows.id) {
+        return { ...row, ...editedRows };
+      }
+      return row;
+    });
+
+    // Update the state with the new rows
+    setRows(updatedRows);
+
+    // Reset edited rows after saving
+    setEditedRows({});
+    handleClose();
+  };
+  const handleCancel = () => {
+    setEditedRows({});
+    // setAddedRow({});
+    handleClose();
+  };
+
+  const handleSelectionModelChange = (newRowSelectionModel) => {
+    setRowSelectionModel(newRowSelectionModel);
+  };
+
+  const columns = [
+    { field: "id", headerName: "ID", flex: 0.5 },
+    {
+      field: "name",
+      headerName: "Tên loại sản phẩm",
+      flex: 1,
+      cellClassName: "name-column--cell",
+    },
+    {
+      field: "description",
+      headerName: "Mô tả",
+      flex: 1,
+    },
+    {
+      field: "status",
+      headerName: "Tình trạng kinh doanh",
+      flex: 1,
+    },
+    {
+      field: "actions",
+      headerName: "",
+      renderCell: (params) => {
+        const { id } = params.row;
+        return (
+          <div>
+            <IconButton
+              onClick={() => handleViewRow(id)}
+              size="small"
+            >
+              <VisibilityIcon />
+            </IconButton>
+
+            <IconButton
+              onClick={() => handleEditRow(params.row)}
+              size="small"
+              style={{ color: '#FFD700' }}
+            >
+              <EditIcon />
+            </IconButton>
+            
+          </div>
+        );
+      }
+    },
+  ];
+
+  const renderEditPanel = () => {
+    return (
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '50%',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          bgcolor: 'white',
+          boxShadow: 24,
+          p: 4,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <IconButton
+          sx={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+          }}
+          onClick={handleClose}
+          style={{ color: '#D80032' }}
+        >
+          <CloseIcon />
+        </IconButton>
+
+        <div className="edit-panel container">
+          <div className="row">
+            
+              <div className="edit-panel__field col-6">
+                <label >Tên loại sản phẩm:</label>
+                <input
+                  type="text"
+                  value={editedRows.name}
+                  onChange={(e)=>handleChangeCategoryName(e)} 
+                  style={{border: '1px solid #000',  fontSize: '14px', padding: '5px', width: '100%' }}
+                />
+              </div>
+
+              <div className="edit-panel__field col-6">
+                <label>Tình trạng kinh doanh:</label>
+                <select id="status" name="status" style={{border: '1px solid #000',  fontSize: '14px', padding: '5px', width: '100%' }}
+                    value={editedRows.status}
+                    onChange={(e) => setEditedRows((prev) => ({ ...prev, 'status': e.target.value }))}>
+                    <option value="0">Ngừng kinh doanh</option>
+                    <option value="1">Đang kinh doanh</option>
+                </select>
+              </div>
+
+              <div className="edit-panel__field col-12">
+                <label>Mô tả:</label>
+                <textarea
+                  style={{border: '1px solid #000',  fontSize: '14px', padding: '5px', width: '100%' }}
+                  value={editedRows.description}
+                  onChange={(e)=>setEditedRows((prev) => ({ ...prev, 'description': e.target.value }))} 
+                />
+              </div>
+
+          </div>
+
+          <div className="edit-panel__buttons">
+            <Button variant="contained" color="primary" onClick={handleSave} style={{ marginRight: '15px', marginTop: '16px' }}>
+              Lưu
+            </Button>
+            <Button variant="contained" color="secondary" onClick={handleClose} style={{ marginTop: '16px' }}>
+              Hủy
+            </Button>
+          </div>
+        </div>
+      </Box>
+    );
+  }
+
+  const renderViewPanel = () => {
+    return (
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '50%',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          bgcolor: 'white',
+          boxShadow: 24,
+          p: 4,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <IconButton
+          sx={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+          }}
+          onClick={handleClose}
+          style={{ color: '#D80032' }}
+        >
+          <CloseIcon />
+        </IconButton>
+
+        <div className="container">
+            <div className="row" style={{ flexDirection: 'row', margin: '10px', color: '#000' }}>
+              <div className="col-8" style={{ placeSelf: 'center' }}><b>Tên sản phẩm</b></div>
+              <div className="col-4" style={{ placeSelf: 'center' }}><b>Đơn giá</b></div>
+            </div>
+          {productDetails.map((item) => (
+            <div className="row card" key={item.product_id} style={{ flexDirection: 'row', margin: '10px', color: '#000' }}>
+              <div className="col-4" style={{ textAlign: 'center' }}>
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  style={{ maxWidth: '100px', maxHeight: '100px', width: 'auto', height: 'auto', marginRight: '20px' }}
+                />
+              </div>
+              <div className="col-4" style={{ placeSelf: 'center' }}>{item.name}</div>
+              <div className="col-4" style={{ placeSelf: 'center' }}>
+                <div>{item.price}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Box>
+    );
+  };
+
+  const renderAddPanel = () => {
+    return (
+      <Box
+        sx={{
+          position: 'absolute',
+          width: '50%',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          bgcolor: 'white',
+          boxShadow: 24,
+          p: 4,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <IconButton
+          sx={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+          }}
+          onClick={handleClose}
+          style={{ color: '#D80032' }}
+        >
+          <CloseIcon />
+        </IconButton>
+        
+        <div className="edit-panel container">
+          <div className="row">
+            
+          <div className="edit-panel__field col-6">
+                <label >Tên loại sản phẩm:</label>
+                <input
+                  type="text"
+                  value={addedRow.name}
+                  onChange={(e)=>handleAddCategoryName(e)} 
+                  style={{border: '1px solid #000',  fontSize: '14px', padding: '5px', width: '100%' }}
+                />
+              </div>
+
+              <div className="edit-panel__field col-6">
+                <label>Tình trạng kinh doanh:</label>
+                <select id="status" name="status" style={{border: '1px solid #000',  fontSize: '14px', padding: '5px', width: '100%' }}
+                    value={addedRow.status}
+                    onChange={(e) => setAddedRow((prev) => ({ ...prev, 'status': e.target.value }))}>
+                    <option value="0">Ngừng kinh doanh</option>
+                    <option value="1">Đang kinh doanh</option>
+                </select>
+              </div>
+
+              <div className="edit-panel__field col-12">
+                <label>Mô tả:</label>
+                <textarea
+                  style={{border: '1px solid #000',  fontSize: '14px', padding: '5px', width: '100%' }}
+                  value={addedRow.description}
+                  onChange={(e)=>setAddedRow((prev) => ({ ...prev, 'description': e.target.value }))} 
+                />
+              </div>
+
+          </div>
+
+          <div className="edit-panel__buttons">
+            <Button variant="contained" color="primary" onClick={handleAdd} style={{ marginRight: '15px', marginTop: '16px' }}>
+              Lưu
+            </Button>
+            <Button variant="contained" color="secondary" onClick={handleCancel} style={{ marginTop: '16px' }}>
+              Hủy
+            </Button>
+          </div>
+        </div>
+      </Box>
+    );
+  };
+
+  return (
+    <Box m="20px" width="100%" flexDirection="column">
+        <Header
+          title="SẢN PHẨM"
+          subtitle="Quản lý sản phẩm"
+        />
+        <Button variant="contained" color="primary" onClick={handleAddNew}>Thêm mới</Button>
+      <Box
+        m="40px 0 0 0"
+        height="70vh"
+        sx={{
+          "& .MuiDataGrid-root": {
+            border: "none",
+          },
+          "& .MuiDataGrid-cell": {
+            borderBottom: "none",
+          },
+          "& .name-column--cell": {
+            color: colors.greenAccent[300],
+          },
+          "& .MuiDataGrid-columnHeaders": {
+            backgroundColor: colors.blueAccent[700],
+            borderBottom: "none",
+          },
+          "& .MuiDataGrid-virtualScroller": {
+            backgroundColor: colors.primary[400],
+          },
+          "& .MuiDataGrid-footerContainer": {
+            borderTop: "none",
+            backgroundColor: colors.blueAccent[700],
+          },
+          "& .MuiCheckbox-root": {
+            color: `${colors.greenAccent[200]} !important`,
+          },
+          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+            color: `${colors.grey[100]} !important`,
+          },
+        }}
+      >
+        <DataGrid
+          disableRowSelectionOnClick
+          rows={rows}
+          columns={columns}
+          components={{ Toolbar: GridToolbar }}
+          onRowSelectionModelChange={(newRowSelectionModel) => {
+            handleSelectionModelChange(newRowSelectionModel);
+          }}
+          rowSelectionModel={rowSelectionModel}
+        />
+      </Box>
+
+      {openEditPanel &&
+        <Modal open={openEditPanel} onClose={handleClose}>
+          {renderEditPanel()}
+        </Modal>
+      }
+
+      {openAddPanel &&
+        <Modal open={openAddPanel} onClose={handleClose}>
+          {renderAddPanel()}
+        </Modal>
+      }
+
+      {openViewPanel &&
+        <Modal open={openViewPanel} onClose={handleClose}>
+          {renderViewPanel()}
+        </Modal>
+      }
+    </Box>
+  );
+};
+
+export default Brand;

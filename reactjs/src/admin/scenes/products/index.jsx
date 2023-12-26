@@ -33,13 +33,13 @@ const Products = () => {
 
   useEffect(() => {
     axios.post("/api/get-products")
-    .then((response) => {
-      console.log(response.data);
-      setRows(response.data);
-    })
-    .catch((error) => {
-      throw error;
-    });
+      .then((response) => {
+        console.log(response.data);
+        setRows(response.data);
+      })
+      .catch((error) => {
+        throw error;
+      });
 
     axios.post("/api/get-categories")
       .then(
@@ -64,7 +64,7 @@ const Products = () => {
       });
   }, []);
 
-  const handleImageUpload = async() => {
+  const handleImageUpload = async () => {
     const formData = new FormData();
     formData.append("image", selectedImage);
 
@@ -84,7 +84,7 @@ const Products = () => {
       });
   };
 
-  const handleImageChange = async(e) => {
+  const handleImageChange = async (e) => {
     setSelectedImage(e.target.files[0]);
 
     const formData = new FormData();
@@ -128,14 +128,13 @@ const Products = () => {
   const handleDeleteRow = (id) => {
     console.log("Delete rows:", id);
 
-    axios.post("/api/delete-product", {id})
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      throw error;
-    });
-
+    axios.post("/api/delete-product", { id })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        throw error;
+      });
     const updatedRows = rows.filter((row) => row.id !== id);
     setRows(updatedRows);
   };
@@ -144,35 +143,35 @@ const Products = () => {
     setAddedRow((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleAddCategory = (e) =>{
+  const handleAddCategory = (e) => {
     handleAddField('category_name', e.target.value);
-    handleAddField('category_id',e.target.options[e.target.selectedIndex].getAttribute('data-key'));
+    handleAddField('category_id', e.target.options[e.target.selectedIndex].getAttribute('data-key'));
   }
 
-  const handleAddBrand = (e) =>{
+  const handleAddBrand = (e) => {
     handleAddField('brand_name', e.target.value);
-    handleAddField('brand_id',e.target.options[e.target.selectedIndex].getAttribute('data-key'));
+    handleAddField('brand_id', e.target.options[e.target.selectedIndex].getAttribute('data-key'));
   }
 
   const handleEditField = (field, value) => {
     setEditedRows((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleChangeCategory = (e) =>{
+  const handleChangeCategory = (e) => {
     handleEditField('category_name', e.target.value);
-    handleEditField('category_id',e.target.options[e.target.selectedIndex].getAttribute('data-key'));
+    handleEditField('category_id', e.target.options[e.target.selectedIndex].getAttribute('data-key'));
   }
 
-  const handleChangeBrand = (e) =>{
+  const handleChangeBrand = (e) => {
     handleEditField('brand_name', e.target.value);
-    handleEditField('brand_id',e.target.options[e.target.selectedIndex].getAttribute('data-key'));
+    handleEditField('brand_id', e.target.options[e.target.selectedIndex].getAttribute('data-key'));
   }
 
-  const handleAdd = async() => {
+  const handleAdd = async () => {
     const { category_name, brand_name, ...data } = addedRow;
     console.log(addedRow);
     console.log(data);
-    
+
     axios.post("/api/add-product", data)
       .then((response) => {
         console.log(response.data.productDetails.id);
@@ -185,9 +184,9 @@ const Products = () => {
     handleClose();
   };
 
-  const handleSave = async() => {
+  const handleSave = async () => {
     console.log(editedRows);
-    
+
     const { category_name, brand_name, ...data } = editedRows;
 
     axios.post("/api/update-product", data)
@@ -253,12 +252,12 @@ const Products = () => {
       flex: 1,
       cellClassName: "name-column--cell",
     },
-    {
-      field: "brand_name",
-      headerName: "Tên thương hiệu",
-      flex: 1,
-      cellClassName: "name-column--cell",
-    },
+    // {
+    //   field: "brand_name",
+    //   headerName: "Tên thương hiệu",
+    //   flex: 1,
+    //   cellClassName: "name-column--cell",
+    // },
     {
       field: "price",
       headerName: "Đơn giá",
@@ -275,6 +274,12 @@ const Products = () => {
       headerName: "Số lượng tồn kho",
       flex: 1,
     },
+    // {
+    //   field: "status",
+    //   headerName: "Tình trạng",
+    //   flex: 1,
+    //   cellClassName: "name-column--cell",
+    // },
     {
       field: "star",
       headerName: "Đánh giá",
@@ -294,7 +299,7 @@ const Products = () => {
     },
     {
       field: "actions",
-      headerName: "Actions",
+      headerName: "",
       renderCell: (params) => {
         const { id } = params.row;
         return (
@@ -306,7 +311,7 @@ const Products = () => {
             >
               <EditIcon />
             </IconButton>
-            
+
             <IconButton
               onClick={() => handleDeleteRow(id)}
               size="small"
@@ -365,15 +370,15 @@ const Products = () => {
                   type="text"
                   value={editedRows.name || selectedProduct.name}
                   onChange={(e) => handleEditField('name', e.target.value)}
-                  style={{ fontSize: '14px', padding: '5px', width: '250px' }}
+                  style={{ border: '1px solid #000', fontSize: '14px', padding: '5px', width: '250px' }}
                 />
               </div>
 
               <div className="edit-panel__field">
                 <label>Tên loại sản phẩm:</label>
-                <select id="categories" name="categories" style={{ fontSize: '14px', padding: '5px', width: '250px' }}
-                value={editedRows.category_name || selectedProduct.category_name}
-                onChange={handleChangeCategory}>
+                <select id="categories" name="categories" style={{ border: '1px solid #000', fontSize: '14px', padding: '5px', width: '250px' }}
+                  value={editedRows.category_name || selectedProduct.category_name}
+                  onChange={handleChangeCategory}>
                   {categories.map((category) => (
                     <option data-key={category.id} value={category.name}>{category.name}</option>
                   ))}
@@ -382,9 +387,9 @@ const Products = () => {
 
               <div className="edit-panel__field">
                 <label>Tên thương hiệu:</label>
-                <select id="brands" name="brands" style={{ fontSize: '14px', padding: '5px', width: '250px' }}
-                value={editedRows.brand_name || selectedProduct.brand_name}
-                onChange={(e) => handleChangeBrand(e)}>
+                <select id="brands" name="brands" style={{ border: '1px solid #000', fontSize: '14px', padding: '5px', width: '250px' }}
+                  value={editedRows.brand_name || selectedProduct.brand_name}
+                  onChange={(e) => handleChangeBrand(e)}>
                   {brands.map((brand) => (
                     <option data-key={brand.id} value={brand.id}>{brand.name}</option>
                   ))}
@@ -394,7 +399,7 @@ const Products = () => {
               <div className="edit-panel__field">
                 <label>Đơn giá:</label>
                 <input
-                  style={{ fontSize: '14px', padding: '5px', width: '250px' }}
+                  style={{ border: '1px solid #000', fontSize: '14px', padding: '5px', width: '250px' }}
                   type="number"
                   value={editedRows.price !== undefined ? editedRows.price : selectedProduct.price}
                   onChange={(e) => {
@@ -407,7 +412,7 @@ const Products = () => {
               <div className="edit-panel__field">
                 <label>Số lượng tồn kho:</label>
                 <input
-                  style={{ fontSize: '14px', padding: '5px', width: '250px' }}
+                  style={{ border: '1px solid #000', fontSize: '14px', padding: '5px', width: '250px' }}
                   type="number"
                   value={editedRows.inventory_quantity !== undefined ? editedRows.inventory_quantity : selectedProduct.inventory_quantity}
                   onChange={(e) => {
@@ -419,7 +424,7 @@ const Products = () => {
 
               <div className="edit-panel__field">
                 <label>Chọn hình ảnh:</label>
-                <form onSubmit={handleImageUpload} encType="multipart/form-data">
+                <form encType="multipart/form-data">
                   <input type="file" accept="image/*" style={{ color: 'black' }} onChange={handleImageChange} />
                 </form>
               </div>
@@ -482,15 +487,15 @@ const Products = () => {
                 <input
                   type="text"
                   onChange={(e) => handleAddField('name', e.target.value)}
-                  style={{ fontSize: '14px', padding: '5px', width: '250px' }}
+                  style={{ border: '1px solid #000', fontSize: '14px', padding: '5px', width: '250px' }}
                   required
                 />
               </div>
 
               <div className="edit-panel__field">
                 <label>Tên loại sản phẩm:</label>
-                <select id="categories" name="categories" style={{ fontSize: '14px', padding: '5px', width: '250px' }}
-                ref={selectRefCategory} onChange={handleAddCategory}>
+                <select id="categories" name="categories" style={{ border: '1px solid #000', fontSize: '14px', padding: '5px', width: '250px' }}
+                  ref={selectRefCategory} onChange={handleAddCategory}>
                   {categories.map((category) => (
                     <option data-key={category.id} value={category.name}>{category.name}</option>
                   ))}
@@ -499,8 +504,8 @@ const Products = () => {
 
               <div className="edit-panel__field">
                 <label>Tên thương hiệu:</label>
-                <select id="brands" name="brands" style={{ fontSize: '14px', padding: '5px', width: '250px' }}
-                ref={selectRefBrand} onChange={(e) => handleAddBrand(e)}>
+                <select id="brands" name="brands" style={{ border: '1px solid #000', fontSize: '14px', padding: '5px', width: '250px' }}
+                  ref={selectRefBrand} onChange={(e) => handleAddBrand(e)}>
                   {brands.map((brand) => (
                     <option data-key={brand.id} value={brand.id}>{brand.name}</option>
                   ))}
@@ -510,7 +515,7 @@ const Products = () => {
               <div className="edit-panel__field">
                 <label>Đơn giá:</label>
                 <input
-                  style={{ fontSize: '14px', padding: '5px', width: '250px' }}
+                  style={{ border: '1px solid #000', fontSize: '14px', padding: '5px', width: '250px' }}
                   type="number"
                   onChange={(e) => {
                     const newValue = e.target.value;
@@ -521,16 +526,16 @@ const Products = () => {
               </div>
 
               <div className="edit-panel__field">
-                <label>Số lượng tồn kho:</label>
+                <label for="inventory_quantity">Số lượng tồn kho:</label>
                 <input
-                  style={{ fontSize: '14px', padding: '5px', width: '250px' }}
-                  type="number"
+                  style={{ border: '1px solid #000', fontSize: '14px', padding: '5px', width: '250px' }}
+                  type="number" id="inventory_quantity" name="inventory_quantity"
                   onChange={(e) => {
                     const newValue = e.target.value;
                     handleAddField('inventory_quantity', newValue);
                   }}
-                  required
-                />
+
+                ></input>
               </div>
 
               <div className="edit-panel__field">
@@ -558,11 +563,11 @@ const Products = () => {
 
   return (
     <Box m="20px" width="100%" flexDirection="column">
-        <Header
-          title="SẢN PHẨM"
-          subtitle="Quản lý sản phẩm"
-        />
-        <Button variant="contained" color="primary" onClick={handleAddNew}>Thêm mới</Button>
+      <Header
+        title="SẢN PHẨM"
+        subtitle="Quản lý sản phẩm"
+      />
+      <Button variant="contained" color="primary" onClick={handleAddNew}>Thêm mới</Button>
       <Box
         m="40px 0 0 0"
         height="70vh"

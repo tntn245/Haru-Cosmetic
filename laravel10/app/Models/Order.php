@@ -14,7 +14,13 @@ class Order extends Model
 
     protected $fillable = [
         'user_id', 
+        'address_id',
+        'created_date',
+        'delivery_date',
         'total_price',
-        'payment_method'
+        'payment_method',
+        'payment_status',
+        'order_status',
+        'evaluated'
     ]; 
 }

@@ -32,6 +32,8 @@ class VerifyCsrfToken extends Middleware
 
         'api/get-categories',
         'api/load-products-in-category',
+        'api/load-products-in-category-id',
+        'api/update-category',
         
         'api/get-brands',
         'api/load-products-in-brand',
@@ -62,12 +64,15 @@ class VerifyCsrfToken extends Middleware
         'api/remove-from-favs',
         
         'api/get-orders',
+        'api/get-unique-years',
         'api/count-orders',
         'api/get-user-orders',
         'api/get-user-orders-details',
         'api/create-order',
+        'api/update-delivered-date',
         'api/update-order-status',
         'api/update-payment-status',
+        'api/evaluate-order',
 
         'api/create-order-details',
 

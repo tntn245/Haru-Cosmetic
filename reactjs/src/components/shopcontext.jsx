@@ -22,33 +22,44 @@ const shopcontext = (props) => {
   const [isLogin, setIsLogin] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [addresses, setAddresses] = useState([]);
+  const [createdOrderID, setCreatedOrderID] = useState(0);
 
   const checkIsLogin = () => {
     const user = localStorage.getItem('user');
     console.log(user);
     if (user != null) {
       setIsLogin(true);
+      return true;
     }
     else {
       setIsLogin(false);
+      return false
     }
-    console.log(isLogin);
   }
 
-  const createOrder = (userID, totalPrice, paymentMethod) => {
+  const createOrder = (userID, totalPrice, paymentMethod, addressID) => {
     if (userID !== 0) {
       let orderID = 0;
-      axios.post("/api/create-order", { userID, totalPrice, paymentMethod })
+      const currentDate = new Date();
+      const createdDate = currentDate.toISOString().split('T')[0];
+
+      axios.post("/api/create-order", { userID, totalPrice, paymentMethod, addressID, createdDate })
         .then(
           (response) => {
             setFavorites(response.data);
             console.log(response.data);
 
             orderID = response.data.order_id;
+            setCreatedOrderID(orderID)
             console.log(productsChoosedToBuy);
+            
+            if(paymentMethod === "COD"){
+              updatePaymentStatus(orderID, "Chưa thanh toán")
+              updateOrderStatus(orderID, "Chờ duyệt")
+            }
 
             productsChoosedToBuy.forEach((item) => {
-              const productID = item.product_id;
+              const productID = item.id;
               const quantity = item.quantity;
               const price = item.price;
 
@@ -74,7 +85,6 @@ const shopcontext = (props) => {
                   console.log(error.message);
                 });
             });
-
           }
         )
         .catch(function (error) {
@@ -95,6 +105,17 @@ const shopcontext = (props) => {
   }
   const updateOrderStatus = (orderID, orderStatus) => {
     axios.post("api/update-order-status", { orderID, orderStatus })
+      .then(
+        (response) => {
+          console.log(response.data);
+        }
+      )
+      .catch(function (error) {
+        console.log(error.message);
+      });
+  }
+  const updateDeliveredDate = (orderID, deliveredDate) => {
+    axios.post("api/update-delivered-date", { orderID, deliveredDate })
       .then(
         (response) => {
           console.log(response.data);
@@ -234,21 +255,18 @@ const shopcontext = (props) => {
         });
     }
   }
-  // Cập nhật cái loại sản phẩm được chọn
-  const updateSelectedCategory = (category) => {
-    // setSelectedCategory(category);
-  };
 
   const getTotalCartAmount = () => {
     var total = Number(0);
     for (let i = 0; i < cartItems.length; i++) {
-      let itemInfo = PRODUCTS.find((product) => product.id === Number(cartItems[i].product_id));
+      let itemInfo = PRODUCTS.find((product) => Number(product.id) === Number(cartItems[i].product_id));
+      if(itemInfo){
+        let itemPrice = itemInfo.price;
+        if (itemPrice === null)
+          itemPrice = 0;
 
-      let itemPrice = itemInfo.price;
-      if (itemPrice === null)
-        itemPrice = 0;
-
-      total += Number(itemPrice);
+        total += Number(itemPrice);
+      }
     }
     setTotalAmount(total);
     return totalAmount;
@@ -426,6 +444,60 @@ const shopcontext = (props) => {
     return reviews.filter((review) => review.stars === rating).length;
   };
 
+
+  const [userOrders, setUserOrders] = useState([]);
+  const loadUserOrders = async (userID) => {
+    await axios.post("/api/get-user-orders", { userID })
+    .then(
+        (response) => {
+            const fetchOrders = [];
+            const orders = response.data;
+
+
+            orders.map(async (order) => {
+                const orderID = order.id;
+                axios.post("/api/get-user-orders-details", { orderID })
+                    .then(
+                        (response) => {
+                            const orderDetails = response.data;
+
+                            const items = orderDetails.map((detail) => {
+                                return {
+                                    productID: detail.product_id,
+                                    productName: detail.name,
+                                    productImage: detail.image,
+                                    price: detail.price,
+                                    quantity: detail.quantity,
+                                    totalPriceItem: Number(detail.price) * Number(detail.quantity),
+                                };
+                            });
+
+                            const arr = {
+                                id: order.id,
+                                total_price: order.total_price,
+                                created_date: order.created_date,
+                                delivered_date: order.delivered_date,
+                                payment_method: order.payment_method,
+                                payment_status: order.payment_status,
+                                order_status: order.order_status,
+                                items: items,
+                            };
+                            fetchOrders.push(arr);
+                        })
+                    .catch(function (error) {
+                        console.log('Error', error.message);
+                    })
+
+            })
+            setUserOrders(fetchOrders);
+            console.log("userOrders ", userOrders)
+        }
+    )
+    .catch(function (error) {
+        console.log('Error', error.message);
+    })
+  };
+
   const loadAddresses = (userID) => {
     axios.post('/api/get-addresses', { userID })
       .then(
@@ -496,7 +568,10 @@ const shopcontext = (props) => {
     isLogin,
     reviews,
     addresses,
+    userOrders,
+    createdOrderID,
     loadAddresses,
+    loadUserOrders,
     addNewAddress,
     updateAddress,
     deleteAddress,
@@ -508,6 +583,7 @@ const shopcontext = (props) => {
     createOrder,
     updatePaymentStatus,
     updateOrderStatus,
+    updateDeliveredDate,
     loadCategories,
     loadProductsCategory,
     loadProducts,
@@ -531,15 +607,15 @@ const shopcontext = (props) => {
     addToFavs,
     removeFromFavs,
     filter,
-    updateSelectedCategory,
   };
 
   console.log("shopcontext cartitem ", cartItems);
-  console.log("total cart amount ", totalAmount);
-  console.log("islogin ", isLogin);
-  console.log("shopcontext reviews ", reviews);
-  console.log("shopcontext address ", addresses);
-  console.log("shopcontext productchoosed ", productsChoosedToBuy);
+  // console.log("total cart amount ", totalAmount);
+  // console.log("islogin ", isLogin);
+  // console.log("shopcontext reviews ", reviews);
+  // console.log("shopcontext address ", addresses);
+  // console.log("shopcontext userOrders ", userOrders);
+  // console.log("shopcontext productchoosed ", productsChoosedToBuy);
 
   return (
     <ShopContext.Provider value={contextValue}>

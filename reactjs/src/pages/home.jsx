@@ -16,7 +16,6 @@ const home = () => {
     if (user != null) {
       const user_id = JSON.parse(user).id;
       setUserID(user_id);
-      console.log(userID);
     }
   }, [userID]);
 

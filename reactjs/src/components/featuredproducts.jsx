@@ -13,6 +13,7 @@ const featuredproducts = () => {
   const [flagFaved, setFlagFaved] = useState(0);
   const [hover, setHover] = useState(false);
   const shopcontext = useContext(ShopContext);
+  const [addedToCart, setAddedToCart] = useState(false);
   const [addedToWishlist, setAddedToWishlist] = useState(false);
   const [removeFromWishlist, setRemoveFromWishlist] = useState(false);
   const [notLogin, setNotLogin] = useState(false);
@@ -29,6 +30,7 @@ const featuredproducts = () => {
   const handleAddToCart = (productID) => {
     if (userID != 0) {
       var quantity = 1;
+      setAddedToCart(true)
       axios.post("/api/add-to-cart", { userID, productID, quantity })
         .then(
           (response) => {
@@ -50,9 +52,9 @@ const featuredproducts = () => {
 
   const handleAddToFavs = (productID) => {
     if (userID != 0) {
-      shopcontext.addToFavs(userID, productID);
       setFlagFaved(1);
       setAddedToWishlist(true);
+      shopcontext.addToFavs(userID, productID);
     }
     else {
       setNotLogin(true);
@@ -60,25 +62,33 @@ const featuredproducts = () => {
   };
 
   const handleRemoveFromFavs = (productID) => {
-    shopcontext.removeFromFavs(userID, productID);
     setFlagFaved(0);
     setRemoveFromWishlist(true);
+    shopcontext.removeFromFavs(userID, productID);
   };
 
   const handleCheckFaved = (productID) => {
-    console.log(productID);
+    setHover(true);
     axios.post("/api/check-faved", { userID, productID })
       .then(
         (response) => {
           setFlagFaved(response.data);
           console.log("flag", flagFaved);
-          setHover(true);
         }
       )
       .catch(function (error) {
         console.log(error.message);
       });
   };
+
+  useEffect(() => {
+    if (addedToCart) {
+      const timer = setTimeout(() => {
+        setAddedToCart(false);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [addedToCart]);
 
   useEffect(() => {
     if (addedToWishlist) {
@@ -144,32 +154,41 @@ const featuredproducts = () => {
               <ReactStars count={5} edit={false} isHalf={true} value={product.star} size={24} activeColor="#EA9D5A" />
               <div className="mb-3">
                 <p className="price mb-2">
-                  <span className="red">{product.price} </span>&nbsp; <strike>{product.price * 2}$</strike>
+                  <span className="red">{product.price} VNĐ</span>&nbsp;
                 </p>
               </div>
             </div>
           </Link>
+
         </div>
+        
       ))}
+      
+      {addedToCart && (
+            <div className="wishlist-notification">
+              <p>You've added to your cart.</p>
+            </div>
+          )}
+
+          {addedToWishlist && (
+            <div className="wishlist-notification">
+              <p>You've added to your wishlist.</p>
+            </div>
+          )}
+
+          {removeFromWishlist && (
+            <div className="wishlist-notification">
+              <p>You've removed from your wishlist.</p>
+            </div>
+          )}
+
+          {notLogin && (
+            <div className="wishlist-notification">
+              <p>You've not login.</p>
+            </div>
+          )}
     </div>
 
-    {addedToWishlist && (
-      <div className="wishlist-notification">
-        <p>You've added {name} to your wishlist.</p>
-      </div>
-    )}
-
-    {removeFromWishlist && (
-      <div className="wishlist-notification">
-        <p>You've removed {name} from your wishlist.</p>
-      </div>
-    )}
-
-    {notLogin && (
-      <div className="wishlist-notification">
-        <p>You've not login.</p>
-      </div>
-    )}
   </>;
 }
 

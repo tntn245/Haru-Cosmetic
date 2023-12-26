@@ -4,7 +4,6 @@ import { tokens } from "../../theme";
 // loadUsers();
 // loadOrders();
 // loadProducts();
-countPaymentMethodOrders();
 
 export let users = [];
 async function loadUsers() {
@@ -62,31 +61,32 @@ async function loadOrders() {
       throw error;
     });
 }
-
 export let paymentMethodOrdersByMonth = [];
-async function countPaymentMethodOrders() {
-  const year = new Date().getFullYear();
-  
-  for (let month = 1; month <= 12; month++) {
-    await axios.post("/api/count-orders", {year, month})
-      .then((response) => {
-        const ordersByMonth = {
-          time: month,
-          COD: response.data.find(item => item.payment_method === 'COD')?.count ?? 0,
-          CODColor: "hsl(229, 70%, 50%)",
-          Momo: response.data.find(item => item.payment_method === 'Momo')?.count ?? 0,
-          MomoColor: "hsl(97, 70%, 50%)",
-          VNPay: response.data.find(item => item.payment_method === 'VNPay')?.count ?? 0,
-          VNPayColor: "hsl(296, 70%, 50%)",
-        }
-        paymentMethodOrdersByMonth.push(ordersByMonth);
-      })
-      .catch((error) => {
-        throw error;
-      });
+
+export const countPaymentMethodOrders = async (year) => {
+  paymentMethodOrdersByMonth = [];
+  try {
+    for (let month = 1; month <= 12; month++) {
+      const response = await axios.post("/api/count-orders", { year, month });
+      const ordersByMonth = {
+        time: month,
+        COD: response.data.find(item => item.payment_method === 'COD')?.count ?? 0,
+        CODColor: "hsl(229, 70%, 50%)",
+        Momo: response.data.find(item => item.payment_method === 'Momo')?.count ?? 0,
+        MomoColor: "hsl(97, 70%, 50%)",
+        VNPay: response.data.find(item => item.payment_method === 'VNPay')?.count ?? 0,
+        VNPayColor: "hsl(296, 70%, 50%)",
+      };
+      paymentMethodOrdersByMonth.push(ordersByMonth);
+    }
+    console.log(paymentMethodOrdersByMonth);
+    return paymentMethodOrdersByMonth;
+  } catch (error) {
+    console.error(error);
   }
-  console.log(paymentMethodOrdersByMonth);
-}
+};
+countPaymentMethodOrders(2023);
+
 
 export const mockPieData = [
   {

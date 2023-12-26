@@ -29,6 +29,7 @@ import Products from './admin/scenes/products'
 import Account from './admin/scenes/account'
 import Orders from './admin/scenes/orders'
 import Form from './admin/scenes/form'
+import Categories from './admin/scenes/category'
 import Bar from './admin/scenes/bar'
 // import Calendar from './admin/scenes/calendar/calendar'
 import Line from './admin/scenes/line'
@@ -75,7 +76,7 @@ function App() {
               <Route path='forgotpasword' element={<Forgotpasword />} />
               <Route path='cart' element={<Cart />} />
               <Route path='wishlist' element={<Wishlist />} />
-              <Route path='checkout/:query' element={<Checkout />} />
+              <Route path='checkout' element={<Checkout />} />
               <Route path='thanks' element={<Thanks />} />
               <Route path='editprofile' element={<EditUserProfile />} />
               <Route path='details' element={<Details />} />
@@ -97,13 +98,11 @@ function App() {
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/account" element={<Account />} />
                     <Route path="/products" element={<Products />} />
+                    <Route path="/category" element={<Categories />} />
+                    <Route path="/brand" element={<Brands />} />
                     <Route path="/orders" element={<Orders />} />
-                    <Route path="/form" element={<Form />} />
                     <Route path="/bar" element={<Bar />} />
                     <Route path="/pie" element={<Pie />} />
-                    <Route path="/line" element={<Line />} />
-                    <Route path="/faq" element={<FAQ />} />
-                    <Route path="/geography" element={<Geography />} />
                   </Routes>
                 </main>
               </div>
