@@ -13,6 +13,30 @@ class CategoriesController extends Controller
         $getCategories = Categories::get();
         return $getCategories;
     }
+    public function addCate(Request $request)
+    {
+            $data = $request->input();
+
+            // $productCount =  Product::where('name', $data['name'])->count();
+            // if ($productCount > 0) {
+            //     return response()->json(['status' => false, 'message' => "Product is existed"], 422);
+            // }
+            // else{
+                $product = Categories::create([
+                    'name' => $data['name'],
+                    'status' => 1
+                ]);
+                $product->save();
+
+                $productDetails = Categories::where('name', $data['name'])->first();
+
+                return response()->json([
+                    'productDetails' => $productDetails,
+                    'status' => true,
+                    'message' => 'Add product successful'
+                ], 201);
+            // }
+    }
     public function loadProductsInCategory(Request $request)
     {
         $data = $request->input();

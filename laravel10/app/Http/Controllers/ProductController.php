@@ -83,18 +83,18 @@ class ProductController extends Controller
     {
             $data = $request->input();
 
-            $productCount =  Product::where('name', $data['name'])->count();
-            if ($productCount > 0) {
-                return response()->json(['status' => false, 'message' => "Product is existed"], 422);
-            }
-            else{
+            // $productCount =  Product::where('name', $data['name'])->count();
+            // if ($productCount > 0) {
+            //     return response()->json(['status' => false, 'message' => "Product is existed"], 422);
+            // }
+            // else{
                 $product = Product::create([
                     'name' => $data['name'],
                     'category_id' => $data['category_id'],
                     'brand_id' => $data['brand_id'],
                     'price' => $data['price'],
                     'inventory_quantity' => $data['inventory_quantity'],
-                    'image' => $data['image'],
+                    // 'image' => $data['image'],
                     'quantity_sold' => 0,
                     'status' => true,
                     'star' => 0
@@ -108,7 +108,7 @@ class ProductController extends Controller
                     'status' => true,
                     'message' => 'Add product successful'
                 ], 201);
-            }
+            // }
     }
     public function deleteProduct(Request $request)
     {

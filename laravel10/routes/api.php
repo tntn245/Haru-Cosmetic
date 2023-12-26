@@ -41,6 +41,7 @@ Route::namespace('App\Http\Controllers')->group(function(){
     // Route::post('images', [UserController::class, 'uploadImg']);
 
     Route::post('get-categories', [CategoriesController::class, 'getCategories']);
+    Route::post('add-category', [CategoriesController::class, 'addCate']);
     Route::post('load-products-in-category', [CategoriesController::class, 'loadProductsInCategory']);
     Route::post('load-products-in-category-id', [CategoriesController::class, 'loadProductsInCategoryUseID']);
     Route::post('update-category', [CategoriesController::class, 'updateCategory']);

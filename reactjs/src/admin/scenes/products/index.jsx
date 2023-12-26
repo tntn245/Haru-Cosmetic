@@ -172,7 +172,22 @@ const Products = () => {
     console.log(addedRow);
     console.log(data);
 
-    axios.post("/api/add-product", data)
+    var brand_id = data.brand_id
+    var category_id = data.category_id
+    var name  = data.name
+    var price  = data.price
+    var inventory_quantity  = data.inventory_quantity
+    var image = data.image
+    // axios.post("/api/add-product", { brand_id, category_id, name, price, inventory_quantity })
+    //   .then((response) => {
+    //     console.log(response);
+    //   })
+    //   .catch((error) => {
+    //     alert("Có lỗi xảy ra")
+    //     throw error;
+    //   });
+      
+    axios.post("/api/add-product",  { brand_id, category_id, name, price, inventory_quantity })
       .then((response) => {
         console.log(response.data.productDetails.id);
         const newdata = Object.assign({}, data, { id: response.data.productDetails.id });

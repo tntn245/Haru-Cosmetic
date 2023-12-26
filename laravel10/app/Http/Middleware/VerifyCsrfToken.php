@@ -31,6 +31,7 @@ class VerifyCsrfToken extends Middleware
         'api/reset-password',
 
         'api/get-categories',
+        'api/add-category',
         'api/load-products-in-category',
         'api/load-products-in-category-id',
         'api/update-category',

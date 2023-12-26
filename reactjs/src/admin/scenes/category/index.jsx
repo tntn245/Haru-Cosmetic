@@ -102,8 +102,10 @@ const Categories = () => {
     const { category_name, brand_name, ...data } = addedRow;
     console.log(addedRow);
     console.log(data);
+    var name = data.name;
+    var description = data.description;
     
-    axios.post("/api/add-product", data)
+    axios.post("/api/add-category", {name})
       .then((response) => {
         console.log(response.data.productDetails.id);
         const newdata = Object.assign({}, data, { id: response.data.productDetails.id });
@@ -406,8 +408,8 @@ const Categories = () => {
   return (
     <Box m="20px" width="100%" flexDirection="column">
         <Header
-          title="SẢN PHẨM"
-          subtitle="Quản lý sản phẩm"
+          title="LOẠI SẢN PHẨM"
+          subtitle="Quản lý loại sản phẩm"
         />
         <Button variant="contained" color="primary" onClick={handleAddNew}>Thêm mới</Button>
       <Box

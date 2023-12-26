@@ -286,9 +286,11 @@ const Orders = () => {
         <div className="edit-panel container">
           <div>
             <label>Chọn ngày giao hàng:</label>
+            <div style={{}}>
             <input type="date" id="birthday" name="delivered_date"
               value={selectedDate}
-              onChange={handleDateChange}/>
+              onChange={handleDateChange} style={{border: '1px solid #000', width: '100%'}}/>
+              </div>
           </div>
 
           <div className="edit-panel__buttons">
