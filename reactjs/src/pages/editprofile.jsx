@@ -135,7 +135,7 @@ const EditUserProfile = () => {
   return (
     <div className="container">
       <h2 class="text-center mt-4">Chỉnh Sửa Thông Tin Cá Nhân</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="card" style={{margin:'30px 20% 50px', padding: '20px'}}>
         <div className="mb-3">
           <label htmlFor="email" className="form-label"><strong>Email: </strong>{userProfile.email}</label>
         </div>
@@ -237,8 +237,10 @@ const EditUserProfile = () => {
             <strong>Sửa thông tin thành công</strong>
           </div>
         )}
-        <button type="submit" disabled={!disabled} className="btn btn-dark">Lưu</button>
-        <button className="btn btn-dark" onClick={handleBack}>Trở về</button>
+        <div className='row' style={{justifyContent: 'center'}}>
+          <button type="submit" disabled={!disabled} className="col-5 btn btn-dark">Lưu</button>
+          <button className="col-5 btn btn-dark" onClick={handleBack}>Trở về</button>
+        </div>
       </form>
     </div>
   );

@@ -9,21 +9,22 @@ import ReactStars from "react-rating-stars-component";
 import axios from '../api/axios.js';
 
 const ProductDetails = () => {
-  const { selectedProduct, cartItems } = useContext(ShopContext);
   const shopcontext = useContext(ShopContext);
   const [quantity, setQuantity] = useState(1);
   const [userID, setUserID] = useState(0);
   const [averageStars, setAverageStars] = useState(4);
 
   // Set selectedProduct to 0
-  const productID = selectedProduct || 0;
+  const productID = shopcontext.selectedProduct || 0;
 
-  const product = PRODUCTS.find((p) => p.id === productID) || PRODUCTS1.find((p) => p.id === productID);
+  const product = PRODUCTS.find((p) => p.id === productID);
+  const inventory_quantity = product.inventory_quantity;
 
   if (!product) {
     return null;
   }
-  const cartItemAmount = cartItems[product.id];
+
+  const cartItemAmount = shopcontext.cartItems[product.id];
   const [activeTab, setActiveTab] = useState('details');
 
   const handleTabClick = (tab) => {
@@ -63,7 +64,7 @@ const ProductDetails = () => {
       const formattedDate = currentDate.toISOString().split('T')[0];
       shopcontext.addNewReviews(productID, userID, newReview.text, newReview.stars, formattedDate)
       shopcontext.calculateAverageStars();
-      console.log("add new",shopcontext.reviews);
+      console.log("add new", shopcontext.reviews);
       setNewReview({ stars: 0, text: '' });
       setIsWritingReview(false);
       calculateAverageStars(shopcontext.reviews)
@@ -94,15 +95,33 @@ const ProductDetails = () => {
     setIsWritingReview(true);
   };
 
-  const handleDecreaseQuantiy = () => {
-    if(quantity>1)
-      setQuantity(quantity-1);
+
+  const handleIncreaseNumber = () => {
+    const newQuantity = Number(quantity + 1);
+    if(newQuantity <= inventory_quantity){
+      setQuantity(quantity + 1);
+    }
   };
+
+  const handleDecreaseNumber = () => {
+    const newQuantity = Number(quantity - 1);
+    if(newQuantity > 0){
+      setQuantity(newQuantity);
+    }
+  };
+
+  const handleUpdateNumber = (e) => {
+    const newQuantity = Number(e.target.value);
+    if (newQuantity > 0 && newQuantity <= inventory_quantity) {
+      setQuantity(newQuantity);
+    }
+  };
+
   const handleAddToCart = () => {
     event.target.classList.toggle("red");
     if (userID !== 0) {
       var productID = product.id;
-      axios.post("/api/add-to-cart", { userID, productID, quantity})
+      axios.post("/api/add-to-cart", { userID, productID, quantity })
         .then(
           (response) => {
             console.log(response);
@@ -124,7 +143,7 @@ const ProductDetails = () => {
   useEffect(() => {
     shopcontext.loadReviews(productID);
     calculateAverageStars(shopcontext.reviews);
-  },[]);
+  }, []);
 
   return (
     <div className="container p-5">
@@ -140,20 +159,31 @@ const ProductDetails = () => {
             <div className="card-body">
               <h5 className="card-title">{product.brand}</h5>
               <h3 className="card-text">{product.name}</h3>
+                        <ReactStars
+                          isHalf={true}
+                          count={5}
+                          value={shopcontext.calculateAverageStars()}
+                          size={24}
+                          color1="#CCCCCC"
+                          color2="#FFD700"
+                          edit={false}
+                        />
               <p className="card-text text-start ">
-                <span className="text-danger fs-4 me-2">{product.price}đ</span>
-                <strike>{product.price * 2}đ</strike>
+                <span className="text-danger fs-4 me-2">{product.price} VNĐ</span>
               </p>
-              <p className="card-text">{product.description}</p>
-              <div>
+              <div className="card-text">
                 <GrDeliver className="mb-2" /> THANH TOÁN BẰNG HÌNH THỨC COD HOẶC CHUYỂN KHOẢN<br />
                 <FaPhoneAlt /> HOTLINE: (098) 67453476
               </div>
+              <p className="card-text" style={{textAlign: 'justify'}}>{product.description}</p>
+              <p className="card-text">Còn lại <b>{product.inventory_quantity}</b> sản phẩm</p>
 
-              <div className="d-flex align-items-center mb-3 col-4 mb-5">
-                <button className="btn btn-outline-secondary ms-2" onClick={() => handleDecreaseQuantiy}>-</button>
-                <input className="form-control text-center" type="number"  min="1" value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} />
-                <button className="btn btn-outline-secondary me-2" onClick={() => setQuantity(quantity+1)}>+</button>
+              <div style={{ textAlign: '-webkit-center' }}>
+                <div className="d-flex align-items-center mb-3 col-4">
+                  <button className="btn btn-outline-secondary ms-2" onClick={handleDecreaseNumber}>-</button>
+                  <input className="form-control text-center" type="number" min="1" value={quantity}  onChange={handleUpdateNumber} />
+                  <button className="btn btn-outline-secondary ms-2" onClick={handleIncreaseNumber}>+</button>
+                </div>
               </div>
 
               <div className="d-flex justify-content-center">
@@ -294,7 +324,7 @@ const ProductDetails = () => {
                     ))}
                   </div>
                 </div>
-                <div className="d-flex justify-content-end mb-3">
+                <div className="justify-content-end mb-3" style={{ display: 'none' }}>
                   <div className="container p-5">
                     {/* ... (other code) */}
                     {isWritingReview ? (

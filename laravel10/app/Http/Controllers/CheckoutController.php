@@ -25,6 +25,8 @@ class CheckoutController extends Controller
         return $result;
     }
     public function Momo(Request $request){
+        $order_id = DB::table('orders')->max('id');
+        
         $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
 
         $partnerCode = 'MOMOBKUN20180529';
@@ -35,7 +37,7 @@ class CheckoutController extends Controller
         $orderId = time() ."";
         $redirectUrl = "http://localhost:5173/thanks";
         $ipnUrl = "http://localhost:5173/thanks";
-        $extraData = "";
+        $extraData = $order_id;
 
         $requestId = time() . "";
         $requestType = "payWithATM";
@@ -64,8 +66,7 @@ class CheckoutController extends Controller
     }
     public function VNPay(Request $request)
     {
-        $maxID = DB::table('orders')->max('id');
-        $nextBillID = $maxID + 1;
+        $orderID = DB::table('orders')->max('id');
         $billAmount = intval($request->input("query"));
 
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
@@ -73,7 +74,7 @@ class CheckoutController extends Controller
         $vnp_TmnCode = "7E23ITIE"; //Mã website tại VNPAY 
         $vnp_HashSecret = "JHVKPNVHLCBOYTVGHSEVSVEOLCTRLRLG"; //Chuỗi bí mật
 
-        $vnp_TxnRef = $nextBillID; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
+        $vnp_TxnRef = $orderID; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
         $vnp_OrderInfo = 'Thanh toán VNPay';
         $vnp_OrderType = 'billpayment';
         $vnp_Amount = $billAmount * 100;

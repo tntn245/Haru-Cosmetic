@@ -137,11 +137,11 @@ const ForgotPassword = () => {
                   onChange={(event) => setToken(event.target.value)}
                   required
                   style={{
-                    width: '100%'
+                    width: '100%', border: "1px solid #000", padding: '5px'
                   }}
                 />
                 {messagePIN && <div class="alert alert-danger">{messagePIN}</div>}
-                <button type="submit" onClick={handleVerifyPIN} style={{width: '100%'}}>Tiếp tục</button>
+                <button className="btn btn-dark" type="submit" onClick={handleVerifyPIN} style={{width: '100%'}}>Tiếp tục</button>
               </div>
             </Box>
           </Modal>
@@ -189,7 +189,7 @@ const ForgotPassword = () => {
                   placeholder='Mật khẩu mới'
                   required
                   style={{
-                    width: '100%'
+                    width: '100%', border: "1px solid #000", padding: '5px'
                   }}
                 />
                 <input
@@ -198,11 +198,11 @@ const ForgotPassword = () => {
                   placeholder='Xác nhận lại mật khẩu'
                   required
                   style={{
-                    width: '100%'
+                    width: '100%', border: "1px solid #000", padding: '5px'
                   }}
                 />
                 {messagePassword && <div class="alert alert-danger">{messagePassword}</div>}
-                <button type="submit" onClick={handleNewPassWord} style={{width: '100%'}}>Xác nhận</button>
+                <button className='btn btn-dark' type="submit" onClick={handleNewPassWord} style={{width: '100%'}}>Xác nhận</button>
               </div>
             </Box>
           </Modal>

@@ -27,7 +27,8 @@ class Product extends Model
         'image',
         'quantity_sold',
         'status',
-        'star'
+        'star',
+        'description'
     ];
 
 }

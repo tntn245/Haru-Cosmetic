@@ -165,7 +165,7 @@ const header = () => {
                     ))}
                   </NavDropdown>
                 </div>
-                <div className='ms-auto gap-3'>
+                {/* <div className='ms-auto gap-3'>
                   <NavDropdown
                     title={
                       <NavLink to="/brand" className={location.pathname === '/brand' ? 'active' : 'not-active'} onClick={closeMenu}>
@@ -180,7 +180,7 @@ const header = () => {
                       <NavDropdown.Item as={NavLink} to={`/brands/${brand.name_str}`}>{brand.name}</NavDropdown.Item>
                     ))}
                   </NavDropdown>
-                </div>
+                </div> */}
                 <div className='ms-auto gap-3'>
                   <NavLink to="/about" className={location.pathname === '/about' ? 'active' : 'not-active'} onClick={closeMenu}>
                     VỀ HARU

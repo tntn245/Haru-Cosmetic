@@ -17,6 +17,7 @@ class Address extends Model
         'user_id',
         'name',
         'phone',	
-        'address'	
+        'address', 
+        'status'
     ];
 }

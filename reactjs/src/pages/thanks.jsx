@@ -22,6 +22,12 @@ const Thanks = () => {
   const [vnpAmount, setVNPAmount] = useState('');
   const [vnpTxnRef, setVNPTxnRef] = useState('');
 
+  const [resultCode, setResultCode] = useState(null);
+  const [extraData, setExtraData] = useState(null);
+
+  const [COD, setCOD] = useState('');
+
+
   useEffect(() => {
     const user = localStorage.getItem('user');
     if (user != null) {
@@ -41,14 +47,24 @@ const Thanks = () => {
     setVNPAmount(params.get("vnp_Amount"));
     setVNPTransactionStatus(params.get("vnp_TransactionStatus"));
 
-    console.log(vnpTransactionStatus);
-    if (vnpTransactionStatus === '00') {
-      shopcontext.updatePaymentStatus(vnpTxnRef, "Thành công")
-      shopcontext.updateOrderStatus(vnpTxnRef, "Chờ duyệt")
+    setResultCode(params.get("resultCode"))
+    setExtraData(params.get("extraData"))
+
+    setCOD(params.get("COD"))
+
+    const orderID = vnpTxnRef || extraData;
+    console.log(params.get("resultCode")==='0')
+    if (params.get("vnp_TransactionStatus") === '00' || params.get("resultCode")==='0') {
+      shopcontext.updatePaymentStatus(orderID, "Thành công")
+      shopcontext.updateOrderStatus(orderID, "Đã duyệt")
+    }
+    else if (COD === '1'){
+      shopcontext.updatePaymentStatus(orderID, "Chưa thanh toán")
+      shopcontext.updateOrderStatus(orderID, "Chờ duyệt")
     }
     else {
-      shopcontext.updatePaymentStatus(vnpTxnRef, "Không thành công")
-      shopcontext.updateOrderStatus(vnpTxnRef, "Đã hủy")
+      shopcontext.updatePaymentStatus(orderID, "Không thành công")
+      shopcontext.updateOrderStatus(orderID, "Đã hủy")
     }
   }, [vnpTransactionStatus]);
 
@@ -59,10 +75,12 @@ const Thanks = () => {
           <div className="row">
             <div className="text-center p-5 mb-4">
               <div className="container card my-3">
-                {vnpTransactionStatus == '00'
+                {vnpTransactionStatus == '00' || resultCode === '0' || COD=='1'
                   ?
                   <div>
-                    <h3>Cảm ơn quý khách rất nhiều :D !!!</h3>
+                    <img src="src/assets/images/Picture2.jpg" className="card-img-top img-fluid " alt="..." style={{maxHeight:'100px', width: 'auto'}}/>
+                    <h3>Cảm ơn bạn đã lựa chọn chúng tôi</h3>
+                    <h5>Đơn hàng của bạn đã đặt thành công! Chúng tôi sẽ giao nhanh nhất có thể để bạn không chờ quá lâu</h5>
                     <div className="row">
                       <div className="col-12 col-md-6 d-flex m-auto justify-content-center mt-4">
                         <button onClick={() => navigate("/shop")}>
@@ -70,17 +88,18 @@ const Thanks = () => {
                         </button>
                       </div>
                       <div className="col-12 col-md-6 d-flex m-auto justify-content-center mt-4">
-                        <button onClick={() => navigate("/order-details")}>
-                          Order Details
+                        <button onClick={() => navigate("/user")}>
+                          Xem đơn hàng
                         </button>
                       </div>
                     </div>
                   </div>
                   :
                   <div>
-                    <h3>Giao dịch thất bại :C !!!</h3>
-                    <button onClick={() => navigate("/cart")}>
-                      Return cart
+                    <img src="src/assets/images/Picture1.jpg" className="card-img-top img-fluid " alt="..." style={{maxHeight:'100px', width: 'auto'}}/>
+                    <h3>Ôi không! Giao dịch thất bại</h3>
+                    <button onClick={() => navigate("/shop")}>
+                      Tiếp Tục Mua Sắm
                     </button>
                   </div>
                 }

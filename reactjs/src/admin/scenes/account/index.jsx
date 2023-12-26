@@ -91,44 +91,34 @@ const Account = () => {
         );
       },
     },
-    {
-      field: "actions",
-      headerName: "Actions",
-      renderCell: (params) => {
-        const { id, type } = params.row;
+    // {
+    //   field: "actions",
+    //   headerName: "",
+    //   renderCell: (params) => {
+    //     const { id, type } = params.row;
         
-        if (type !== "admin") {
-          return (
-            <div>
-              <IconButton
-                onClick={() => handleEditRow(id)}
-                size="small"
-                style={{ color: '#FFD700' }}
-              >
-                <EditIcon />
-              </IconButton>
-              <IconButton
-                onClick={() => handleDeleteRow(id)}
-                size="small"
-                color="error"
-              >
-                <DeleteIcon />
-              </IconButton>
-            </div>
-          );
-        }
-        return null;
-      },
-    }
+    //     if (type !== "admin") {
+    //       return (
+    //         <div>
+    //           <IconButton
+    //             onClick={() => handleEditRow(id)}
+    //             size="small">
+    //             <VisibilityIcon />
+    //           </IconButton>
+    //         </div>
+    //       );
+    //     }
+    //     return null;
+    //   },
+    // }
   ];
 
   return (
     <Box m="20px" width="100%">
       <Header title="TÀI KHOẢN" subtitle="Quản lý tài khoản" />
-      <Button variant="contained" color="primary">Thêm mới</Button>
       <Box
         m="40px 0 0 0"
-        height="70vh"
+        height="80vh"
         sx={{
           "& .MuiDataGrid-root": {
             border: "none",
@@ -158,8 +148,8 @@ const Account = () => {
           },
         }}
       >
-      <DataGrid 
-          disableRowSelectionOnClick 
+        <DataGrid 
+          checkboxSelection
           rows={users}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
@@ -169,6 +159,7 @@ const Account = () => {
           rowSelectionModel={rowSelectionModel}
         />
       </Box>
+
     </Box>
   );
 };

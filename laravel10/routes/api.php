@@ -41,7 +41,10 @@ Route::namespace('App\Http\Controllers')->group(function(){
     // Route::post('images', [UserController::class, 'uploadImg']);
 
     Route::post('get-categories', [CategoriesController::class, 'getCategories']);
+    Route::post('add-category', [CategoriesController::class, 'addCate']);
     Route::post('load-products-in-category', [CategoriesController::class, 'loadProductsInCategory']);
+    Route::post('load-products-in-category-id', [CategoriesController::class, 'loadProductsInCategoryUseID']);
+    Route::post('update-category', [CategoriesController::class, 'updateCategory']);
 
     Route::post('get-brands', [BrandController::class, 'getBrands']);
     Route::post('load-products-in-brand', [BrandController::class, 'loadProductsInBrand']);
@@ -72,12 +75,15 @@ Route::namespace('App\Http\Controllers')->group(function(){
     Route::post('remove-from-favs', [FavouriteController::class, 'removeFromFavs']);
 
     Route::post('get-orders', [OrderController::class, 'getOrders']);
+    Route::post('get-unique-years', [OrderController::class, 'getUniqueYears']);
     Route::post('count-orders', [OrderController::class, 'countOrdersByMonth']);
     Route::post('get-user-orders', [OrderController::class, 'getUserOrders']);
     Route::post('get-user-orders-details', [OrderController::class, 'getUserOrderDetails']);
     Route::post('create-order', [OrderController::class, 'createOrder']);
+    Route::post('update-delivered-date', [OrderController::class, 'updateDeliveredDate']);
     Route::post('update-order-status', [OrderController::class, 'updateOrderStatus']);
     Route::post('update-payment-status', [OrderController::class, 'updatePaymentStatus']);
+    Route::post('evaluate-order', [OrderController::class, 'evaluateOrder']);
 
     Route::post('create-order-details', [OrderDetailsController::class, 'createOrderDetails']);
 

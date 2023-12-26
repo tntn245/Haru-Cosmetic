@@ -20,6 +20,8 @@ class Categories extends Model
 
     protected $fillable = [
         'name',
-        'name_str'
+        'name_str',
+        'status',
+        'description'
     ];
 }

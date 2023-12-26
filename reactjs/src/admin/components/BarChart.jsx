@@ -1,11 +1,18 @@
 import { useTheme } from "@mui/material";
 import { ResponsiveBar } from "@nivo/bar";
 import { tokens } from "../../theme";
-import { paymentMethodOrdersByMonth as data } from "../data/mockData";
+import {countPaymentMethodOrders, paymentMethodOrdersByMonth as data } from "../data/mockData";
+import React, { useState, useEffect, useRef } from 'react'
 
-const BarChart = ({ isDashboard = false }) => {
+const BarChart = ({ isDashboard = false }, props) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const receivedData = props.data;
+
+  useEffect(() => {
+    // countPaymentMethodOrders(receivedData);
+    // console.log("a",receivedData)
+  }, []);
 
   return (
     <ResponsiveBar
